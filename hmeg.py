@@ -1,6 +1,8 @@
 import sys
 import tomllib
 
+from hmeg import utils
+
 
 if len(sys.argv) > 1:
     config_file = sys.argv[1]
@@ -10,6 +12,9 @@ else:
 
 with open(config_file, mode="r") as f:
     config = tomllib.loads(f.read())
+
+
+utils.register_grammar_topics(config["topics_folder"])
 
 print("topic:", config["topic"])
 print("# exercises:", config["number_exercises"])
