@@ -1,7 +1,7 @@
 import sys
 import tomllib
 
-from hmeg import utils
+from hmeg import utils, ExerciseGenerator
 
 
 if len(sys.argv) > 1:
@@ -16,5 +16,4 @@ with open(config_file, mode="r") as f:
 
 utils.register_grammar_topics(config["topics_folder"])
 
-print("topic:", config["topic"])
-print("# exercises:", config["number_exercises"])
+ExerciseGenerator.generate_exercises(topic_name=config["topic"], num=config["number_exercises"])

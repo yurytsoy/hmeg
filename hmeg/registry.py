@@ -7,26 +7,19 @@ from __future__ import annotations
 from .entities import GrammarDescription
 
 
-class GrammarFactory:
+class GrammarRegistry:
     topics: dict[str, GrammarDescription] = dict()
 
     @staticmethod
     def register_grammar_topic(grammar_descr: GrammarDescription):
-        if grammar_descr.name in GrammarFactory.topics:
+        if grammar_descr.name in GrammarRegistry.topics:
             return
-        GrammarFactory.topics[grammar_descr.name] = grammar_descr
+        GrammarRegistry.topics[grammar_descr.name] = grammar_descr
 
     @staticmethod
     def get_registered_topics() -> list[str]:
         """
         Returns names of registered topics.
-        """
-        ...
-
-    @staticmethod
-    def generate_exercises(topic_name: str, num: str) -> list[str]:
-        """
-        Generates list of random translation exercises for the given topic.
         """
         ...
 
