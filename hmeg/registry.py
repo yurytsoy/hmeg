@@ -4,28 +4,22 @@ Factory for generation of exercises for the given topic.
 
 from __future__ import annotations
 
-
-def register_grammar_topics():
-    # iterate over files in hmeg.grammar, load descriptions and register in the factory.
-    ...
+from .entities import GrammarDescription
 
 
-class GrammarFactory:
+class GrammarRegistry:
+    topics: dict[str, GrammarDescription] = dict()
+
     @staticmethod
-    def register_grammar_topic(topic_description):
-        ...
+    def register_grammar_topic(grammar_descr: GrammarDescription):
+        if grammar_descr.name in GrammarRegistry.topics:
+            return
+        GrammarRegistry.topics[grammar_descr.name] = grammar_descr
 
     @staticmethod
     def get_registered_topics() -> list[str]:
         """
         Returns names of registered topics.
-        """
-        ...
-
-    @staticmethod
-    def generate_exercises(topic_name: str, num: str) -> list[str]:
-        """
-        Generates list of random translation exercises for the given topic.
         """
         ...
 
