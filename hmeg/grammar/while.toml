@@ -9,6 +9,6 @@ exercises=[
     """
     S -> P V 'and' V
     P -> 'he' | 'she' | 'it' |
-    V -> '{verb:s}'
+    V -> '{verb:3s}'
     """
 ]
