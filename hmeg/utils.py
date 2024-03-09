@@ -1,7 +1,7 @@
+from mlconjug3 import Conjugator
 import os
 import random
 import tomllib
-
 
 from .entities import GrammarDescription, MinilexPlaceholders
 from .registry import GrammarRegistry
@@ -39,5 +39,11 @@ def apply_minilex(s: str) -> str:
 
     while MinilexPlaceholders.Noun in s:
         s = s.replace(MinilexPlaceholders.Noun, random.choice(nouns), 1)
+
+    conj = Conjugator(language="en")
+    while MinilexPlaceholders.VerbSingular3rd in s:
+        cur_verb = conj.conjugate(random.choice(verbs))
+        conj_verb = cur_verb["indicative"]["indicative present"]["he/she/it"]
+        s = s.replace(MinilexPlaceholders.VerbSingular3rd, conj_verb, 1)
 
     return s
