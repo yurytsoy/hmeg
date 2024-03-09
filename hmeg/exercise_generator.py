@@ -28,5 +28,7 @@ class ExerciseGenerator:
         res = []
         for _ in range(num):
             cur_idx = random.randint(0, len(templates)-1)
-            res.append(apply_minilex(" ".join(templates[cur_idx])))
+            exercise = apply_minilex(" ".join(templates[cur_idx]))
+            exercise = exercise.replace(exercise[0], exercise[0].capitalize(), 1)
+            res.append(exercise)
         return res
