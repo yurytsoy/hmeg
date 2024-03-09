@@ -12,17 +12,21 @@ class ExerciseGenerator:
     def generate_exercises(topic_name: str, num: int) -> list[str]:
         """
         Generates list of random translation exercises for the given topic.
+
+        The results are represented as templates with placeholders for nouns, verbs, ....
+
+        See also: `apply_minilex`
         """
         if topic_name not in GrammarRegistry.topics:
             raise RuntimeError(f"Requested an unregistered topic: {topic_name}. Please check the topics' folder.")
 
-        exercise_types = [
-            CFG.fromstring(exercise_type)
-            for exercise_type in GrammarRegistry.topics[topic_name].exercises
-        ]
+        templates = []
+        for exercise_type in GrammarRegistry.topics[topic_name].exercises:
+            cur_grammar = CFG.fromstring(exercise_type)
+            templates.extend(generate(cur_grammar, n=num))
+
         res = []
         for _ in range(num):
-            cur_type_idx = random.randint(0, len(exercise_types)-1)
-            cur_exercise = next(generate(exercise_types[cur_type_idx], n=1))
-            res.append(apply_minilex(" ".join(cur_exercise)))
+            cur_idx = random.randint(0, len(templates)-1)
+            res.append(apply_minilex(" ".join(templates[cur_idx])))
         return res
