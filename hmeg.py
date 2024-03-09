@@ -16,4 +16,7 @@ with open(config_file, mode="r") as f:
 
 utils.register_grammar_topics(config["topics_folder"])
 
-ExerciseGenerator.generate_exercises(topic_name=config["topic"], num=config["number_exercises"])
+exercises = ExerciseGenerator.generate_exercises(topic_name=config["topic"], num=config["number_exercises"])
+print(f"Exercises for topic: {config['topic']}")
+for idx, exercise in enumerate(exercises):
+    print(f"{idx+1}. {exercise}")
