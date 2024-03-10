@@ -1,0 +1,17 @@
+name="I want to… / -고 싶어요"
+levels=[
+    {resource_name="TTMIK", level=1}
+]
+links=[]
+exercises=[
+    """
+    S -> P 'want to' V
+    P -> 'I' | 'they' | 'you' | 'we'
+    V -> '{verb}'
+    """,
+    """
+    S -> P 'wants to' V
+    P -> 'he' | 'she' | 'it'
+    V -> '{verb}'
+    """
+]

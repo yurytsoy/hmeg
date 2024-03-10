@@ -1,0 +1,17 @@
+name="What do you want to do? / 뭐 -고 싶어요?"
+levels=[
+    {resource_name="TTMIK", level=1}
+]
+links=[]
+exercises=[
+    """
+    S -> 'What do' P 'want to' V
+    P -> 'I' | 'they' | 'you' | 'we'
+    V -> '{verb}'
+    """,
+    """
+    S -> 'What does' P 'want to' V
+    P -> 'he' | 'she' | 'it'
+    V -> '{verb}'
+    """
+]

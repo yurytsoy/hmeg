@@ -1,0 +1,19 @@
+name="Have, Don’t have, There is, There isn’t / 있어요, 없어요"
+levels=[
+    {resource_name="TTMIK", level=1}
+]
+links=[]
+exercises=[
+    """
+    S -> 'There is {noun}'
+    """,
+    """
+    S -> 'There isn`t {noun}'
+    """,
+    """
+    S -> 'Have {noun}'
+    """,
+    """
+    S -> 'Have not {noun}'
+    """
+]

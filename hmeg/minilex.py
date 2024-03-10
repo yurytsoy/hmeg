@@ -53,7 +53,7 @@ nouns = [
     "reason", "relative", "right", "road", "room",
     "school", "shop", "show", "side", "sister", "sleep", "somebody", "something", "son", "sound", "stand", "stop", "street", "suitcase", "sun", "surprise",
     "talk", "tax", "teacher", "thing", "ticket", "time", "today", "tomorrow", "top", "town", "travel", "true",
-    "use"
+    "use",
     "voice",
     "walk", "watch", "water", "way", "weather", "week", "wife", "will", "woman", "word", "work", "world", "worry",
     "year", "yesterday"
@@ -87,3 +87,12 @@ adjectives = [
     "warm", "whole", "wonderful", "worst", "wrong",
     "young"
 ]
+
+weekdays = [
+    "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"
+]
+
+seasons = [
+    "Spring", "Summer", "Autumn", "Winter"
+]
+

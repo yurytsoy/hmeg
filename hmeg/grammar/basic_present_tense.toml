@@ -1,0 +1,17 @@
+name="Basic Present Tense / -아요, -어요, -여요"
+levels=[
+    {resource_name="TTMIK", level=1}
+]
+links=[]
+exercises=[
+    """
+    S -> P V
+    P -> 'I' | 'they' | 'you' | 'we'
+    V -> '{verb}'
+    """,
+    """
+    S -> P V
+    P -> 'he' | 'she' | 'it'
+    V -> '{verb:3s}'
+    """
+]

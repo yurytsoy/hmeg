@@ -5,7 +5,7 @@ import tomllib
 
 from .entities import GrammarDescription, MinilexPlaceholders
 from .registry import GrammarRegistry
-from .minilex import nouns, verbs
+from .minilex import nouns, verbs, weekdays, seasons
 
 
 def register_grammar_topics(grammar_dir: str | None = None):
@@ -40,10 +40,21 @@ def apply_minilex(s: str) -> str:
     while MinilexPlaceholders.Noun in s:
         s = s.replace(MinilexPlaceholders.Noun, random.choice(nouns), 1)
 
+    while MinilexPlaceholders.Weekday in s:
+        s = s.replace(MinilexPlaceholders.Weekday, random.choice(weekdays), 1)
+
+    while MinilexPlaceholders.Season in s:
+        s = s.replace(MinilexPlaceholders.Season, random.choice(seasons), 1)
+
     conj = Conjugator(language="en")
     while MinilexPlaceholders.VerbSingular3rd in s:
         cur_verb = conj.conjugate(random.choice(verbs))
         conj_verb = cur_verb["indicative"]["indicative present"]["he/she/it"]
         s = s.replace(MinilexPlaceholders.VerbSingular3rd, conj_verb, 1)
+
+    while MinilexPlaceholders.VerbPast in s:
+        cur_verb = conj.conjugate(random.choice(verbs))
+        conj_verb = cur_verb["indicative"]["indicative past tense"]["I"]
+        s = s.replace(MinilexPlaceholders.VerbPast, conj_verb, 1)
 
     return s
