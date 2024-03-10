@@ -3,11 +3,11 @@ Help me, Erik Gunnemark
 
 # Grammar topics
 
-Each grammar topic is defined by a json-like structure, that includes sections:
+Each grammar topic is defined by a structure, that includes sections:
 * `name` -- topic name
 * `levels` -- list of study level for different resources and textbooks. Can be helpful to understand the complexity and for reference.
 * `links` -- links to the resources with explanation
-* `grammars` -- list of NLTK-compatible grammars that describe structure of generated sentences
+* `exercises` -- list of NLTK-compatible grammars that describe structure of generated exercises. Can include several different structures.
 
 ```python
 description = {
@@ -17,7 +17,7 @@ description = {
         {"resource_name": "King Sejong Institute Practical Korean", "level": 3}
     ],
     "links": [],
-    "grammars": [
+    "exercises": [
         """
         S -> P V 'and' V
         P -> 'I' | 'they' | 'you' | 'we' |
