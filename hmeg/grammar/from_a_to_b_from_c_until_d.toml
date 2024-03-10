@@ -1,0 +1,15 @@
+name="From A To B, From C Until D / -에서/부터 -까지"
+levels=[
+    {resource_name="TTMIK", level=1}
+]
+links=[]
+exercises=[
+    """
+    S -> 'From' T 'to' T
+    T -> '{noun}' | '{weekday}' | '{season}'
+    """,
+    """
+    S -> 'From' T 'until' T
+    T -> '{weekday}' | '{season}'
+    """
+]

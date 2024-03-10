@@ -1,0 +1,22 @@
+name="Negative Sentences / 안, -지 않다"
+levels=[
+    {resource_name="TTMIK", level=1}
+]
+links=[]
+exercises=[
+    """
+    S -> P 'don`t' V
+    P -> 'I' | 'they' | 'you' | 'we' |
+    V -> '{verb}'
+    """,
+    """
+    S -> P 'doesn`t' V
+    P -> 'he' | 'she' | 'it'
+    V -> '{verb}'
+    """,
+    """
+    S -> P 'didn`t' V
+    P -> 'I' | 'they' | 'you' | 'we' | 'he' | 'she' | 'it' |
+    V -> '{verb}'
+    """
+]
