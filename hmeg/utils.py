@@ -46,4 +46,9 @@ def apply_minilex(s: str) -> str:
         conj_verb = cur_verb["indicative"]["indicative present"]["he/she/it"]
         s = s.replace(MinilexPlaceholders.VerbSingular3rd, conj_verb, 1)
 
+    while MinilexPlaceholders.VerbPast in s:
+        cur_verb = conj.conjugate(random.choice(verbs))
+        conj_verb = cur_verb["indicative"]["indicative past tense"]["I"]
+        s = s.replace(MinilexPlaceholders.VerbPast, conj_verb, 1)
+
     return s

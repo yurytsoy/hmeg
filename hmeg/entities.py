@@ -8,6 +8,7 @@ class MinilexPlaceholders:
     PronounSingular3rd = "{pronoun:3s}"  # personal pronoun for 3rd person, singular: he, she, it
     Verb = "{verb}"  # verb, present simple
     VerbSingular3rd = "{verb:3s}"  # verb in the present simple for 3rd person, singular
+    VerbPast = "{verb:past}"  # verb, past
 
     @staticmethod
     def to_list() -> list[str]:
@@ -16,7 +17,8 @@ class MinilexPlaceholders:
             MinilexPlaceholders.Pronoun,
             MinilexPlaceholders.PronounSingular3rd,
             MinilexPlaceholders.Verb,
-            MinilexPlaceholders.VerbSingular3rd
+            MinilexPlaceholders.VerbSingular3rd,
+            MinilexPlaceholders.VerbPast,
         ]
 
 
