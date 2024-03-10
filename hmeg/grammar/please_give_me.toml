@@ -1,0 +1,10 @@
+name="Please give me... / ... 주세요"
+levels=[
+    {resource_name="TTMIK", level=1}
+]
+links=[]
+exercises=[
+    """
+    S -> 'Please give me {noun}'
+    """
+]

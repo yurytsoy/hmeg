@@ -1,0 +1,15 @@
+name="This is ... / 이거/이것 ..."
+levels=[
+    {resource_name="TTMIK", level=1}
+]
+links=[]
+exercises=[
+    """
+    S -> 'This is' N
+    N -> '{noun}'
+    """,
+    """
+    S -> 'This was' N
+    N -> '{noun}'
+    """
+]

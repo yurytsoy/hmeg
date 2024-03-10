@@ -1,0 +1,10 @@
+name="Topic/Subject Marking Particles / -은/는, -이/가"
+levels=[
+    {resource_name="TTMIK", level=1}
+]
+links=[]
+exercises=[
+    """
+    S -> '{noun}'
+    """
+]
