@@ -38,11 +38,13 @@ In order to make generated sentences extensible and more compact, the grammar ca
 that represent group of words, instead of a specific word.
 
 The following token-nodes are allowed:
+* `{noun}` -- regular singular noun
+   * "word", "house", "tree", ... 
 * `{verb}` -- regular verb
    * "go", "work", "see", ... 
-* `{verb:s}` -- regular verb in the present simple for 3rd person, singular
+* `{verb:3s}` -- regular verb in the present simple for 3rd person, singular
    * "goes", "works", "sees", ... 
 * `{pronoun}` -- personal pronouns
    * "I", "we", "they", "you" 
-* `{pronoun:s}` -- personal pronouns for 3rd person, singular
+* `{pronoun:3s}` -- personal pronouns for 3rd person, singular
    * "he", "she", "it" 
