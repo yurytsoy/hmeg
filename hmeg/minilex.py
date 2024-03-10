@@ -87,3 +87,12 @@ adjectives = [
     "warm", "whole", "wonderful", "worst", "wrong",
     "young"
 ]
+
+weekdays = [
+    "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"
+]
+
+seasons = [
+    "Spring", "Summer", "Autumn", "Winter"
+]
+

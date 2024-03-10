@@ -6,9 +6,11 @@ class MinilexPlaceholders:
     Noun = "{noun}"  # noun, singular
     Pronoun = "{pronoun}"  # personal pronoun: I, we, they, you
     PronounSingular3rd = "{pronoun:3s}"  # personal pronoun for 3rd person, singular: he, she, it
+    Season = "{season}"  # season
     Verb = "{verb}"  # verb, present simple
     VerbSingular3rd = "{verb:3s}"  # verb in the present simple for 3rd person, singular
     VerbPast = "{verb:past}"  # verb, past
+    Weekday = "{weekday}"  # day of the week
 
     @staticmethod
     def to_list() -> list[str]:
