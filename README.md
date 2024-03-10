@@ -5,12 +5,17 @@ Help me, Erik Gunnemark
 
 Each grammar topic is defined by a json-like structure, that includes sections:
 * `name` -- topic name
+* `levels` -- list of study level for different resources and textbooks. Can be helpful to understand the complexity and for reference.
 * `links` -- links to the resources with explanation
 * `grammars` -- list of NLTK-compatible grammars that describe structure of generated sentences
 
 ```python
 description = {
     "name": "-으면서 / -면서",
+    "levels": [
+        {"resource_name": "TTMIK", "level": 9},
+        {"resource_name": "King Sejong Institute Practical Korean", "level": 3}
+    ],
     "links": [],
     "grammars": [
         """
