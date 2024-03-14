@@ -1,0 +1,17 @@
+name="To like / 좋다 vs. 좋아하다"
+levels=[
+    {resource_name="TTMIK", level=2}
+]
+links=[]
+exercises=[
+    """
+    S -> P 'like' N
+    P -> 'I' | 'they' | 'you' | 'we'
+    N -> '{noun}'
+    """,
+    """
+    S -> P 'likes' N
+    P -> 'he' | 'she' | 'it'
+    N -> '{noun}'
+    """
+]

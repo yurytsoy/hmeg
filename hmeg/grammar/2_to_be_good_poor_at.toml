@@ -1,0 +1,13 @@
+name="To be good/poor at … / 잘하다/못하다"
+levels=[
+    {resource_name="TTMIK", level=2}
+]
+links=[]
+exercises=[
+    """
+    S -> P GB V
+    GB -> 'good at' | 'poor at'
+    P -> 'I am' | 'they are' | 'you are' | 'we are' | 'he is' | 'she is' | 'it is' |
+    V -> '{verb:ing}'
+    """
+]

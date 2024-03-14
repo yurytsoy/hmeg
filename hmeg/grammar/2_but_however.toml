@@ -1,0 +1,13 @@
+name="But, However / 그렇지만, 그런데"
+levels=[
+    {resource_name="TTMIK", level=2}
+]
+links=[]
+exercises=[
+    """
+    S -> V 'but' V | V 'however' V | Vp 'but' Vp | Vp 'however' Vp | A 'but' A | A 'howevers' A
+    V -> '{verb}'
+    Vp -> '{verb:past}'
+    V -> '{adj}'
+    """
+]

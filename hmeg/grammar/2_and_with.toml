@@ -1,0 +1,10 @@
+name="And, with / -하고, -(이)랑"
+levels=[
+    {resource_name="TTMIK", level=2}
+]
+links=[]
+exercises=[
+    """
+    S -> '{noun} and {noun}'
+    """
+]

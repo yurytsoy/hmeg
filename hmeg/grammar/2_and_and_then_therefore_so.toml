@@ -1,0 +1,12 @@
+name="And, and then, therefore, so / 그리고, 그래서"
+levels=[
+    {resource_name="TTMIK", level=2}
+]
+links=[]
+exercises=[
+    """
+    S -> V Pt V
+    Pt -> 'and' | 'and then' | 'therefore' | 'so'
+    V -> '{verb}'
+    """
+]

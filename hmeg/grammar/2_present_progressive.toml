@@ -1,0 +1,12 @@
+name="Present Progressive / -고 있어요"
+levels=[
+    {resource_name="TTMIK", level=2}
+]
+links=[]
+exercises=[
+    """
+    S -> P V
+    P -> 'I am' | 'they are' | 'you are' | 'we are' | 'he is' | 'she is' | 'it is' |
+    V -> '{verb:ing}'
+    """
+]

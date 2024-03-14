@@ -1,0 +1,13 @@
+name="Can, Cannot / -ㄹ 수 있다/없다"
+levels=[
+    {resource_name="TTMIK", level=2}
+]
+links=[]
+exercises=[
+    """
+    S -> P C V
+    P -> 'I' | 'they' | 'you' | 'we' | 'he' | 'she' | 'it' |
+    C -> 'can' | 'can`t'
+    V -> '{verb}'
+    """
+]

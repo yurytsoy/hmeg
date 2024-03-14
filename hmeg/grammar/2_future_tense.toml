@@ -1,0 +1,12 @@
+name="Future Tense / -ㄹ/을 거예요, 할 거예요"
+levels=[
+    {resource_name="TTMIK", level=2}
+]
+links=[]
+exercises=[
+    """
+    S -> P 'will' V
+    P -> 'I' | 'they' | 'you' | 'we' | 'he' | 'she' | 'it' |
+    V -> '{verb}'
+    """
+]

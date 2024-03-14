@@ -1,6 +1,7 @@
 import unittest
 
 from hmeg import utils
+from hmeg.entities import MinilexPlaceholders
 
 
 class TestUtils(unittest.TestCase):
@@ -17,3 +18,9 @@ class TestUtils(unittest.TestCase):
             res = utils.apply_minilex(s)
             with self.assertRaises(ValueError):
                 res.index(res[:3], 1)  # no repetitions in the generated string
+
+        with self.subTest("All placeholders"):
+            all_placeholders = " ".join(MinilexPlaceholders.to_list())
+            res = utils.apply_minilex(all_placeholders)
+            for placeholder in all_placeholders:
+                self.assertTrue(placeholder not in res)

@@ -1,0 +1,13 @@
+name="Have to, Should, Must / -아/어/여야 되다/하다"
+levels=[
+    {resource_name="TTMIK", level=2}
+]
+links=[]
+exercises=[
+    """
+    S -> P H V
+    H -> 'have to' | 'should' | 'must'
+    P -> 'I' | 'they' | 'you' | 'we' | 'he' | 'she' | 'it' |
+    V -> '{verb}'
+    """
+]
