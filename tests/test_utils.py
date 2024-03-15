@@ -22,5 +22,5 @@ class TestUtils(unittest.TestCase):
         with self.subTest("All placeholders"):
             all_placeholders = " ".join(MinilexPlaceholders.to_list())
             res = utils.apply_minilex(all_placeholders)
-            for placeholder in all_placeholders:
+            for placeholder in MinilexPlaceholders.to_list():
                 self.assertTrue(placeholder not in res)

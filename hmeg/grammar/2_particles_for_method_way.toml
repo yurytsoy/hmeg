@@ -1,0 +1,12 @@
+name="Particles For Method, Way / -(으)로"
+levels=[
+    {resource_name="TTMIK", level=2}
+]
+links=[]
+exercises=[
+    """
+    S -> A V
+    A -> '{adverb}'
+    V -> '{verb}'
+    """
+]

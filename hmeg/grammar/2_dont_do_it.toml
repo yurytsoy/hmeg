@@ -1,0 +1,10 @@
+name="Don’t do it. / -지 마세요"
+levels=[
+    {resource_name="TTMIK", level=2}
+]
+links=[]
+exercises=[
+    """
+    S -> 'Don`t' '{verb}'
+    """
+]

@@ -1,0 +1,10 @@
+name="Imperative / -(으)세요"
+levels=[
+    {resource_name="TTMIK", level=2}
+]
+links=[]
+exercises=[
+    """
+    S -> '{verb}'
+    """
+]

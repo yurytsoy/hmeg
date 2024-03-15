@@ -1,0 +1,11 @@
+name="If, In case / 만약, -(으)면"
+levels=[
+    {resource_name="TTMIK", level=2}
+]
+links=[]
+exercises=[
+    """
+    S -> 'If' ANV
+    ANV -> '{adj}' | '{noun}' | '{verb}'
+    """
+]

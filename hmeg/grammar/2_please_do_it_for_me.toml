@@ -1,0 +1,10 @@
+name="Please do it for me. / -아/어/여 주세요"
+levels=[
+    {resource_name="TTMIK", level=2}
+]
+links=[]
+exercises=[
+    """
+    S -> '{verb}'
+    """
+]
