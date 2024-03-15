@@ -5,7 +5,7 @@ import tomllib
 
 from .entities import GrammarDescription, MinilexPlaceholders
 from .registry import GrammarRegistry
-from .minilex import adjectives, nouns, verbs, weekdays, seasons
+from .minilex import adjectives, adverbs, nouns, verbs, weekdays, seasons
 
 
 def register_grammar_topics(grammar_dir: str | None = None):
@@ -48,6 +48,9 @@ def apply_minilex(s: str) -> str:
 
     while MinilexPlaceholders.Adjective in s:
         s = s.replace(MinilexPlaceholders.Adjective, random.choice(adjectives), 1)
+
+    while MinilexPlaceholders.Adverb in s:
+        s = s.replace(MinilexPlaceholders.Adverb, random.choice(adverbs), 1)
 
     conj = Conjugator(language="en")
     while MinilexPlaceholders.VerbSingular3rd in s:

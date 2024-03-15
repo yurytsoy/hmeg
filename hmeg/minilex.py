@@ -88,6 +88,28 @@ adjectives = [
     "young"
 ]
 
+adverbs = [
+    "angrily",
+    "badly", "beautifully", "boringly",
+    "calmly", "certainly", "cheaply", "cheerfully", "cleanly", "clearly", "coldly", "commonly",
+    "dangerously", "deadly", "dearly", "differently", "difficultly", "dirtily", "dryly",
+    "easily", "every", "expensively",
+    "famously", "fastly", "firstly", "freely", "fully", "funnily",
+    "gladly", "greatly",
+    "happily", "heavily", "highly", "hotly",
+    "importantly", "impossibly", "interestingly",
+    "kindly",
+    "lastly", "lately", "lightly",
+    "nearly", "necessarily", "newly", "next", "nicely",
+    "openly",
+    "possibly", "prettily",
+    "quietly", "relatively", "rightly",
+    "safely", "shortly", "slowly", "sorrily", "strangely", "strongly", "stupidly", "surprisingly",
+    "terribly", "tiredly",
+    "urgently", "usually",
+    "warmly", "well", "wonderfully", "wrongly"
+]
+
 weekdays = [
     "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"
 ]
