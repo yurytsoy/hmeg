@@ -4,6 +4,7 @@ import random
 import tomllib
 
 from .entities import GrammarDescription, MinilexPlaceholders
+from .inflections import verbs_singular_3rd
 from .registry import GrammarRegistry
 from .minilex import adjectives, adverbs, nouns, verbs, weekdays, seasons
 
@@ -55,7 +56,10 @@ def apply_minilex(s: str) -> str:
     conj = Conjugator(language="en")
     while MinilexPlaceholders.VerbSingular3rd in s:
         cur_verb = conj.conjugate(random.choice(verbs))
-        conj_verb = cur_verb["indicative"]["indicative present"]["he/she/it"]
+        conj_verb = verbs_singular_3rd.get(
+            cur_verb.name,
+            cur_verb["indicative"]["indicative present"]["he/she/it"]
+        )
         s = s.replace(MinilexPlaceholders.VerbSingular3rd, conj_verb, 1)
 
     while MinilexPlaceholders.VerbPast in s:
