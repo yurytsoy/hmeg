@@ -8,12 +8,12 @@ exercises=[
     S -> 'There is {noun}'
     """,
     """
-    S -> 'There isn`t {noun}'
+    S -> 'There is no {noun}'
     """,
     """
     S -> 'Have {noun}'
     """,
     """
-    S -> 'Have not {noun}'
+    S -> 'Don`t have {noun}'
     """
 ]

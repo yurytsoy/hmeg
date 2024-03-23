@@ -44,10 +44,6 @@ nouns = [
     "walk", "watch", "water", "way", "weather", "week", "wife", "will", "woman", "word", "work", "world", "worry",
     "year", "yesterday"
 ]
-pronouns = [
-    "anybody", "anything",
-    "everybody", "everything",
-]
 adjectives = [
     "angry", "another", "any",
     "bad", "beautiful", "boring",
@@ -92,10 +88,4 @@ adverbs = [
     "terribly", "tiredly",
     "urgently", "usually",
     "warmly", "well", "wonderfully", "wrongly"
-]
-weekdays = [
-    "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"
-]
-seasons = [
-    "Spring", "Summer", "Autumn", "Winter"
 ]
