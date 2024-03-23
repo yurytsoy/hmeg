@@ -5,8 +5,7 @@ The (very hopeful) idea is that mastering these blocks can help with faster spea
 complex sentences. 
 
 The exercises are generated randomly and thus can occasionally come out
-as grammatically strange or even inappropriate. In either case, if you use this library and
-encounter such sentences please let me know.
+as grammatically or semantically strange.
 
 But as long as the sentence is not abusive and grammatically correct I assume
 that it is a proper exercise. With the goal to practice quickfire translation into Korean,
@@ -20,6 +19,32 @@ Update file [hmeg.conf](hmeg.conf) to select the grammatical topic and number of
 and then execute:
 ```bash
 python hmeg.py
+```
+
+You can also specify command line arguments to define configuration file, topic,
+and or number of generated exercises.
+
+* Run with custom configuration file (notice the `run` keyword)
+```bash
+python hmeg.py run --config="custom/configuration/file.toml"
+```
+
+* Run with custom topic and number of exercises
+```bash
+python hmeg.py run -n 15 -t "Have, Don’t have, There is, There isn’t / 있어요, 없어요"
+```
+
+* List available topics described in the specified configuration file (optional)
+```bash
+python hmeg.py list -c hmeg.conf
+```
+
+* Print help for the arguments or specific command
+
+```bash
+python hmeg.py --help
+python hmeg.py run --help
+python hmeg.py list --help
 ```
 
 ## Python code
