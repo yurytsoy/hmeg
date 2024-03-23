@@ -1,50 +1,36 @@
 # hmeg
-Help me, Erik Gunnemark
 
-# Grammar topics
+Help me, Erik Gunnemark -- library for generation of exercises for practicing of some basic speaking blocks.
 
-Each grammar topic is defined by a structure, that includes sections:
-* `name` -- topic name
-* `levels` -- list of study level for different resources and textbooks. Can be helpful to understand the complexity and for reference.
-* `links` -- links to the resources with explanation
-* `exercises` -- list of NLTK-compatible grammars that describe structure of generated exercises. Can include several different structures.
+TODO: who was Erik Gunnemark.
+
+TODO: why I made this library, its purpose and usage.
+
+TODO: disclaimer about randomness of generated exercises and them not making much sense.
+
+# Usage
 
 ```python
-description = {
-    "name": "-으면서 / -면서",
-    "levels": [
-        {"resource_name": "TTMIK", "level": 9},
-        {"resource_name": "King Sejong Institute Practical Korean", "level": 3}
-    ],
-    "links": [],
-    "exercises": [
-        """
-        S -> P V 'and' V
-        P -> 'I' | 'they' | 'you' | 'we' |
-        V -> '{verb}'
-        """,
-        """
-        S -> P V 'and' V
-        P -> 'he' | 'she' | 'it' | 
-        V -> '{verb:s}'
-        """
-    ]
-}
+from hmeg import utils, Vocabulary, ExerciseGenerator
+
+topics_folder = "hmeg/topics/"  # folder containing description of exercises for different grammar topics.
+vocab_file = "vocabs/minilex.toml"  # file with vocabulary for generation of exercises.
+num_exercises = 10  # number of randomly generated exercises for selected topic
+
+utils.register_grammar_topics(topics_folder)
+vocab = Vocabulary.load(vocab_file)
+
+exercises = ExerciseGenerator.generate_exercises(
+    topic_name="While / -(으)면서", num=num_exercises, vocab=vocab
+)
+print(exercises)
 ```
 
-## Grammar token-nodes
+# Format of exercises and vocabulary
 
-In order to make generated sentences extensible and more compact, the grammar can include special token-nodes
-that represent group of words, instead of a specific word.
+The library supports extensible and configurable templates for generation of exercises
+as well as customizable vocabulary.
 
-The following token-nodes are allowed:
-* `{noun}` -- regular singular noun
-   * "word", "house", "tree", ... 
-* `{verb}` -- regular verb
-   * "go", "work", "see", ... 
-* `{verb:3s}` -- regular verb in the present simple for 3rd person, singular
-   * "goes", "works", "sees", ... 
-* `{pronoun}` -- personal pronouns
-   * "I", "we", "they", "you" 
-* `{pronoun:3s}` -- personal pronouns for 3rd person, singular
-   * "he", "she", "it" 
+The built-in exercises topics and vocabulary can be found in the `hmeg/topics/` and `vocabs/minilex.toml` 
+
+See folder `docs` for more details regarding description of format for exercises and vocabulary.
