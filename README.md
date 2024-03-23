@@ -1,6 +1,6 @@
 # hmeg
 
-Help me, Erik Gunnemark -- library for generation of exercises for practicing of some basic Korean speaking blocks.
+Help me, Erik Gunnemark -- library for generation of exercises for practicing of some basic Korean-speaking blocks.
 The (very hopeful) idea is that mastering these blocks can help with faster speaking and constructing more
 complex sentences. 
 
@@ -9,10 +9,20 @@ as grammatically strange or even inappropriate. In either case, if you use this 
 encounter such sentences please let me know.
 
 But as long as the sentence is not abusive and grammatically correct I assume
-that it is a proper exercise, with the goal is to practice quickfire translation into Korean,
+that it is a proper exercise. With the goal to practice quickfire translation into Korean,
 where element of surprise can facilitate better memorization.
 
 # Usage
+
+## Command line
+
+Update file [hmeg.conf](hmeg.conf) to select the grammatical topic and number of exercises
+and then execute:
+```bash
+python hmeg.py
+```
+
+## Python code
 
 ```python
 from hmeg import utils, Vocabulary, ExerciseGenerator
@@ -35,9 +45,10 @@ print(exercises)
 The library supports extensible and configurable templates for generation of exercises
 as well as customizable vocabulary.
 
-The built-in exercises topics and vocabulary can be found in the `hmeg/topics/` and `vocabs/minilex.toml` 
+The built-in exercises topics and vocabulary can be found in the
+[hmeg/topics/](hmeg/topics/) and [vocabs/minilex.toml](vocabs/minilex.toml) 
 
-See folder `docs` for more details regarding description of format for exercises and vocabulary.
+See folder [docs](docs) for more details regarding description of format for exercises and vocabulary.
 
 # Why I made this library
 
