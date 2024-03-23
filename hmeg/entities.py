@@ -2,7 +2,7 @@ from __future__ import annotations
 import dataclasses
 
 
-class MinilexPlaceholders:
+class VocabularyPlaceholders:
     Adjective = "{adj}"  # adjective
     Adverb = "{adverb}"  # adverb
     Noun = "{noun}"  # noun, singular
@@ -18,15 +18,15 @@ class MinilexPlaceholders:
     @staticmethod
     def to_list() -> list[str]:
         return [
-            MinilexPlaceholders.Adjective,
-            MinilexPlaceholders.Adverb,
-            MinilexPlaceholders.Noun,
+            VocabularyPlaceholders.Adjective,
+            VocabularyPlaceholders.Adverb,
+            VocabularyPlaceholders.Noun,
             # MinilexPlaceholders.Pronoun,
             # MinilexPlaceholders.PronounSingular3rd,
-            MinilexPlaceholders.Verb,
-            MinilexPlaceholders.VerbSingular3rd,
-            MinilexPlaceholders.VerbPast,
-            MinilexPlaceholders.VerbProgressive,
+            VocabularyPlaceholders.Verb,
+            VocabularyPlaceholders.VerbSingular3rd,
+            VocabularyPlaceholders.VerbPast,
+            VocabularyPlaceholders.VerbProgressive,
         ]
 
 

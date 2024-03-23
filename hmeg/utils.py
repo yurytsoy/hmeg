@@ -1,12 +1,11 @@
 from mlconjug3 import Conjugator
 import os
-import random
 import tomllib
 
-from .entities import GrammarDescription, MinilexPlaceholders
+from .entities import GrammarDescription, VocabularyPlaceholders
 from .inflections import verbs_singular_3rd
 from .registry import GrammarRegistry
-from .minilex import adjectives, adverbs, nouns, verbs, weekdays, seasons
+from .vocabulary import Vocabulary
 
 
 def register_grammar_topics(grammar_dir: str | None = None):
@@ -30,46 +29,46 @@ def register_grammar_topics(grammar_dir: str | None = None):
             GrammarRegistry.register_grammar_topic(grammar_descr)
 
 
-def apply_minilex(s: str) -> str:
+def apply_vocabulary(s: str, vocab: Vocabulary) -> str:
     """
     Takes input string and replaces placeholders with respective minilex entities.
     """
 
-    while MinilexPlaceholders.Verb in s:
-        s = s.replace(MinilexPlaceholders.Verb, random.choice(verbs), 1)
+    while VocabularyPlaceholders.Verb in s:
+        s = s.replace(VocabularyPlaceholders.Verb, vocab.random_verb(), 1)
 
-    while MinilexPlaceholders.Noun in s:
-        s = s.replace(MinilexPlaceholders.Noun, random.choice(nouns), 1)
+    while VocabularyPlaceholders.Noun in s:
+        s = s.replace(VocabularyPlaceholders.Noun, vocab.random_noun(), 1)
 
-    while MinilexPlaceholders.Weekday in s:
-        s = s.replace(MinilexPlaceholders.Weekday, random.choice(weekdays), 1)
+    while VocabularyPlaceholders.Weekday in s:
+        s = s.replace(VocabularyPlaceholders.Weekday, vocab.random_weekday(), 1)
 
-    while MinilexPlaceholders.Season in s:
-        s = s.replace(MinilexPlaceholders.Season, random.choice(seasons), 1)
+    while VocabularyPlaceholders.Season in s:
+        s = s.replace(VocabularyPlaceholders.Season, vocab.random_season(), 1)
 
-    while MinilexPlaceholders.Adjective in s:
-        s = s.replace(MinilexPlaceholders.Adjective, random.choice(adjectives), 1)
+    while VocabularyPlaceholders.Adjective in s:
+        s = s.replace(VocabularyPlaceholders.Adjective, vocab.random_adjective(), 1)
 
-    while MinilexPlaceholders.Adverb in s:
-        s = s.replace(MinilexPlaceholders.Adverb, random.choice(adverbs), 1)
+    while VocabularyPlaceholders.Adverb in s:
+        s = s.replace(VocabularyPlaceholders.Adverb, vocab.random_adverb(), 1)
 
     conj = Conjugator(language="en")
-    while MinilexPlaceholders.VerbSingular3rd in s:
-        cur_verb = conj.conjugate(random.choice(verbs))
+    while VocabularyPlaceholders.VerbSingular3rd in s:
+        cur_verb = conj.conjugate(vocab.random_verb())
         conj_verb = verbs_singular_3rd.get(
             cur_verb.name,
             cur_verb["indicative"]["indicative present"]["he/she/it"]
         )
-        s = s.replace(MinilexPlaceholders.VerbSingular3rd, conj_verb, 1)
+        s = s.replace(VocabularyPlaceholders.VerbSingular3rd, conj_verb, 1)
 
-    while MinilexPlaceholders.VerbPast in s:
-        cur_verb = conj.conjugate(random.choice(verbs))
+    while VocabularyPlaceholders.VerbPast in s:
+        cur_verb = conj.conjugate(vocab.random_verb())
         conj_verb = cur_verb["indicative"]["indicative past tense"]["I"]
-        s = s.replace(MinilexPlaceholders.VerbPast, conj_verb, 1)
+        s = s.replace(VocabularyPlaceholders.VerbPast, conj_verb, 1)
 
-    while MinilexPlaceholders.VerbProgressive in s:
-        cur_verb = conj.conjugate(random.choice(verbs))
+    while VocabularyPlaceholders.VerbProgressive in s:
+        cur_verb = conj.conjugate(vocab.random_verb())
         conj_verb = cur_verb["indicative"]["indicative present continuous"]["I"]
-        s = s.replace(MinilexPlaceholders.VerbProgressive, conj_verb, 1)
+        s = s.replace(VocabularyPlaceholders.VerbProgressive, conj_verb, 1)
 
     return s
