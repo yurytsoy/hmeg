@@ -1,14 +1,14 @@
 import unittest
 
 from hmeg import GrammarRegistry, utils, ExerciseGenerator
-from hmeg.entities import MinilexPlaceholders
+from hmeg.entities import VocabularyPlaceholders
 
 
 class TestExerciseGenerator(unittest.TestCase):
     @classmethod
     def setUp(cls):
         super().setUp(cls)
-        utils.register_grammar_topics("hmeg/grammar/")
+        utils.register_grammar_topics("hmeg/topics/")
 
     def test_generate(self):
         for topic in GrammarRegistry.topics:
@@ -16,7 +16,7 @@ class TestExerciseGenerator(unittest.TestCase):
             self.assertEqual(len(ress), 10)
 
             # check that no exercises contain placeholders.
-            for placeholder in MinilexPlaceholders.to_list():
+            for placeholder in VocabularyPlaceholders.to_list():
                 self.assertTrue(all(placeholder not in res for res in ress))
 
     def test_generate_unregistered_topic(self):

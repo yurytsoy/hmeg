@@ -1,17 +1,4 @@
-class WordClasses:
-    """
-    From Gunnemark's minilex
-    """
-    Colors = "colors"
-    DaysOfWeek = "days of week"
-    PointsOfTheCompass = "points of the compass"  # east, east of, ...
-    Numbers = "numbers"  # I, you, ...
-    OrdinalNumbers = "ordinal numbers"  # first, second, ...
-    PersonalPronoun = "personal pronoun"  # I, you, ...
-    PossessivePronoun = "possessive pronoun"  # my, your, ...
-    Seasons = "seasons"  # spring, ...
-
-
+name = "Minilex"
 verbs = [
     "arrive", "ask",
     "become", "begin", "believe", "borrow", "bring", "buy",
@@ -32,7 +19,6 @@ verbs = [
     "understand", "use",
     "wait", "walk", "want", "work", "worry", "write"
 ]
-
 nouns = [
     "accident", "address", "air", "anybody", "anything", "apartment",
     "bag", "beginning", "book", "bottom", "boy", "bread", "brother", "buy",
@@ -58,12 +44,6 @@ nouns = [
     "walk", "watch", "water", "way", "weather", "week", "wife", "will", "woman", "word", "work", "world", "worry",
     "year", "yesterday"
 ]
-
-pronouns = [
-    "anybody", "anything",
-    "everybody", "everything",
-]
-
 adjectives = [
     "angry", "another", "any",
     "bad", "beautiful", "boring",
@@ -109,12 +89,3 @@ adverbs = [
     "urgently", "usually",
     "warmly", "well", "wonderfully", "wrongly"
 ]
-
-weekdays = [
-    "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"
-]
-
-seasons = [
-    "Spring", "Summer", "Autumn", "Winter"
-]
-
