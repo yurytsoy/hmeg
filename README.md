@@ -1,6 +1,6 @@
 # hmeg
 
-Help me, Erik Gunnemark -- library for generation of exercises for practicing of some basic Korean-speaking blocks.
+Help me, Erik Gunnemark -- library for generation of exercises for practicing of some basic speaking constructs.
 The (very hopeful) idea is that mastering these blocks can help with faster speaking and constructing more
 complex sentences. 
 
