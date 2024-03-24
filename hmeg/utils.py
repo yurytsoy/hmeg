@@ -2,7 +2,7 @@ from mlconjug3 import Conjugator
 import os
 import tomllib
 
-from .entities import GrammarDescription, VocabularyPlaceholders
+from .entities import GrammarDescription, VocabularyPlaceholders, VOWELS
 from .inflections import verbs_singular_3rd
 from .registry import GrammarRegistry
 from .vocabulary import Vocabulary
@@ -39,6 +39,11 @@ def apply_vocabulary(s: str, vocab: Vocabulary) -> str:
 
     while VocabularyPlaceholders.Noun in s:
         s = s.replace(VocabularyPlaceholders.Noun, vocab.random_noun(), 1)
+
+    while VocabularyPlaceholders.ANoun in s:
+        noun = vocab.random_noun()
+        suffix = "an" if noun[0] in VOWELS else "a"
+        s = s.replace(VocabularyPlaceholders.ANoun, f"{suffix} {noun}", 1)
 
     while VocabularyPlaceholders.Weekday in s:
         s = s.replace(VocabularyPlaceholders.Weekday, vocab.random_weekday(), 1)

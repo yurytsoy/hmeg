@@ -2,9 +2,13 @@ from __future__ import annotations
 import dataclasses
 
 
+VOWELS = "aeiou"
+
+
 class VocabularyPlaceholders:
     Adjective = "{adj}"  # adjective
     Adverb = "{adverb}"  # adverb
+    ANoun = "{a:noun}"  # noun, singular, with a preceding a/an article
     Noun = "{noun}"  # noun, singular
     # Pronoun = "{pronoun}"  # personal pronoun: I, we, they, you
     # PronounSingular3rd = "{pronoun:3s}"  # personal pronoun for 3rd person, singular: he, she, it
@@ -20,6 +24,7 @@ class VocabularyPlaceholders:
         return [
             VocabularyPlaceholders.Adjective,
             VocabularyPlaceholders.Adverb,
+            VocabularyPlaceholders.ANoun,
             VocabularyPlaceholders.Noun,
             # MinilexPlaceholders.Pronoun,
             # MinilexPlaceholders.PronounSingular3rd,
