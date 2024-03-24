@@ -5,13 +5,13 @@ levels=[
 links=[]
 exercises=[
     """
-    S -> 'There is {noun}'
+    S -> 'There is {a:noun}'
     """,
     """
     S -> 'There is no {noun}'
     """,
     """
-    S -> 'Have {noun}'
+    S -> 'Have {a:noun}'
     """,
     """
     S -> 'Don`t have {noun}'

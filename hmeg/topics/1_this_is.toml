@@ -6,7 +6,7 @@ links=[]
 exercises=[
     """
     S -> 'This is' N
-    N -> '{noun}'
+    N -> '{a:noun}'
     """,
     """
     S -> 'This was' N
