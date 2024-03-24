@@ -13,9 +13,9 @@ def register_grammar_topics(grammar_dir: str | None = None):
     Read and register descriptions of grammar exercises.
     """
 
-    # iterate over files in hmeg.grammar, load descriptions and register in the factory.
     grammar_dir = grammar_dir or "hmeg/topics/"
 
+    # iterate over files in `grammar_dir`, load descriptions of topics and exercises and register them.
     for file in os.listdir(grammar_dir):
         if not file.endswith(".toml"):
             continue
