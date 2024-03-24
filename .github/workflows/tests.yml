@@ -8,8 +8,9 @@ jobs:
       - name: Install packages
       - run: pip install -r requirements.txt
       - run: pip install pytest
-  test:
-    needs: setup
-    runs-on: ubuntu-latest
-    steps:
       - run: pytest test
+#  test:
+#    needs: setup
+#    runs-on: ubuntu-latest
+#    steps:
+#      - run: pytest test
