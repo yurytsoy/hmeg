@@ -57,6 +57,7 @@ The following token-nodes are allowed:
 | `{adj}`       | adjective                                                   | "calm", "famous", "light"                                                    |
 | `{adverb}`    | adverb                                                      | "importantly", "relatively", "strangely"                                     |
 | `{noun}`      | regular singular noun                                       | "word", "house", "tree"                                                      |
+| `{a:noun}`    | regular singular noun with a preceding "a" or "an" article  | "a word", "a house", "an apple"                                              |
 | `{verb}`      | regular verb in present simple                              | "go", "work", "see"                                                          |
 | `{verb:3s}`   | regular verb in the present simple for 3rd person, singular | "goes", "works", "sees"                                                      |
 | `{verb:ing}`  | regular verb in the present continuous tense                | "going", "working", "seeing"                                                 |
