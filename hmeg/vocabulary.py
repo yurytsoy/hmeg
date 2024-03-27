@@ -54,3 +54,6 @@ class Vocabulary:
 
     def random_season(self) -> str:
         return random.choice(self.seasons)
+
+    def random_number(self, max) -> str:
+        return str(random.randint(0, max))
