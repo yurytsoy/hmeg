@@ -10,6 +10,7 @@ class VocabularyPlaceholders:
     Adverb = "{adverb}"  # adverb
     ANoun = "{a:noun}"  # noun, singular, with a preceding a/an article
     Noun = "{noun}"  # noun, singular
+    Number1000 = "{number:1000}"  # number below 1000
     # Pronoun = "{pronoun}"  # personal pronoun: I, we, they, you
     # PronounSingular3rd = "{pronoun:3s}"  # personal pronoun for 3rd person, singular: he, she, it
     Season = "{season}"  # season

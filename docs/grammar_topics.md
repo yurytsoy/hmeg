@@ -52,15 +52,16 @@ corresponding quality during generation of exercises.
 
 The following token-nodes are allowed:
 
-| Token         | Description                                                 | Examples                                                                     |
-|---------------|-------------------------------------------------------------|------------------------------------------------------------------------------|
-| `{adj}`       | adjective                                                   | "calm", "famous", "light"                                                    |
-| `{adverb}`    | adverb                                                      | "importantly", "relatively", "strangely"                                     |
-| `{noun}`      | regular singular noun                                       | "word", "house", "tree"                                                      |
-| `{a:noun}`    | regular singular noun with a preceding "a" or "an" article  | "a word", "a house", "an apple"                                              |
-| `{verb}`      | regular verb in present simple                              | "go", "work", "see"                                                          |
-| `{verb:3s}`   | regular verb in the present simple for 3rd person, singular | "goes", "works", "sees"                                                      |
-| `{verb:ing}`  | regular verb in the present continuous tense                | "going", "working", "seeing"                                                 |
-| `{verb:past}` | regular verb in the past simple tense                       | "went", "worked", "saw"                                                      |
-| `{season}`    | time of the year                                            | "Spring", "Summer", "Autumn", "Winter"                                       |
-| `{weekday}`   | day of the week                                             | "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday" |
+| Token           | Description                                                 | Examples                                                                     |
+|-----------------|-------------------------------------------------------------|------------------------------------------------------------------------------|
+| `{adj}`         | adjective                                                   | "calm", "famous", "light"                                                    |
+| `{adverb}`      | adverb                                                      | "importantly", "relatively", "strangely"                                     |
+| `{noun}`        | regular singular noun                                       | "word", "house", "tree"                                                      |
+| `{a:noun}`      | regular singular noun with a preceding "a" or "an" article  | "a word", "a house", "an apple"                                              |
+| `{number:1000}` | number from 0 to 999                                        | "96", "754", "342"                                                           |
+| `{verb}`        | regular verb in present simple                              | "go", "work", "see"                                                          |
+| `{verb:3s}`     | regular verb in the present simple for 3rd person, singular | "goes", "works", "sees"                                                      |
+| `{verb:ing}`    | regular verb in the present continuous tense                | "going", "working", "seeing"                                                 |
+| `{verb:past}`   | regular verb in the past simple tense                       | "went", "worked", "saw"                                                      |
+| `{season}`      | time of the year                                            | "Spring", "Summer", "Autumn", "Winter"                                       |
+| `{weekday}`     | day of the week                                             | "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday" |

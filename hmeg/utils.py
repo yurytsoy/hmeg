@@ -40,6 +40,9 @@ def apply_vocabulary(s: str, vocab: Vocabulary) -> str:
     while VocabularyPlaceholders.Noun in s:
         s = s.replace(VocabularyPlaceholders.Noun, vocab.random_noun(), 1)
 
+    while VocabularyPlaceholders.Number1000 in s:
+        s = s.replace(VocabularyPlaceholders.Number1000, vocab.random_number(max=1000), 1)
+
     while VocabularyPlaceholders.ANoun in s:
         noun = vocab.random_noun()
         suffix = "an" if noun[0] in VOWELS else "a"
