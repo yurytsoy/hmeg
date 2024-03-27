@@ -20,6 +20,18 @@ class Vocabulary:
     seasons = [
         "Spring", "Summer", "Autumn", "Winter"
     ]
+    months = [
+        "January", "February", "March", "April", "May", "June",
+        "July", "August", "September", "October", "November", "December"
+    ]
+    countries = [
+        "Australia", "Brazil", "Canada", "China", "England", "France", "Germany", "India", "Japan",
+        "Korea", "Philippines", "Russia", "Thailand", "Vietnam", "USA"
+    ]
+    nationalities = [
+        "Australian", "Brazilian", "Canadian", "Chinese", "English", "French", "German", "Indian", "Japanese",
+        "Korean", "Filipino", "Russian", "Thai", "Vietnamese", "American"
+    ]
 
     def __init__(self, vocab_file: str):
         self.vocab_file = vocab_file
@@ -55,5 +67,14 @@ class Vocabulary:
     def random_season(self) -> str:
         return random.choice(self.seasons)
 
+    def random_month(self) -> str:
+        return random.choice(self.months)
+
     def random_number(self, max) -> str:
         return str(random.randint(0, max))
+
+    def random_country(self) -> str:
+        return random.choice(self.countries)
+
+    def random_nationality(self) -> str:
+        return random.choice(self.nationalities)
