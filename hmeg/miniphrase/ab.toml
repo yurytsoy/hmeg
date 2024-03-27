@@ -19,7 +19,7 @@ exercises=[
     """,
     """
     S -> '[age]' P Num 'years old'
-    P -> 'I am' | 'he is' | 'she is' | 'it is' | 'we are' | 'you are'
+    P -> 'I am' | 'he is' | 'she is' | 'it is' | 'we are' | 'you are' | 'they are'
     Num -> '{number:1000}'
     """,
     """
