@@ -7,7 +7,7 @@ exercises=[
     C -> 'cup of tea' | 'cup of coffee' | 'glass of water' | 'glass of juice' | 'beer'
     """,
     """
-    S -> 'Could I have my {noun} please?' A
+    S -> 'Could I have my {noun:nonperson} please?' A
     A -> 'Certainly' | 'Of course' | 'Sure' | 'Sorry, no'
     """,
     """
@@ -48,7 +48,7 @@ exercises=[
     A -> 'I am from {country}' | 'I am {nationality}'
     """,
     """
-    S -> 'How much does {a:noun} cost?'
+    S -> 'How much does {a:noun:nonperson} cost?'
     """,
     """
     S -> 'How much does it cost in {country}?'

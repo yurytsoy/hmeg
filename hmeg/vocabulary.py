@@ -32,6 +32,12 @@ class Vocabulary:
         "Australian", "Brazilian", "Canadian", "Chinese", "English", "French", "German", "Indian", "Japanese",
         "Korean", "Filipino", "Russian", "Thai", "Vietnamese", "American"
     ]
+    person_nouns = [
+        "anybody", "boy", "brother", "child", "daughter", "everybody",
+        "family", "father", "friend", "girl", "husband", "lady", "man", "mother",
+        "nobody", "people", "person", "relative", "sister", "somebody", "son",
+        "teacher", "wife", "woman"
+    ]
 
     def __init__(self, vocab_file: str):
         self.vocab_file = vocab_file
@@ -54,6 +60,12 @@ class Vocabulary:
 
     def random_noun(self) -> str:
         return random.choice(self.nouns)
+
+    def random_noun_non_person(self) -> str:
+        res = random.choice(self.nouns)
+        while res in Vocabulary.person_nouns:
+            res = random.choice(self.nouns)
+        return res
 
     def random_adjective(self) -> str:
         return random.choice(self.adjectives)

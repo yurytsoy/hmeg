@@ -9,10 +9,12 @@ class VocabularyPlaceholders:
     Adjective = "{adj}"  # adjective
     Adverb = "{adverb}"  # adverb
     ANoun = "{a:noun}"  # noun, singular, with a preceding a/an article
+    ANounNonPerson = "{a:noun:nonperson}"  # noun, singular, with a preceding a/an article, excluding people
     Country = "{country}"  # name of the country
     Month = "{month}"  # month
     Nationality = "{nationality}"  # nationality
     Noun = "{noun}"  # noun, singular
+    NounNonPerson = "{noun:nonperson}"  # noun, singular, except of people related
     Number100 = "{number:100}"  # number below 100
     Number1000 = "{number:1000}"  # number below 1000
     Number100k = "{number:100000}"  # number below 100000
