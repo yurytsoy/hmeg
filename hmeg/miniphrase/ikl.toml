@@ -1,0 +1,70 @@
+name="Miniphrase: I, K, L"
+levels=[]
+links=[]
+exercises=[
+    """
+    S -> 'That`s a good idea.' | 'That`s very kind of you.'
+    """,
+    """
+    S -> 'I don`t know what to do.' | 'Do you know how to do it?' | 'Do you know Hong Gil Dong?' | 'Do you know a good restaurant?'
+    """,
+    """
+    S -> 'Do you know many languages?' | 'Do you know these English expressions?'
+    """,
+    """
+    S -> 'What language do you speak?'
+    """,
+    """
+    S -> 'When are you leaving?'
+    """,
+    """
+    S -> 'There are {number:100} {noun:plural} left'
+    """,
+    """
+    S -> 'Do you like {noun:nonperson}? Yes, but I prefer {noun:nonperson}.'
+    """,
+    """
+    S -> 'I`d like room facing' D
+    D -> 'South' | 'North' | 'West' | 'East'
+    """,
+    """
+    S -> 'Would you like a drink? Yes, I`d like a' D
+    D -> 'beer' | 'water' | 'wine'
+#    """,
+    """
+    S -> 'Would you like to go for a walk?' | 'What`s the weather like?'
+    """,
+    """
+    S -> 'Listen!'
+    """,
+    """
+    S -> 'Where do you live? I live in {city}.'
+    """,
+    """
+    S -> 'You look tired.' | 'You look well.' | 'It looks good'
+    """,
+    """
+    S -> 'Look out!' | 'Look!'
+    """,
+    """
+    S -> 'I am looking forward to seeing you again.'
+    """,
+    """
+    S -> 'I`ll look the word up in the dictionary.'
+    """,
+    """
+    S -> 'I`ve lost my {noun:nonperson}.'
+    """,
+    """
+    S -> 'A lot of {noun}.' | 'Lots of time.'
+    """,
+    """
+    S -> 'I love you.' | 'Give my love/regards to Martha.'
+    """,
+    """
+    S -> 'I`d love to come.'
+    """,
+    """
+    S -> 'Good luck!' | 'What luck!' | 'What bad luck!'
+    """,
+]
