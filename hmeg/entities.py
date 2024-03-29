@@ -16,6 +16,7 @@ class VocabularyPlaceholders:
     Nationality = "{nationality}"  # nationality
     Noun = "{noun}"  # noun, singular
     NounNonPerson = "{noun:nonperson}"  # noun, singular, except of people related
+    NounPlural = "{noun:plural}"  # noun, plural
     Number100 = "{number:100}"  # number below 100
     Number1000 = "{number:1000}"  # number below 1000
     Number100k = "{number:100000}"  # number below 100000

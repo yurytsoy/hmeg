@@ -40,6 +40,9 @@ def apply_vocabulary(s: str, vocab: Vocabulary) -> str:
     while VocabularyPlaceholders.Noun in s:
         s = s.replace(VocabularyPlaceholders.Noun, vocab.random_noun(), 1)
 
+    while VocabularyPlaceholders.NounPlural in s:
+        s = s.replace(VocabularyPlaceholders.NounPlural, vocab.random_noun_plural(), 1)
+
     while VocabularyPlaceholders.NounNonPerson in s:
         s = s.replace(VocabularyPlaceholders.NounNonPerson, vocab.random_noun_non_person(), 1)
 

@@ -4,8 +4,12 @@ Class for managing interchangeable vocabulary.
 
 from __future__ import annotations
 
+import inflect
 import random
 import tomllib
+
+
+p = inflect.engine()
 
 
 class Vocabulary:
@@ -67,6 +71,10 @@ class Vocabulary:
 
     def random_noun(self) -> str:
         return random.choice(self.nouns)
+
+    def random_noun_plural(self) -> str:
+        noun = random.choice(self.nouns)
+        return p.plural_noun(noun)
 
     def random_noun_non_person(self) -> str:
         res = random.choice(self.nouns)
