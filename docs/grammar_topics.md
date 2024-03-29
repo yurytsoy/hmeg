@@ -61,11 +61,12 @@ The following token-nodes are allowed:
 | `{month}`         | name of a month                                             | "January", "February", "March", ...                                          |
 | `{nationality}`   | name of a nationality                                       | "French", "Korean", "German"                                                 |
 | `{noun}`          | regular singular noun                                       | "word", "house", "tree"                                                      |
+| `{noun:plural}`   | regular plural noun                                         | "words", "houses", "trees"                                                   |
 | `{a:noun}`        | regular singular noun with a preceding "a" or "an" article  | "a word", "a house", "an apple"                                              |
 | `{number:100}`    | number from 0 to 99                                         | "96", "54", "32"                                                             |
 | `{number:1000}`   | number from 0 to 999                                        | "96", "754", "342"                                                           |
 | `{number:100000}` | number from 0 to 99,999                                     | "96", "75,489", "3,424"                                                      |
-| `{place}`         | name of a place                                             | "apartment", "work", "airport"                                                |
+| `{place}`         | name of a place                                             | "apartment", "work", "airport"                                               |
 | `{verb}`          | regular verb in present simple                              | "go", "work", "see"                                                          |
 | `{verb:3s}`       | regular verb in the present simple for 3rd person, singular | "goes", "works", "sees"                                                      |
 | `{verb:ing}`      | regular verb in the present continuous tense                | "going", "working", "seeing"                                                 |
