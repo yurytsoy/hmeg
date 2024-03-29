@@ -56,6 +56,7 @@ The following token-nodes are allowed:
 |-------------------|-------------------------------------------------------------|------------------------------------------------------------------------------|
 | `{adj}`           | adjective                                                   | "calm", "famous", "light"                                                    |
 | `{adverb}`        | adverb                                                      | "importantly", "relatively", "strangely"                                     |
+| `{city}`          | name of a city                                              | "Paris", "Seoul", "Berlin"                                                   |
 | `{country}`       | name of a country                                           | "France", "Korea", "Germany"                                                 |
 | `{month}`         | name of a month                                             | "January", "February", "March", ...                                          |
 | `{nationality}`   | name of a nationality                                       | "French", "Korean", "German"                                                 |
@@ -64,6 +65,7 @@ The following token-nodes are allowed:
 | `{number:100}`    | number from 0 to 99                                         | "96", "54", "32"                                                             |
 | `{number:1000}`   | number from 0 to 999                                        | "96", "754", "342"                                                           |
 | `{number:100000}` | number from 0 to 99,999                                     | "96", "75,489", "3,424"                                                      |
+| `{place}`         | name of a place                                             | "apartment", "work", "airport"                                                |
 | `{verb}`          | regular verb in present simple                              | "go", "work", "see"                                                          |
 | `{verb:3s}`       | regular verb in the present simple for 3rd person, singular | "goes", "works", "sees"                                                      |
 | `{verb:ing}`      | regular verb in the present continuous tense                | "going", "working", "seeing"                                                 |
