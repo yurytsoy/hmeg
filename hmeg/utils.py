@@ -60,7 +60,7 @@ def apply_vocabulary(s: str, vocab: Vocabulary) -> str:
     while VocabularyPlaceholders.ANounNonPerson in s:
         noun = vocab.random_noun_non_person()
         suffix = "an" if noun[0] in VOWELS else "a"
-        s = s.replace(VocabularyPlaceholders.ANoun, f"{suffix} {noun}", 1)
+        s = s.replace(VocabularyPlaceholders.ANounNonPerson, f"{suffix} {noun}", 1)
 
     while VocabularyPlaceholders.Weekday in s:
         s = s.replace(VocabularyPlaceholders.Weekday, vocab.random_weekday(), 1)
@@ -79,6 +79,12 @@ def apply_vocabulary(s: str, vocab: Vocabulary) -> str:
 
     while VocabularyPlaceholders.Country in s:
         s = s.replace(VocabularyPlaceholders.Country, vocab.random_country(), 1)
+
+    while VocabularyPlaceholders.Place in s:
+        s = s.replace(VocabularyPlaceholders.Place, vocab.random_place(), 1)
+
+    while VocabularyPlaceholders.City in s:
+        s = s.replace(VocabularyPlaceholders.City, vocab.random_city(), 1)
 
     while VocabularyPlaceholders.Nationality in s:
         s = s.replace(VocabularyPlaceholders.Nationality, vocab.random_nationality(), 1)

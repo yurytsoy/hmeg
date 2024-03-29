@@ -24,6 +24,9 @@ class Vocabulary:
         "January", "February", "March", "April", "May", "June",
         "July", "August", "September", "October", "November", "December"
     ]
+    cities = [
+        "Beijing", "Berlin", "Busan", "Daejeon", "London", "New York", "Paris", "Seoul", "Tokyo"
+    ]
     countries = [
         "Australia", "Brazil", "Canada", "China", "England", "France", "Germany", "India", "Japan",
         "Korea", "Philippines", "Russia", "Thailand", "Vietnam", "USA"
@@ -37,6 +40,10 @@ class Vocabulary:
         "family", "father", "friend", "girl", "husband", "lady", "man", "mother",
         "nobody", "people", "person", "relative", "sister", "somebody", "son",
         "teacher", "wife", "woman"
+    ]
+    places = [
+        "airport", "apartment", "country", "flat", "home", "house", "road", "room",
+        "school", "shop", "side", "street", "town", "work",
     ]
 
     def __init__(self, vocab_file: str):
@@ -84,6 +91,12 @@ class Vocabulary:
 
     def random_number(self, max) -> str:
         return str(random.randint(0, max))
+
+    def random_place(self) -> str:
+        return random.choice(self.places)
+
+    def random_city(self) -> str:
+        return random.choice(self.cities)
 
     def random_country(self) -> str:
         return random.choice(self.countries)
