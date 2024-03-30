@@ -18,7 +18,7 @@ where element of surprise can facilitate better memorization.
 Update file [hmeg.conf](hmeg.conf) to select the grammatical topic and number of exercises
 and then execute:
 ```bash
-python hmeg.py
+python hmeg_cli.py
 ```
 
 You can also specify command line arguments to define configuration file, topic,
@@ -26,25 +26,25 @@ and or number of generated exercises.
 
 * Run with custom configuration file (notice the `run` keyword)
 ```bash
-python hmeg.py run --config="custom/configuration/file.toml"
+python hmeg_cli.py run --config="custom/configuration/file.toml"
 ```
 
 * Run with custom topic and number of exercises
 ```bash
-python hmeg.py run -n 15 -t "Have, Don’t have, There is, There isn’t / 있어요, 없어요"
+python hmeg_cli.py run -n 15 -t "Have, Don’t have, There is, There isn’t / 있어요, 없어요"
 ```
 
 * List available topics described in the specified configuration file (optional)
 ```bash
-python hmeg.py list -c hmeg.conf
+python hmeg_cli.py list -c hmeg.conf
 ```
 
 * Print help for the arguments or specific command
 
 ```bash
-python hmeg.py --help
-python hmeg.py run --help
-python hmeg.py list --help
+python hmeg_cli.py --help
+python hmeg_cli.py run --help
+python hmeg_cli.py list --help
 ```
 
 ## Python code

@@ -5,6 +5,7 @@ description = "Generator of exercises for practicing speaking for language learn
 authors = ["Yury Choi <yurytsoy@gmail.com>"]
 license = "MIT"
 readme = "README.md"
+repository = "https://github.com/yurytsoy/hmeg"
 
 [tool.poetry.dependencies]
 python = "^3.10"
