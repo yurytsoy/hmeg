@@ -18,7 +18,7 @@ where element of surprise can facilitate better memorization.
 Update file [hmeg.conf](hmeg.conf) to select the grammatical topic and number of exercises
 and then execute:
 ```bash
-python hmeg.py
+python hmeg_cli.py
 ```
 
 You can also specify command line arguments to define configuration file, topic,
@@ -26,25 +26,25 @@ and or number of generated exercises.
 
 * Run with custom configuration file (notice the `run` keyword)
 ```bash
-python hmeg.py run --config="custom/configuration/file.toml"
+python hmeg_cli.py run --config="custom/configuration/file.toml"
 ```
 
 * Run with custom topic and number of exercises
 ```bash
-python hmeg.py run -n 15 -t "Have, Don’t have, There is, There isn’t / 있어요, 없어요"
+python hmeg_cli.py run -n 15 -t "Have, Don’t have, There is, There isn’t / 있어요, 없어요"
 ```
 
 * List available topics described in the specified configuration file (optional)
 ```bash
-python hmeg.py list -c hmeg.conf
+python hmeg_cli.py list -c hmeg.conf
 ```
 
 * Print help for the arguments or specific command
 
 ```bash
-python hmeg.py --help
-python hmeg.py run --help
-python hmeg.py list --help
+python hmeg_cli.py --help
+python hmeg_cli.py run --help
+python hmeg_cli.py list --help
 ```
 
 ## Python code
@@ -53,7 +53,7 @@ python hmeg.py list --help
 from hmeg import utils, Vocabulary, ExerciseGenerator
 
 topics_folder = "hmeg/topics/"  # folder containing description of exercises for different grammar topics.
-vocab_file = "vocabs/minilex.toml"  # file with vocabulary for generation of exercises.
+vocab_file = "hmeg/vocabs/minilex.toml"  # file with vocabulary for generation of exercises.
 num_exercises = 10  # number of randomly generated exercises for selected topic
 
 utils.register_grammar_topics(topics_folder)
@@ -71,7 +71,7 @@ The library supports extensible and configurable templates for generation of exe
 as well as customizable vocabulary.
 
 The built-in exercises topics and vocabulary can be found in the
-[hmeg/topics/](hmeg/topics/) and [vocabs/minilex.toml](vocabs/minilex.toml) 
+[hmeg/topics/](hmeg/topics/) and [hmeg/vocabs/minilex.toml](hmeg/vocabs/minilex.toml) 
 
 See folder [docs](docs) for more details regarding description of format for exercises and vocabulary.
 

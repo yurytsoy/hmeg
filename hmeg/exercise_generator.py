@@ -8,7 +8,7 @@ from .utils import apply_vocabulary
 from .vocabulary import Vocabulary
 
 
-DEFAULT_VOCABULARY_FILE = "vocabs/minilex.toml"
+DEFAULT_VOCABULARY_FILE = "hmeg/vocabs/minilex.toml"
 
 
 class ExerciseGenerator:
