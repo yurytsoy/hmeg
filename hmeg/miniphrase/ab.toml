@@ -1,0 +1,55 @@
+name="Miniphrase: A, B"
+levels=[]
+links=[]
+exercises=[
+    """
+    S -> '[afraid] I am afraid I can`t help' P
+    P -> 'me' | 'them' | 'you' | 'us' | 'him' | 'her' | 'it' |
+    """,
+    """
+    S -> '[age] How old is' P
+    P -> 'he' | 'she' | 'it'
+    """,
+    """
+    S -> '[age] How old are' P
+    P -> 'you' | 'we' | 'they'
+    """,
+    """
+    S -> '[age] How old am I'
+    """,
+    """
+    S -> '[age]' P Num 'years old'
+    P -> 'I am' | 'he is' | 'she is' | 'it is' | 'we are' | 'you are' | 'they are'
+    Num -> '{number:1000}'
+    """,
+    """
+    S -> 'All right,' P 'will come'
+    P -> 'I' | 'he' | 'she' | 'it' | 'we' | 'you'
+    """,
+    """
+    S -> 'That`s alright (after `sorry`)' | 'That`s alright (=`it does not matter`)' | 'Is that all right?'
+    """,
+    """
+    S -> 'When' P '{verb:ing}'
+    P -> 'am I' | 'are you' | 'is he' | 'is she' | 'is it' | 'are we' | 'are they'
+    """,
+    """
+    S -> P 'going out?'
+    P -> 'am I' | 'are you' | 'is he' | 'is she' | 'is it' | 'are we' | 'are they' |
+    """,
+    """
+    S -> P 'staying another day.'
+    P -> 'I am' | 'you are' | 'he is' | 'she is' | 'it is' | 'we are' | 'they are'
+    """,
+    """
+    S -> 'Happy birthday!'
+    """,
+    """
+    S -> '[bother]' B
+    B -> '(Please) Don`t bother (now)' | 'It`s no bother' | 'Sorry to bother you (but I wonder if you could help me)'
+    """,
+    """
+    S -> '[busy]' P 'very busy'
+    P -> 'I am' | 'you are' | 'he is' | 'she is' | 'it is' | 'we are' | 'they are'
+    """,
+]

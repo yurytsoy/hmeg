@@ -1,0 +1,74 @@
+name="Miniphrase: M, N"
+levels=[]
+links=[]
+exercises=[
+    """
+    S -> P 'married?'
+    P -> 'Is she' | 'Is he' | 'Are they' | 'Are you'
+    """,
+    """
+    S -> P 'married to a' Pr
+    P -> 'she is' | 'he is'
+    Pr -> 'doctor' | 'teacher'
+    """,
+    """
+    S -> 'What is the matter?\t' R
+    R -> 'Oh, nothing to worry about' |
+    """,
+    """
+    S -> 'It does not matter'
+    """,
+    """
+    S -> 'May I put the' D 'on?\t' R
+    D -> 'television' | 'computer' | 'music'
+    R -> 'Of course (please do)' | 'I`d rather you didn`t, if you don`t mind'
+    """,
+    """
+    S -> 'What does this mean?' | 'What do you mean (by that)?'
+    """,
+    """
+    S -> 'Pleased to meet you.' | 'It was nice meeting you.' | 'What shall we meet?'
+    """,
+    """
+    S -> 'Never mind. (=don`t bother)' | 'Never mind. (=you`ll have forgotten all about it tomorrow)' | 'Never mind. (it doesn`t matter)'
+    """,
+    """
+    S -> 'Do you mind if I smoke?'
+    """,
+    """
+    S -> 'I`m afraid' P 'made a mistake.'
+    P -> 'I`ve' | 'you`ve' | 'he`s' | 'she`s' | 'they`ve'
+    """,
+    """
+    S -> 'I think there is a mistake here' | 'I think there is a mistake in this bill.'
+    """,
+    """
+    S -> 'Just a moment please.'
+    """,
+    """
+    S -> 'What is your' N '?' | 'Could I have your' N 'please?'
+    N -> 'name' | 'first name' | 'surname'
+    """,
+    """
+    S -> 'My name is John Brown'
+    """,
+    """
+    S -> '(on telephone) This is John Brown (speaking).'
+    """,
+    """
+    S -> 'That`s not necessary.'
+    """,
+    """
+    S -> 'Happy New Year!'
+    """,
+    """
+    S -> 'No thank you.'
+    """,
+    """
+    S -> 'Not at all (=Don`t mention it).' | 'Not at all (=Not in the least).'
+    """,
+    """
+    S -> P 'make a note of it.'
+    P -> 'I`ll' | 'She`ll' | 'He`ll' | 'They`ll'
+    """,
+]

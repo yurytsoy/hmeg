@@ -1,0 +1,76 @@
+name="Miniphrase: E, F, G"
+levels=[]
+links=[]
+exercises=[
+    """
+    S -> 'That`s enough' | 'Exactly.' | 'Excuse me (How do I ...)' | 'That`s fine' | 'I am fine, thank you!'
+    """,
+    """
+    S -> 'I`ve forgotten (it).'
+    """,
+    """
+    S -> 'I`ve forgotten the {noun:nonperson}'
+    """,
+    """
+    S -> 'Half of kilo of {noun:nonperson}' | 'Half the {noun:nonperson}' | 'A quarter of {noun:nonperson}'
+    """,
+    """
+    S -> 'We had great fun'
+    """,
+    """
+    S -> 'Did you get my {noun:nonperson}?'
+    """,
+    """
+    S -> 'Have you got {a:noun:nonperson}?'
+    """,
+    """
+    S -> 'How do you get {a:noun:nonperson}?' | 'How do you get a driving license?'
+    """,
+    """
+    S -> 'I`ve got {noun:nonperson}.' | 'I`ve got flu.'
+    """,
+    """
+    S -> 'How do I get to the' Pl '?'
+    Pl -> '{place}' | '{city}'
+    """,
+    """
+    S -> 'I got to' Pl 'this morning.'
+    Pl -> '{place}' | '{city}'
+    """,
+    """
+    S -> 'When does the train get to {city}?'
+    """,
+    """
+    S -> 'Get into a car' | 'Get up' | 'It is getting warmer' | 'He is getting angry'
+    """,
+    """
+    S -> P 'getting angry'
+    P -> 'I am' | 'he is' | 'she is' | 'it is' | 'we are' | 'you are' | 'they are'
+    """,
+    """
+    S -> 'I`ve got used to it'
+    """,
+    """
+    S -> 'How' P 'getting on?'
+    P -> 'am I' | 'is he' | 'is she' | 'is it' | 'are we' | 'are you' | 'are they'
+    """,
+    """
+    S -> 'I`m glad to hear that.' | 'I`ll be glad to do it.'
+    """,
+    """
+    S -> 'I`m afraid, I must go now.'
+    """,
+    """
+    S -> P 'going to call me tomorrow.'
+    P -> 'he is' | 'she is' | 'it is' | 'we are' | 'you are' | 'they are'
+    """,
+    """
+    S -> 'Good morning.' | 'Good afternoon.' | 'Good evening' | 'Good night.'
+    """,
+    """
+    S -> 'Good!' | 'Have a good time!' | 'Good luck'
+    """,
+    """
+    S -> 'Goodbye.' | 'Bye-bye / Cheerio'
+    """,
+]

@@ -1,0 +1,61 @@
+name="Miniphrase: H"
+levels=[]
+links=[]
+exercises=[
+    """
+    S -> 'We had better go now.'
+    """,
+    """
+    S -> 'Half a kilo.' | 'Half the town.'
+    """,
+    """
+    S -> 'Do you have (sell) {noun:nonperson}? I am afraid, we don`t.'
+    """,
+    """
+    S -> P 'had to stop.'
+    P -> 'I' | 'he' | 'she' | 'it' | 'we' | 'they' | 'you'
+    """,
+    """
+    S -> 'Hello!' | 'Hi!'
+    """,
+    """
+    S -> 'Sorry, I did not hear what you said.'
+    """,
+    """
+    S -> 'Help!' | 'Could you help me?' | 'Can I help you?' | 'It can`t be helped.'
+    """,
+    """
+    S -> 'Here you are.'
+    """,
+    """
+    S -> 'I hope that ...'
+    """,
+    """
+    S -> 'I hope so.' | 'I hope not.'
+    """,
+    """
+    S -> 'How are you? Very well, thank you. And you?' | 'How are you? Not very well, actually.' | 'How are you? I`ve got a cold, actually.'
+    """,
+    """
+    S -> 'How do you do?'
+    """,
+    """
+    S -> 'How far is it to {city}?'
+    """,
+    """
+    S -> 'How long does it take by' T '?'
+    T -> 'car' | 'train' | 'airplane' | 'foot' | 'bicycle'
+    """,
+    """
+    S -> 'How long have you been here?' | 'How long are you staying here?'
+    """,
+    """
+    S -> 'How much is this? It costs {number:100000} won.'
+    """,
+    """
+    S -> 'How do you say that in Korean?'
+    """,
+    """
+    S -> 'I am in a hurry.' | 'There is no hurry.' | 'Hurry up!'
+    """,
+]

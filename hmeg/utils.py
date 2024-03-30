@@ -40,10 +40,30 @@ def apply_vocabulary(s: str, vocab: Vocabulary) -> str:
     while VocabularyPlaceholders.Noun in s:
         s = s.replace(VocabularyPlaceholders.Noun, vocab.random_noun(), 1)
 
+    while VocabularyPlaceholders.NounPlural in s:
+        s = s.replace(VocabularyPlaceholders.NounPlural, vocab.random_noun_plural(), 1)
+
+    while VocabularyPlaceholders.NounNonPerson in s:
+        s = s.replace(VocabularyPlaceholders.NounNonPerson, vocab.random_noun_non_person(), 1)
+
+    while VocabularyPlaceholders.Number100 in s:
+        s = s.replace(VocabularyPlaceholders.Number100, vocab.random_number(max=100), 1)
+
+    while VocabularyPlaceholders.Number1000 in s:
+        s = s.replace(VocabularyPlaceholders.Number1000, vocab.random_number(max=1000), 1)
+
+    while VocabularyPlaceholders.Number100k in s:
+        s = s.replace(VocabularyPlaceholders.Number100k, vocab.random_number(max=100_000), 1)
+
     while VocabularyPlaceholders.ANoun in s:
         noun = vocab.random_noun()
         suffix = "an" if noun[0] in VOWELS else "a"
         s = s.replace(VocabularyPlaceholders.ANoun, f"{suffix} {noun}", 1)
+
+    while VocabularyPlaceholders.ANounNonPerson in s:
+        noun = vocab.random_noun_non_person()
+        suffix = "an" if noun[0] in VOWELS else "a"
+        s = s.replace(VocabularyPlaceholders.ANounNonPerson, f"{suffix} {noun}", 1)
 
     while VocabularyPlaceholders.Weekday in s:
         s = s.replace(VocabularyPlaceholders.Weekday, vocab.random_weekday(), 1)
@@ -51,11 +71,26 @@ def apply_vocabulary(s: str, vocab: Vocabulary) -> str:
     while VocabularyPlaceholders.Season in s:
         s = s.replace(VocabularyPlaceholders.Season, vocab.random_season(), 1)
 
+    while VocabularyPlaceholders.Month in s:
+        s = s.replace(VocabularyPlaceholders.Month, vocab.random_month(), 1)
+
     while VocabularyPlaceholders.Adjective in s:
         s = s.replace(VocabularyPlaceholders.Adjective, vocab.random_adjective(), 1)
 
     while VocabularyPlaceholders.Adverb in s:
         s = s.replace(VocabularyPlaceholders.Adverb, vocab.random_adverb(), 1)
+
+    while VocabularyPlaceholders.Country in s:
+        s = s.replace(VocabularyPlaceholders.Country, vocab.random_country(), 1)
+
+    while VocabularyPlaceholders.Place in s:
+        s = s.replace(VocabularyPlaceholders.Place, vocab.random_place(), 1)
+
+    while VocabularyPlaceholders.City in s:
+        s = s.replace(VocabularyPlaceholders.City, vocab.random_city(), 1)
+
+    while VocabularyPlaceholders.Nationality in s:
+        s = s.replace(VocabularyPlaceholders.Nationality, vocab.random_nationality(), 1)
 
     conj = Conjugator(language="en")
     while VocabularyPlaceholders.VerbSingular3rd in s:

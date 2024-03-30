@@ -1,0 +1,67 @@
+name="Miniphrase: C, D"
+levels=[]
+links=[]
+exercises=[
+    """
+    S -> 'Could/Can I have another' C
+    C -> 'cup of tea' | 'cup of coffee' | 'glass of water' | 'glass of juice' | 'beer'
+    """,
+    """
+    S -> 'Could I have my {noun:nonperson} please?\t' R
+    R -> 'Certainly' | 'Of course' | 'Sure' | 'Sorry, no'
+    """,
+    """
+    S -> 'Can you show me how to do it?'
+    """,
+    """
+    S -> 'Can I' V 'here?\t' R
+    V -> 'smoke' | '{verb}'
+    R -> 'No, it is not allowed.' | 'Yes, that`s all right.'
+    """,
+    """
+    S -> 'Can' P V '?\t' R
+    P -> 'I' | 'he' | 'she' | 'it' | 'we' | 'you' | 'they'
+    V -> 'drive' | '{verb}'
+    R -> 'Yes' | 'No'
+    """,
+    """
+    S -> 'Take care how you' V
+    V -> 'drive' | '{verb}'
+    """,
+    """
+    S -> 'Take case of youself' | 'I don`t care' | 'Careful!' | 'Be careful!'
+    """,
+    """
+    S -> 'Be careful to not {verb} the {noun}!'
+    """,
+    """
+    S -> 'In the {number:1000}th century'
+    """,
+    """
+    S -> 'Cheers!' | 'Merry Christmas!' | 'Congratulations!'
+    """,
+    """
+    S -> 'Come here' | 'I am coming!' | 'Come in' | 'Do come in'
+    """,
+    """
+    S -> 'Where do you come from?\t' R
+    R -> 'I am from {country}' | 'I am {nationality}'
+    """,
+    """
+    S -> 'How much does {a:noun:nonperson} cost?'
+    """,
+    """
+    S -> 'How much does it cost in {country}?'
+    """,
+    """
+    S -> '[date] In {number:100000}' | '{number:100} {month} {number:100000}'
+    """,
+    """
+    S -> 'I hope' P 'not disturbing you' | 'Sorry to disturb you'
+    P -> 'I am' | 'he is' | 'she is' | 'it is' | 'we are' | 'you are' | 'they are'
+    """,
+    """
+    S -> 'What do you do?' | 'Can' P 'do something?' | 'Don`t do that!'
+    P -> 'I' | 'he' | 'she' | 'it' | 'we' | 'you' | 'they'
+    """,
+]

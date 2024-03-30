@@ -32,9 +32,14 @@ class ExerciseGenerator:
             templates.extend(generate(cur_grammar, n=num))
 
         res = []
-        for _ in range(num):
+        num_trials = 0
+        while len(res) < num:
             cur_idx = random.randint(0, len(templates)-1)
             exercise = apply_vocabulary(" ".join(templates[cur_idx]), vocab)
             exercise = exercise.replace(exercise[0], exercise[0].capitalize(), 1)
-            res.append(exercise)
+            if exercise not in res:
+                res.append(exercise)
+            num_trials += 1
+            if num_trials > num ** 2:
+                break
         return res
