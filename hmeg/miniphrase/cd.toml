@@ -7,22 +7,22 @@ exercises=[
     C -> 'cup of tea' | 'cup of coffee' | 'glass of water' | 'glass of juice' | 'beer'
     """,
     """
-    S -> 'Could I have my {noun:nonperson} please?' A
-    A -> 'Certainly' | 'Of course' | 'Sure' | 'Sorry, no'
+    S -> 'Could I have my {noun:nonperson} please?\t' R
+    R -> 'Certainly' | 'Of course' | 'Sure' | 'Sorry, no'
     """,
     """
     S -> 'Can you show me how to do it?'
     """,
     """
-    S -> 'Can I' V 'here?' A
+    S -> 'Can I' V 'here?\t' R
     V -> 'smoke' | '{verb}'
-    A -> 'No, it is not allowed.' | 'Yes, that`s all right.'
+    R -> 'No, it is not allowed.' | 'Yes, that`s all right.'
     """,
     """
-    S -> 'Can' P V '?' A
+    S -> 'Can' P V '?\t' R
     P -> 'I' | 'he' | 'she' | 'it' | 'we' | 'you' | 'they'
     V -> 'drive' | '{verb}'
-    A -> 'Yes' | 'No'
+    R -> 'Yes' | 'No'
     """,
     """
     S -> 'Take care how you' V
@@ -44,8 +44,8 @@ exercises=[
     S -> 'Come here' | 'I am coming!' | 'Come in' | 'Do come in'
     """,
     """
-    S -> 'Where do you come from?' A
-    A -> 'I am from {country}' | 'I am {nationality}'
+    S -> 'Where do you come from?\t' R
+    R -> 'I am from {country}' | 'I am {nationality}'
     """,
     """
     S -> 'How much does {a:noun:nonperson} cost?'

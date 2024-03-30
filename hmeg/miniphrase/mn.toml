@@ -12,14 +12,14 @@ exercises=[
     Pr -> 'doctor' | 'teacher'
     """,
     """
-    S -> 'What is the matter?' R
+    S -> 'What is the matter?\t' R
     R -> 'Oh, nothing to worry about' |
     """,
     """
     S -> 'It does not matter'
     """,
     """
-    S -> 'May I put the' D 'on?' R
+    S -> 'May I put the' D 'on?\t' R
     D -> 'television' | 'computer' | 'music'
     R -> 'Of course (please do)' | 'I`d rather you didn`t, if you don`t mind'
     """,

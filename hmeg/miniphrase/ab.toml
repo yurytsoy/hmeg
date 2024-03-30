@@ -27,8 +27,7 @@ exercises=[
     P -> 'I' | 'he' | 'she' | 'it' | 'we' | 'you'
     """,
     """
-    S -> OK
-    OK -> 'That`s alright (after `sorry`)' | 'That`s alright (=`it does not matter`)' | 'Is that all right?'
+    S -> 'That`s alright (after `sorry`)' | 'That`s alright (=`it does not matter`)' | 'Is that all right?'
     """,
     """
     S -> 'When' P '{verb:ing}'

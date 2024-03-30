@@ -30,7 +30,7 @@ exercises=[
     """
     S -> 'Would you like a drink? Yes, I`d like a' D
     D -> 'beer' | 'water' | 'wine'
-#    """,
+    """,
     """
     S -> 'Would you like to go for a walk?' | 'What`s the weather like?'
     """,
