@@ -1,0 +1,24 @@
+[tool.poetry]
+name = "hmeg"
+version = "0.1.0"
+description = "Generator of exercises for practicing speaking for language learning."
+authors = ["Yury Choi <yurytsoy@gmail.com>"]
+license = "MIT"
+readme = "README.md"
+packages = [
+  {include = "hmeg.py"},
+  {include = "hmeg.conf"},
+  {include = "miniphrase.conf"},
+]
+
+[tool.poetry.dependencies]
+python = "^3.10"
+inflect = "^7.0.0"
+mlconjug3 = "^3.11.0"
+nltk = "^3.8.1"
+fire = "^0.6.0"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
