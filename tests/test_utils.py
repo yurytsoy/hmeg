@@ -9,7 +9,7 @@ class TestUtils(unittest.TestCase):
     @classmethod
     def setUp(cls):
         super().setUp(cls)
-        cls.vocab = Vocabulary.load("vocabs/minilex.toml")
+        cls.vocab = Vocabulary.load("hmeg/vocabs/minilex.toml")
 
     def test_apply_vocabulary(self):
         with self.subTest("Empty input"):

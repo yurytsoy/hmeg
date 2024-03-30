@@ -8,7 +8,7 @@ of exercises.
 Vocabulary can be extended or replaced with user-defined one in order to
 focus on specific topic or extend list of used words.
 
-Example of the vocabulary can be found in the file `vocabs/minilex.toml`
+Example of the vocabulary can be found in the file [hmeg/vocabs/minilex.toml](hmeg/vocabs/minilex.toml).
 
 ## Vocabulary description format
 
@@ -28,7 +28,7 @@ and using those in order to generate random words for exercises.
 ```python
 from hmeg import Vocabulary
 
-vocab = Vocabulary.load("vocabs/minilex.toml")
+vocab = Vocabulary.load("hmeg/vocabs/minilex.toml")
 ```
 * Getting random word from a loaded vocabulary:
 ```python

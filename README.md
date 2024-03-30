@@ -53,7 +53,7 @@ python hmeg.py list --help
 from hmeg import utils, Vocabulary, ExerciseGenerator
 
 topics_folder = "hmeg/topics/"  # folder containing description of exercises for different grammar topics.
-vocab_file = "vocabs/minilex.toml"  # file with vocabulary for generation of exercises.
+vocab_file = "hmeg/vocabs/minilex.toml"  # file with vocabulary for generation of exercises.
 num_exercises = 10  # number of randomly generated exercises for selected topic
 
 utils.register_grammar_topics(topics_folder)
@@ -71,7 +71,7 @@ The library supports extensible and configurable templates for generation of exe
 as well as customizable vocabulary.
 
 The built-in exercises topics and vocabulary can be found in the
-[hmeg/topics/](hmeg/topics/) and [vocabs/minilex.toml](vocabs/minilex.toml) 
+[hmeg/topics/](hmeg/topics/) and [hmeg/vocabs/minilex.toml](hmeg/vocabs/minilex.toml) 
 
 See folder [docs](docs) for more details regarding description of format for exercises and vocabulary.
 
