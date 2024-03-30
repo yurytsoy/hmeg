@@ -1,6 +1,6 @@
 from mlconjug3 import Conjugator
 import os
-import tomllib
+import toml
 
 from .entities import GrammarDescription, VocabularyPlaceholders, VOWELS
 from .inflections import verbs_singular_3rd
@@ -8,19 +8,27 @@ from .registry import GrammarRegistry
 from .vocabulary import Vocabulary
 
 
+def register_miniphrase():
+    cur_dir = os.path.split(__file__)[0]
+    miniphrase_dir = os.path.join(cur_dir, "miniphrase")
+    register_grammar_topics(miniphrase_dir)
+
+
 def register_grammar_topics(grammar_dir: str | None = None):
     """
     Read and register descriptions of grammar exercises.
     """
 
-    grammar_dir = grammar_dir or "hmeg/topics/"
+    cur_dir = os.path.split(__file__)[0]
+    default_grammar_dir = os.path.join(cur_dir, "topics")
+    grammar_dir = grammar_dir or default_grammar_dir
 
     # iterate over files in `grammar_dir`, load descriptions of topics and exercises and register them.
     for file in os.listdir(grammar_dir):
         if not file.endswith(".toml"):
             continue
         with open(os.path.join(grammar_dir, file), "r") as f:
-            grammar_descr_dict = tomllib.loads(f.read())
+            grammar_descr_dict = toml.loads(f.read())
             grammar_descr = GrammarDescription(
                 name=grammar_descr_dict["name"],
                 links=grammar_descr_dict["links"],

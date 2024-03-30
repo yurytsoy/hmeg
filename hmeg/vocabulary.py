@@ -5,8 +5,9 @@ Class for managing interchangeable vocabulary.
 from __future__ import annotations
 
 import inflect
+import os
 import random
-import tomllib
+import toml
 
 
 p = inflect.engine()
@@ -60,7 +61,7 @@ class Vocabulary:
 
     def _load(self):
         with open(self.vocab_file, "r") as f:
-            vocab_dict = tomllib.loads(f.read())
+            vocab_dict = toml.loads(f.read())
             self.adjectives = vocab_dict.get("adjectives") or []
             self.adverbs = vocab_dict.get("adverbs") or []
             self.nouns = vocab_dict.get("nouns") or []
@@ -111,3 +112,8 @@ class Vocabulary:
 
     def random_nationality(self) -> str:
         return random.choice(self.nationalities)
+
+
+def load_minilex() -> Vocabulary:
+    cur_dir = os.path.split(__file__)[0]
+    return Vocabulary.load(os.path.join(cur_dir, "vocabs", "minilex.toml"))

@@ -2,7 +2,7 @@ from __future__ import annotations
 
 import fire
 import sys
-import tomllib
+import toml
 
 from hmeg import utils, ExerciseGenerator, GrammarRegistry, Vocabulary
 
@@ -24,7 +24,7 @@ class Runner:
         self.config_file = config or "hmeg.conf"
 
         with open(self.config_file, mode="r") as f:
-            run_config = tomllib.loads(f.read())
+            run_config = toml.loads(f.read())
         utils.register_grammar_topics(run_config["topics_folder"])
         self.vocab = Vocabulary.load(run_config["vocab_file"])
         self.topic = topic or run_config["topic"]
