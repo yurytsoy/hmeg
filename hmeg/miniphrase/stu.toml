@@ -1,0 +1,116 @@
+name="Miniphrase: S, T, U"
+levels=[]
+links=[]
+exercises=[
+    """
+    S -> '(Thank you) Same to you.'
+    """,
+    """
+    S -> 'Could you please say that again?'
+    """,
+    """
+    S -> 'See you tomorrow.' | 'It was nice to see you.' | 'When can I see you again?' | 'I see.' | 'Let`s wait and see.'
+    """,
+    """
+    S -> 'Shall' P 'open the {noun:nonperson}?'
+    P -> 'I' | 'he' | 'she' | 'you' | 'they'
+    """,
+    """
+    S -> 'What shall' P 'do?'
+    P -> 'I' | 'he' | 'she' | 'you' | 'they'
+    """,
+    """
+    S -> 'Shall' P 'go for a walk?'
+    P -> 'I' | 'he' | 'she' | 'you' | 'they'
+    """,
+    """
+    S -> 'Sorry? (=I didn`t hear)'
+    """,
+    """
+    S -> '(I`m so) Sorry. That`s all right.' | 'I`m sorry to hear that.' | 'Sorry, I`m late.'
+    """,
+    """
+    S -> 'That sounds interesting.' | P 'sounded cheerful.'
+    P -> 'I' | 'she' | 'he' | 'they' | 'us' | 'you'
+    """,
+    """
+    S -> 'Do you speak' L '?\t' R
+    L -> 'English' | 'Korean'
+    R -> 'Yes, a little' | 'I`m afraid not.'
+    """,
+    """
+    S -> 'Could you speak a bit more slowly?'
+    """,
+    """
+    S -> 'Could I speak to Mr. Anderson?' | 'This is John Brown speaking.'
+    """,
+    """
+    S -> 'Where' P 'staying?'
+    P -> 'are you' | 'am I' | 'is he' | 'is she' | 'are they'
+    """,
+    """
+    S -> P 'staying at' Pl
+    P -> 'I am' | 'you are' | 'he is' | 'she is' | 'they are'
+    Pl -> 'the hotel' | 'with friends'
+    """,
+    """
+    S -> 'I am staying here for {number:100} weeks.'
+    """,
+    """
+    S -> 'My' N 'has been stolen.'
+    N -> 'wallet' | '{noun:nonperson}'
+    """,
+    """
+    S -> 'Stop!' | 'Stop it!' | 'Stop that!'
+    """,
+    """
+    S -> 'Can I talk to you for a moment?'
+    """,
+    """
+    S -> Th '\t' R
+    Th -> 'Thank you (very much).' | 'Thank you very much for your trouble.' | 'Many thanks for your help.'
+    R -> 'Not at all' | 'That`s ok.' | 'You`re welcome.'
+    """,
+    """
+    S -> 'No thank you.'
+    """,
+    """
+    S -> 'Is there a {noun} near here?\tYes, there`s one in front of the {place}.'
+    """,
+    """
+    S -> 'I think so.' | 'I don`t think so' | 'What do you think (of it)?'
+    """,
+    """
+    S -> 'What`s the time?\tIt is' H '{number:100} o`clock.'
+    H -> 'about' | 'exactly'
+    """,
+    """
+    S -> P 'coming at {number:100} o`clock.'
+    P -> 'I am' | 'he is' | 'she is' | 'you are' | 'they are'
+    """,
+    """
+    S -> 'Quarter of an hour.' | 'Half an hour.' | 'Half past {number:100}.'
+    """,
+    """
+    S -> 'What time does the' T 'leave?'
+    T -> 'bus' | 'train' | 'airplane'
+    """,
+    """
+    S -> 'It is time for us to go.'
+    """,
+    """
+    S -> P 'haven`t got time.' | P 'haven`t time (I`m afraid)'
+    P -> 'I' | 'he' | 'she' | 'they' | 'you' | 'we'
+    """,
+    """
+    S -> 'Do you understand' L '?\t' R
+    L -> 'English' | 'Korean'
+    R -> 'Yes, a little.' | 'Only a little.' | 'I`m afraid not.'
+    """,
+    """
+    S -> 'I`m sorry I don`t understand.' | 'I don`t understand (French).'
+    """,
+    """
+    S -> 'That`s no use' | 'It is no use {verb:ing}'
+    """,
+]
