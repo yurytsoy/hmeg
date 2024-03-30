@@ -1,0 +1,57 @@
+name="Miniphrase: O, P, R"
+levels=[]
+links=[]
+exercises=[
+    """
+    S -> 'The meeting is off'
+    """,
+    """
+    S -> 'OK.' | 'Is that OK? (=Is that agreed?)' | 'That`s OK. (=Don`t worry about it.)'
+    """,
+    """
+    S -> 'OK, see you tomorrow.'
+    """,
+    """
+    S -> 'How old' P '?'
+    P -> 'am I' | 'are you' | 'is he' | 'is she' | 'is it' | 'are they' | 'are we'
+    """,
+    """
+    S -> P '{number:1000} years old'
+    P -> 'I am' | 'you are' | 'he is' | 'she is' | 'it is' | 'they are' | 'we are'
+    """,
+    """
+    S -> '(I beg your) Pardon? (I didn`t hear.)' | 'I beg your pardon. (=Sorry.)'
+    """,
+    """
+    S -> 'What a pity!'
+    """,
+    """
+    S -> 'Please' A
+    A -> 'come in' | 'sit down'
+    """,
+    """
+    S -> 'A kilo of {noun:nonperson} please.'
+    """,
+    """
+    S -> 'Yes please.'
+    """,
+    """
+    S -> 'Pleased to meet you.'
+    """,
+    """
+    S -> 'Really?' | 'Oh, really?'
+    """,
+    """
+    S -> 'Give my best regards to Erik.'
+    """,
+    """
+    S -> 'I don`t remember (that).'
+    """,
+    """
+    S -> 'You are right.'
+    """,
+    """
+    S -> 'Please remind' P 'to return the {noun:nonperson}.'
+    P -> 'me' | 'him' | 'her' | 'them' | 'us'
+    """,
+]
