@@ -47,7 +47,7 @@ class Vocabulary:
     ]
     places = [
         "airport", "apartment", "country", "flat", "home", "house", "road", "room",
-        "school", "shop", "side", "street", "town", "work",
+        "school", "shop", "side", "street", "town", "work", "bathroom"
     ]
 
     def __init__(self, vocab_file: str):

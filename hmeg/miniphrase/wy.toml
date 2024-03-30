@@ -1,0 +1,85 @@
+name="Miniphrase: W, Y"
+levels=[]
+links=[]
+exercises=[
+    """
+    S -> 'What do you want?'
+    """,
+    """
+    S -> P 'wants him to do it.'
+    P -> 'He' | 'She' | 'It'
+    """,
+    """
+    S -> 'Which way should' P 'go?'
+    P -> 'I' | 'He' | 'She' | 'It' | 'They'
+    """,
+    """
+    S -> 'Can you tell me the way to the {place}?\t' R
+    R -> 'Straight on' | 'Go down the street and turn' RL
+    RL -> 'right' | 'left'
+    """,
+    """
+    S -> 'Go this way.' | 'Come this way.'
+    """,
+    """
+    S -> 'What`s the weather like?\t' R
+    R -> 'I`m afraid it`s bad today.' | 'It`s raining (hard).' | 'It`s good today.'
+    """,
+    """
+    S -> 'Welcome!'
+    """,
+    """
+    S -> P 'very well, thank you.'
+    P -> 'I am' | 'He is' | 'She is' | 'It is' | 'You are' | 'They are'
+    """,
+    """
+    S -> 'What`s the Korean for' W '?'
+    W -> '{noun}' | '{verb}' | '{adverb}' | '{adjective}'
+    """,
+    """
+    S -> 'What weather!' | 'What a waste of time!' | 'What a wonderful day!'
+    """,
+    """
+    S -> 'When' P 'leaving?'
+    P -> 'am I' | 'are you' | 'is he' | 'is she' | 'are they' | 'is it'
+    """,
+    """
+    S -> 'When does the email come?'
+    """,
+    """
+    S -> 'Where' P 'from?'
+    P -> 'am I' | 'are you' | 'is he' | 'is she' | 'are they' | 'is it'
+    """,
+    """
+    S -> 'Excuse me, where is the {place}?'
+    """,
+    """
+    S -> 'Where' P 'going?' | 'Where' P 'going for holidays?'
+    P -> 'am I' | 'are you' | 'is he' | 'is she' | 'are they' | 'is it'
+    """,
+    """
+    S -> P 'will phone me' W
+    P -> 'You' | 'he' | 'she' | 'they' | 'it'
+    W -> 'tomorrow' | 'today' | 'next week'
+    """,
+    """
+    S -> 'What do you do?' | 'What sort of work do you do?' | 'What`s your job?' | 'What are you doing now?'
+    """,
+    """
+    S -> 'Don`t worry.' | 'Don`t worry about that.'
+    """,
+    """
+    S -> 'Could you write your name here please?'
+    """,
+    """
+    S -> P 'will write it down.'
+    P -> 'I' | 'He' | 'She' | 'It' | 'They'
+    """,
+    """
+    S -> P 'wrong.'
+    P -> 'I am' | 'He is' | 'She is' | 'It is' | 'You are' | 'They are'
+    """,
+    """
+    S -> 'Yes please.'
+    """,
+]
