@@ -21,7 +21,7 @@ class GrammarRegistry:
         """
         Returns names of registered topics.
         """
-        ...
+        return list(GrammarRegistry.topics)
 
     @staticmethod
     def generate_answers(exercises: list[str], grammar_topic: str | None = None) -> list[list[str]]:

@@ -50,19 +50,18 @@ python hmeg_cli.py list --help
 ## Python code
 
 ```python
-from hmeg import utils, Vocabulary, ExerciseGenerator
+from hmeg import utils, ExerciseGenerator, load_minilex
 
-topics_folder = "hmeg/topics/"  # folder containing description of exercises for different grammar topics.
-vocab_file = "hmeg/vocabs/minilex.toml"  # file with vocabulary for generation of exercises.
+
 num_exercises = 10  # number of randomly generated exercises for selected topic
 
-utils.register_grammar_topics(topics_folder)
-vocab = Vocabulary.load(vocab_file)
+utils.register_grammar_topics()
+vocab = load_minilex()  # load words from the Minilex.
 
 exercises = ExerciseGenerator.generate_exercises(
     topic_name="While / -(으)면서", num=num_exercises, vocab=vocab
 )
-print(exercises)
+print("\n".join(exercises))
 ```
 
 # Format of exercises and vocabulary
