@@ -11,7 +11,7 @@ exercises=[
     """,
     """
     S -> 'Which way should' P 'go?'
-    P -> 'I' | 'He' | 'She' | 'It' | 'They'
+    P -> 'I' | 'he' | 'she' | 'it' | 'they'
     """,
     """
     S -> 'Can you tell me the way to the {place}?\t' R
