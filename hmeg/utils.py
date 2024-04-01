@@ -1,9 +1,9 @@
-from mlconjug3 import Conjugator
+from functools import partial
 import os
+import re
 import toml
 
-from .entities import GrammarDescription, VocabularyPlaceholders, VOWELS
-from .inflections import verbs_singular_3rd
+from .entities import GrammarDescription, VocabularyPlaceholders
 from .registry import GrammarRegistry
 from .vocabulary import Vocabulary
 
@@ -42,81 +42,34 @@ def apply_vocabulary(s: str, vocab: Vocabulary) -> str:
     Takes input string and replaces placeholders with respective minilex entities.
     """
 
-    while VocabularyPlaceholders.Verb in s:
-        s = s.replace(VocabularyPlaceholders.Verb, vocab.random_verb(), 1)
+    vocab_function = {
+        VocabularyPlaceholders.Verb: vocab.random_verb,
+        VocabularyPlaceholders.VerbSingular3rd: vocab.random_verb_singular_3rd,
+        VocabularyPlaceholders.VerbPast: vocab.random_verb_past,
+        VocabularyPlaceholders.VerbProgressive: vocab.random_verb_progressive,
+        VocabularyPlaceholders.Noun: vocab.random_noun,
+        VocabularyPlaceholders.ANoun: vocab.random_anoun,
+        VocabularyPlaceholders.NounPlural: vocab.random_noun_plural,
+        VocabularyPlaceholders.NounNonPerson: vocab.random_noun_non_person,
+        VocabularyPlaceholders.ANounNonPerson: vocab.random_anoun_non_person,
+        VocabularyPlaceholders.Number100: partial(vocab.random_number, max=100),
+        VocabularyPlaceholders.Number1000: partial(vocab.random_number, max=1000),
+        VocabularyPlaceholders.Number100k: partial(vocab.random_number, max=100_000),
+        VocabularyPlaceholders.Weekday: partial(vocab.random_weekday),
+        VocabularyPlaceholders.Season: partial(vocab.random_season),
+        VocabularyPlaceholders.Month: partial(vocab.random_month),
+        VocabularyPlaceholders.Adjective: partial(vocab.random_adjective),
+        VocabularyPlaceholders.Adverb: partial(vocab.random_adverb),
+        VocabularyPlaceholders.Country: partial(vocab.random_country),
+        VocabularyPlaceholders.Place: partial(vocab.random_place),
+        VocabularyPlaceholders.City: partial(vocab.random_city),
+        VocabularyPlaceholders.Nationality: partial(vocab.random_nationality),
+    }
 
-    while VocabularyPlaceholders.Noun in s:
-        s = s.replace(VocabularyPlaceholders.Noun, vocab.random_noun(), 1)
-
-    while VocabularyPlaceholders.NounPlural in s:
-        s = s.replace(VocabularyPlaceholders.NounPlural, vocab.random_noun_plural(), 1)
-
-    while VocabularyPlaceholders.NounNonPerson in s:
-        s = s.replace(VocabularyPlaceholders.NounNonPerson, vocab.random_noun_non_person(), 1)
-
-    while VocabularyPlaceholders.Number100 in s:
-        s = s.replace(VocabularyPlaceholders.Number100, vocab.random_number(max=100), 1)
-
-    while VocabularyPlaceholders.Number1000 in s:
-        s = s.replace(VocabularyPlaceholders.Number1000, vocab.random_number(max=1000), 1)
-
-    while VocabularyPlaceholders.Number100k in s:
-        s = s.replace(VocabularyPlaceholders.Number100k, vocab.random_number(max=100_000), 1)
-
-    while VocabularyPlaceholders.ANoun in s:
-        noun = vocab.random_noun()
-        suffix = "an" if noun[0] in VOWELS else "a"
-        s = s.replace(VocabularyPlaceholders.ANoun, f"{suffix} {noun}", 1)
-
-    while VocabularyPlaceholders.ANounNonPerson in s:
-        noun = vocab.random_noun_non_person()
-        suffix = "an" if noun[0] in VOWELS else "a"
-        s = s.replace(VocabularyPlaceholders.ANounNonPerson, f"{suffix} {noun}", 1)
-
-    while VocabularyPlaceholders.Weekday in s:
-        s = s.replace(VocabularyPlaceholders.Weekday, vocab.random_weekday(), 1)
-
-    while VocabularyPlaceholders.Season in s:
-        s = s.replace(VocabularyPlaceholders.Season, vocab.random_season(), 1)
-
-    while VocabularyPlaceholders.Month in s:
-        s = s.replace(VocabularyPlaceholders.Month, vocab.random_month(), 1)
-
-    while VocabularyPlaceholders.Adjective in s:
-        s = s.replace(VocabularyPlaceholders.Adjective, vocab.random_adjective(), 1)
-
-    while VocabularyPlaceholders.Adverb in s:
-        s = s.replace(VocabularyPlaceholders.Adverb, vocab.random_adverb(), 1)
-
-    while VocabularyPlaceholders.Country in s:
-        s = s.replace(VocabularyPlaceholders.Country, vocab.random_country(), 1)
-
-    while VocabularyPlaceholders.Place in s:
-        s = s.replace(VocabularyPlaceholders.Place, vocab.random_place(), 1)
-
-    while VocabularyPlaceholders.City in s:
-        s = s.replace(VocabularyPlaceholders.City, vocab.random_city(), 1)
-
-    while VocabularyPlaceholders.Nationality in s:
-        s = s.replace(VocabularyPlaceholders.Nationality, vocab.random_nationality(), 1)
-
-    conj = Conjugator(language="en")
-    while VocabularyPlaceholders.VerbSingular3rd in s:
-        cur_verb = conj.conjugate(vocab.random_verb())
-        conj_verb = verbs_singular_3rd.get(
-            cur_verb.name,
-            cur_verb["indicative"]["indicative present"]["he/she/it"]
+    placeholder_patterns = re.compile("|".join(list(vocab_function)))
+    for match in placeholder_patterns.findall(s):
+        s = placeholder_patterns.sub(
+            vocab_function[match](), string=s, count=1
         )
-        s = s.replace(VocabularyPlaceholders.VerbSingular3rd, conj_verb, 1)
-
-    while VocabularyPlaceholders.VerbPast in s:
-        cur_verb = conj.conjugate(vocab.random_verb())
-        conj_verb = cur_verb["indicative"]["indicative past tense"]["I"]
-        s = s.replace(VocabularyPlaceholders.VerbPast, conj_verb, 1)
-
-    while VocabularyPlaceholders.VerbProgressive in s:
-        cur_verb = conj.conjugate(vocab.random_verb())
-        conj_verb = cur_verb["indicative"]["indicative present continuous"]["I"]
-        s = s.replace(VocabularyPlaceholders.VerbProgressive, conj_verb, 1)
 
     return s
