@@ -5,12 +5,24 @@ Class for managing interchangeable vocabulary.
 from __future__ import annotations
 
 import inflect
+from mlconjug3 import Conjugator
 import os
 import random
 import toml
 
+from .entities import VOWELS
 
+
+conj = Conjugator(language="en")
 p = inflect.engine()
+
+# dictionary with fixes for conjugation of the mlconjug3
+verbs_singular_3rd = {
+    'borrow': 'borrows',
+    'hurt': 'hurts',
+    'look for': 'looks for',
+    'name': 'names',
+}
 
 
 class Vocabulary:
@@ -70,8 +82,31 @@ class Vocabulary:
     def random_verb(self) -> str:
         return random.choice(self.verbs)
 
+    def random_verb_singular_3rd(self) -> str:
+        cur_verb = conj.conjugate(self.random_verb())
+        conj_verb = verbs_singular_3rd.get(
+            cur_verb.name,
+            cur_verb["indicative"]["indicative present"]["he/she/it"]
+        )
+        return conj_verb
+
+    def random_verb_past(self) -> str:
+        cur_verb = conj.conjugate(self.random_verb())
+        conj_verb = cur_verb["indicative"]["indicative past tense"]["I"]
+        return conj_verb
+
+    def random_verb_progressive(self) -> str:
+        cur_verb = conj.conjugate(self.random_verb())
+        conj_verb = cur_verb["indicative"]["indicative present continuous"]["I"]
+        return conj_verb
+
     def random_noun(self) -> str:
         return random.choice(self.nouns)
+
+    def random_anoun(self) -> str:
+        noun = self.random_noun()
+        article = "an" if noun[0] in VOWELS else "a"
+        return f"{article} {noun}"
 
     def random_noun_plural(self) -> str:
         noun = random.choice(self.nouns)
@@ -82,6 +117,11 @@ class Vocabulary:
         while res in Vocabulary.person_nouns:
             res = random.choice(self.nouns)
         return res
+
+    def random_anoun_non_person(self) -> str:
+        noun = self.random_noun_non_person()
+        article = "an" if noun[0] in VOWELS else "a"
+        return f"{article} {noun}"
 
     def random_adjective(self) -> str:
         return random.choice(self.adjectives)
