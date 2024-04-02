@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import fire
+import numpy as np
 import sys
 import toml
 
@@ -34,17 +35,32 @@ class Runner:
         """
         Prints list of registered topics.
         """
-        for topic, descr in GrammarRegistry.topics.items():
-            print(topic)
+        topics = GrammarRegistry.get_registered_topics()
+        print("\n".join(topics))
 
     def run(self):
         """
         Runs generation of exercises and prints them on the screen.
         """
-        exercises = ExerciseGenerator.generate_exercises(
-            topic_name=self.topic, num=self.num_exercises, vocab=self.vocab
-        )
-        print(f"Exercises for topic: {self.topic}")
+
+        topics = GrammarRegistry.find_topics(self.topic)
+        if len(topics) == 0:
+            print(f"Requested an unregistered topic: {self.topic}. Please run `python hmeg_cli.py list` to see the existing topics.")
+            return
+        elif len(topics) == 1:
+            print(f"Exercises for topic: {self.topic}")
+        elif len(topics) > 1:
+            print(f"Exercises for topics:")
+            for topic in topics:
+                print(f"\t{topic}")
+
+        exercises = []
+        for k in range(self.num_exercises):
+            cur_topic = np.random.choice(topics)
+            [cur_exercise] = ExerciseGenerator.generate_exercises(
+                topic_name=cur_topic, num=1, vocab=self.vocab
+            )
+            exercises.append(cur_exercise)
         for idx, exercise in enumerate(exercises):
             print(f"{idx + 1}. {exercise}")
 

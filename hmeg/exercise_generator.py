@@ -24,7 +24,7 @@ class ExerciseGenerator:
         vocab = vocab or Vocabulary.load(DEFAULT_VOCABULARY_FILE)
 
         if topic_name not in GrammarRegistry.topics:
-            raise RuntimeError(f"Requested an unregistered topic: {topic_name}. Please check the topics' folder.")
+            raise RuntimeError(f"Requested an unregistered topic: {topic_name}. Please run `python hmeg_cli.py list` to see the existing topics.")
 
         templates = []
         for exercise_type in GrammarRegistry.topics[topic_name].exercises:

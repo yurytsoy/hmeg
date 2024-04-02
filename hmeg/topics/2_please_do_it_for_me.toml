@@ -5,6 +5,6 @@ levels=[
 links=[]
 exercises=[
     """
-    S -> '{verb}'
+    S -> 'Please {verb} for me.'
     """
 ]
