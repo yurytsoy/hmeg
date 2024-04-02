@@ -11,6 +11,10 @@ class GrammarRegistry:
     topics: dict[str, GrammarDescription] = dict()
 
     @staticmethod
+    def reset():
+        GrammarRegistry.topics = dict()
+
+    @staticmethod
     def register_grammar_topic(grammar_descr: GrammarDescription):
         if grammar_descr.name in GrammarRegistry.topics:
             return

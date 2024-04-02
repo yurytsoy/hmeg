@@ -5,6 +5,8 @@ from hmeg import GrammarRegistry, utils
 
 class GrammarRegistryTest(unittest.TestCase):
     def test_find_topic(self):
+        GrammarRegistry.reset()
+
         with self.subTest("Empty registry"):
             topics = GrammarRegistry.find_topics("I want to… / -고 싶어요")
             self.assertEqual(topics, [])
