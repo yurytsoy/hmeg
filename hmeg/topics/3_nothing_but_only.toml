@@ -1,0 +1,15 @@
+name="Nothing but, Only / 밖에 + 부정형"
+levels=[
+    {resource_name="TTMIK", level=3}
+]
+links=[]
+exercises=[
+    """
+    S -> P 'have nothing but {noun}'
+    P -> 'I' | 'you' | 'we' | 'they'
+    """,
+    """
+    S -> P 'has nothing but {noun}'
+    P -> 'he' | 'she' | 'it'
+    """
+]

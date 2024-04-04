@@ -1,0 +1,10 @@
+name="To look like, To seem like / 같아요"
+levels=[
+    {resource_name="TTMIK", level=3}
+]
+links=[]
+exercises=[
+    """
+    S -> '{noun} looks like {noun}' | '{noun} seems like {noun}'
+    """
+]

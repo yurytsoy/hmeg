@@ -1,0 +1,11 @@
+name="Verb Ending / -네요"
+levels=[
+    {resource_name="TTMIK", level=3}
+]
+links=[]
+exercises=[
+    """
+    S -> W '!'
+    W -> '{adj}' | '{noun}'
+    """
+]

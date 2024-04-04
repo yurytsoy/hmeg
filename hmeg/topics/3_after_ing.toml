@@ -1,0 +1,10 @@
+name="After -ing / 다음에"
+levels=[
+    {resource_name="TTMIK", level=3}
+]
+links=[]
+exercises=[
+    """
+    S -> '{verb} after {verb:ing}'
+    """
+]

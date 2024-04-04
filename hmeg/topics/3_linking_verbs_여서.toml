@@ -1,0 +1,10 @@
+name="Linking Verbs With -아/어/여서"
+levels=[
+    {resource_name="TTMIK", level=3}
+]
+links=[]
+exercises=[
+    """
+    S -> '{verb} and (then) {verb}'
+    """
+]

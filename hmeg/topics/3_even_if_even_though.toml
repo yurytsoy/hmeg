@@ -1,0 +1,10 @@
+name="Even if, Even though / -아/어/여도"
+levels=[
+    {resource_name="TTMIK", level=3}
+]
+links=[]
+exercises=[
+    """
+    S -> 'Even if {verb} {verb}'
+    """
+]
