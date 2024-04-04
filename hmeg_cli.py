@@ -48,19 +48,26 @@ class Runner:
             print(f"Requested an unregistered topic: {self.topic}. Please run `python hmeg_cli.py list` to see the existing topics.")
             return
         elif len(topics) == 1:
-            print(f"Exercises for topic: {self.topic}")
+            print(f"Exercises for topic: {topics[0]}")
         elif len(topics) > 1:
             print(f"Exercises for topics:")
             for topic in topics:
                 print(f"\t{topic}")
 
         exercises = []
-        for k in range(self.num_exercises):
+        attempts = 0
+        while len(exercises) < self.num_exercises:
             cur_topic = np.random.choice(topics)
-            [cur_exercise] = ExerciseGenerator.generate_exercises(
-                topic_name=cur_topic, num=1, vocab=self.vocab
+            cur_topic_num_exercises = min(self.num_exercises // len(topics), self.num_exercises - len(exercises))
+            cur_topic_exercises = ExerciseGenerator.generate_exercises(
+                topic_name=cur_topic, num=cur_topic_num_exercises, vocab=self.vocab
             )
-            exercises.append(cur_exercise)
+            for cur_exercise in cur_topic_exercises:
+                if cur_exercise not in exercises:
+                    exercises.append(cur_exercise)
+            attempts += cur_topic_num_exercises
+            if attempts > self.num_exercises ** 2:
+                break
         for idx, exercise in enumerate(exercises):
             print(f"{idx + 1}. {exercise}")
 
