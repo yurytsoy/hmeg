@@ -1,0 +1,11 @@
+name="Shall we? / I wonder / -(으)ㄹ까요?"
+levels=[
+    {resource_name="TTMIK", level=3}
+]
+links=[]
+exercises=[
+    """
+    S -> 'Shall we {verb}' | P 'wonder if it is {adj}'
+    P -> 'I' | 'he' | 'she' | 'it' | 'they' | 'you'
+    """
+]

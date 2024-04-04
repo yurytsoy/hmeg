@@ -1,0 +1,17 @@
+name="Maybe I might… / -(으)ㄹ 수도 있어요"
+levels=[
+    {resource_name="TTMIK", level=3}
+]
+links=[]
+exercises=[
+    """
+    S -> P 'might {verb}' T
+    P -> 'I' | 'you' | 'we' | 'they'
+    T -> 'today' | 'tomorrow'
+    """,
+    """
+    S -> P 'might {verb}' T
+    P -> 'he' | 'she' | 'it'
+    T -> 'today' | 'tomorrow'
+    """
+]

@@ -1,0 +1,10 @@
+name="But still, Nevertheless / 그래도"
+levels=[
+    {resource_name="TTMIK", level=3}
+]
+links=[]
+exercises=[
+    """
+    S -> '{noun} is {adj} but {adj}'
+    """
+]

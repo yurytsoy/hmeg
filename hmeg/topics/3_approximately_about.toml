@@ -1,0 +1,11 @@
+name="Approximately, About / 쯤, 약, 정도"
+levels=[
+    {resource_name="TTMIK", level=3}
+]
+links=[]
+exercises=[
+    """
+    S -> C '{number:100} {noun:plural}'
+    C -> 'Approximately' | 'About'
+    """
+]

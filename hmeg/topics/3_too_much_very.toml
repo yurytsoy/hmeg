@@ -1,0 +1,11 @@
+name="Too much, Very / 너무"
+levels=[
+    {resource_name="TTMIK", level=3}
+]
+links=[]
+exercises=[
+    """
+    S -> C '{adj}'
+    C -> 'too much' | 'very'
+    """
+]

@@ -1,0 +1,17 @@
+name="Well then, In that case, If so / 그러면, 그럼"
+levels=[
+    {resource_name="TTMIK", level=3}
+]
+links=[]
+exercises=[
+    """
+    S -> C P '{verb}'
+    C -> 'well then' | 'in that case' | 'if so'
+    P -> 'I' | 'you' | 'we' | 'they'
+    """,
+    """
+    S -> C P '{verb:3s}'
+    C -> 'well then' | 'in that case' | 'if so'
+    P -> 'he' | 'she' | 'it'
+    """
+]

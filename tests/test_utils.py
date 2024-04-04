@@ -1,3 +1,4 @@
+import random
 import unittest
 
 from hmeg import utils
@@ -12,6 +13,8 @@ class TestUtils(unittest.TestCase):
         cls.vocab = Vocabulary.load("hmeg/vocabs/minilex.toml")
 
     def test_apply_vocabulary(self):
+        random.seed(42)
+
         with self.subTest("Empty input"):
             self.assertEqual(utils.apply_vocabulary("", self.vocab), "")
 

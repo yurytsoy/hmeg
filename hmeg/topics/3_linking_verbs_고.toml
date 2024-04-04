@@ -1,0 +1,13 @@
+name="Linking Verbs with -고"
+levels=[
+    {resource_name="TTMIK", level=3}
+]
+links=[]
+exercises=[
+    """
+    S -> '{verb} and {verb}'
+    """,
+    """
+    S -> '{verb} and {verb} and {verb}'
+    """
+]

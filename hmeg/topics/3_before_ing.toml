@@ -1,0 +1,10 @@
+name="Before -ing / -기 전에"
+levels=[
+    {resource_name="TTMIK", level=3}
+]
+links=[]
+exercises=[
+    """
+    S -> 'Before {verb:ing} {verb}'
+    """
+]

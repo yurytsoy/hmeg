@@ -1,0 +1,13 @@
+name="Linking Verbs with -는데 / noun + -인데, adjective + -ㄴ데"
+levels=[
+    {resource_name="TTMIK", level=3}
+]
+links=[]
+exercises=[
+    """
+    S -> '{verb} but {verb}' | '{verb} and {verb}'
+    """,
+    """
+    S -> '{noun} but {adj}'
+    """,
+]

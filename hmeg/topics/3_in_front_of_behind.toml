@@ -1,0 +1,11 @@
+name="In front of, Behind, On top of, Under, Next to / 앞에, 옆에, 위에, 밑에, 뒤에"
+levels=[
+    {resource_name="TTMIK", level=3}
+]
+links=[]
+exercises=[
+    """
+    S -> '{noun} is' W '{noun}'
+    W -> 'in front of' | 'behind' | 'on top of' | 'under' | 'next to'
+    """
+]

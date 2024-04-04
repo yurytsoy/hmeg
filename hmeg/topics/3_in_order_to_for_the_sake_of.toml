@@ -1,0 +1,10 @@
+name="In order to, For the sake of / 위하다, 위해, 위해서"
+levels=[
+    {resource_name="TTMIK", level=3}
+]
+links=[]
+exercises=[
+    """
+    S -> 'In order to {verb}' | 'For the sake of {verb:ing}'
+    """
+]
