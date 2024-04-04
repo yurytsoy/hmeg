@@ -29,7 +29,7 @@ class GrammarRegistryTest(unittest.TestCase):
 
         with self.subTest("Multiple matches"):
             topics = GrammarRegistry.find_topics("면")
-            expected = ['While / -(으)면서', 'If, In case / 만약, -(으)면']
+            expected = ['While / -(으)면서', 'If, In case / 만약, -(으)면', 'Well then, In that case, If so / 그러면, 그럼']
             self.assertListEqual(topics, expected)
 
         with self.subTest("Case sensitivity"):
