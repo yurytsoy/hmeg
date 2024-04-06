@@ -1,0 +1,14 @@
+name="Less, Not completely / 덜"
+levels=[
+    {resource_name="TTMIK", level=4}
+]
+links=[]
+exercises=[
+    """
+    S -> '{noun:nonperson} is less {adj}.'
+    """,
+    """
+    S -> P 'did not finish {verb:ing}.'
+    P -> 'he' | 'she' | 'it' | 'I' | 'you' | 'they' | 'we'
+    """,
+]

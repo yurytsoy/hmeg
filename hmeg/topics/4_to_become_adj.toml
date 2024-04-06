@@ -1,0 +1,13 @@
+name="To become + adjective / -아/어/여지다"
+levels=[
+    {resource_name="TTMIK", level=4}
+]
+links=[]
+exercises=[
+    """
+    S -> '{noun} became {adj}.'
+    """,
+    """
+    S -> '{noun} will become {adj}.'
+    """,
+]

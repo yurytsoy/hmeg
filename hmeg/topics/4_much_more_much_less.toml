@@ -1,0 +1,11 @@
+name="Much (more), Much (less) / 훨씬"
+levels=[
+    {resource_name="TTMIK", level=4}
+]
+links=[]
+exercises=[
+    """
+    S -> '{noun} is much' C '{adj}.'
+    C -> 'more' | 'less'
+    """
+]

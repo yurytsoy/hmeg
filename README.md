@@ -34,6 +34,12 @@ python hmeg_cli.py run --config="custom/configuration/file.toml"
 python hmeg_cli.py run -n 15 -t "Have, Don’t have, There is, There isn’t / 있어요, 없어요"
 ```
 
+* You can use partial name of the topic. In that case all topics, that contain the specified string will be used.
+```bash
+python hmeg_cli.py run -n 15 -t "있어요, 없어요"
+python hmeg_cli.py run -n 15 -t "there is"
+```
+
 * List available topics described in the specified configuration file (optional)
 ```bash
 python hmeg_cli.py list -c hmeg.conf

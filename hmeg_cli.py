@@ -1,5 +1,7 @@
 from __future__ import annotations
 
+import random
+
 import fire
 import numpy as np
 import sys
@@ -68,6 +70,8 @@ class Runner:
             attempts += cur_topic_num_exercises
             if attempts > self.num_exercises ** 2:
                 break
+        # shuffle exercises
+        random.shuffle(exercises)
         for idx, exercise in enumerate(exercises):
             print(f"{idx + 1}. {exercise}")
 

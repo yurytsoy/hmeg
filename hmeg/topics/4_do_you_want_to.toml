@@ -1,0 +1,10 @@
+name="Do you want to …? / -(으)ㄹ래요?"
+levels=[
+    {resource_name="TTMIK", level=4}
+]
+links=[]
+exercises=[
+    """
+    S -> 'Do you want to {verb}?'
+    """,
+]

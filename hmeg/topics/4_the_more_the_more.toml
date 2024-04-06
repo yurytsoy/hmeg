@@ -1,0 +1,15 @@
+name="The more … the more … / -(으)면 -(으)ㄹ수록"
+levels=[
+    {resource_name="TTMIK", level=4}
+]
+links=[]
+exercises=[
+    """
+    S -> 'The more' P '{verb} the more' P 'get {adj}'
+    P -> 'I' | 'you' | 'we' | 'they'
+    """,
+    """
+    S -> 'The more' P '{verb:3s} the more' P 'gets {adj}'
+    P -> 'he' | 'she' | 'it'
+    """
+]

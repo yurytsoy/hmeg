@@ -1,0 +1,18 @@
+name="To try doing something / -아/어/여 보다, 해 보다"
+levels=[
+    {resource_name="TTMIK", level=4}
+]
+links=[]
+exercises=[
+    """
+    S -> 'Try {verb:ing}.'
+    """,
+    """
+    S -> P 'tries {verb:ing}.'
+    P -> 'he' | 'she' | 'it'
+    """,
+    """
+    S -> P 'try {verb:ing}.'
+    P -> 'I' | 'You' | 'They' | 'We'
+    """,
+]

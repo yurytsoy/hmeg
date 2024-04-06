@@ -1,0 +1,14 @@
+name="Most, Best (superlative) / 최상급, 최고"
+levels=[
+    {resource_name="TTMIK", level=4}
+]
+links=[]
+exercises=[
+    """
+    S -> '{noun} is the most {adj}.'
+    """,
+    """
+    S -> P 'the best at {verb:ing}.'
+    P -> 'he is' | 'she is' | 'it is' | 'I am' | 'you are' | 'they are' | 'we are'
+    """,
+]
