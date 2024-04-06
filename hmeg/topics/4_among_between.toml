@@ -1,0 +1,13 @@
+name="Among, Between / 사이에, 사이에서, 중에, 중에서"
+levels=[
+    {resource_name="TTMIK", level=4}
+]
+links=[]
+exercises=[
+    """
+    S -> 'Choose among {number:100} {noun:plural}.'
+    """,
+    """
+    S -> 'The {noun} is between the {noun} and the {noun}.'
+    """,
+]

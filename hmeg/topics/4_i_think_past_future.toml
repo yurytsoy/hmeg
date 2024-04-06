@@ -1,0 +1,21 @@
+name="I think … (+ future tense) / -(으)ㄴ/(으)ㄹ/ㄴ 것 같다, 한 것 같다, 할 것 같다"
+levels=[
+    {resource_name="TTMIK", level=4}
+]
+links=[]
+exercises=[
+    """
+    S -> 'I think {noun} will be {adj}.'
+    """,
+    """
+    S -> 'I think {noun} was {adj}.'
+    """,
+    """
+    S -> 'I think' P 'will {verb}.'
+    P -> 'he' | 'she' | 'it' | 'I' | 'you' | 'they' | 'we'
+    """,
+    """
+    S -> 'I think' P '{verb:past}.'
+    P -> 'he' | 'she' | 'it' | 'I' | 'you' | 'they' | 'we'
+    """,
+]

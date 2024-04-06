@@ -1,0 +1,15 @@
+name="To gradually/eventually get to do something / -게 되다, 하게 되다"
+levels=[
+    {resource_name="TTMIK", level=4}
+]
+links=[]
+exercises=[
+    """
+    S -> P 'gradually got to {verb}'
+    P -> 'I' | 'he' | 'she' | 'it' | 'they' | 'we' | 'you'
+    """,
+    """
+    S -> P 'made {noun} {adj}'
+    P -> 'I' | 'he' | 'she' | 'it' | 'they' | 'we' | 'you'
+    """,
+]

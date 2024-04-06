@@ -1,0 +1,15 @@
+name="You shouldn’t…, You’re not supposed to… / -(으)면 안 돼요, 하면 안 돼요"
+levels=[
+    {resource_name="TTMIK", level=4}
+]
+links=[]
+exercises=[
+    """
+    S -> P 'should not {verb}.'
+    P -> 'he' | 'she' | 'it' | 'I' | 'you' | 'they' | 'we'
+    """,
+    """
+    S -> P 'not supposed to {verb}.'
+    P -> 'he is' | 'she is' | 'it is' | 'I am' | 'you are' | 'they are' | 'we are'
+    """,
+]

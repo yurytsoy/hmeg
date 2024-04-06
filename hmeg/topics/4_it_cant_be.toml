@@ -1,0 +1,13 @@
+name="It can’t be … / -(으)ㄹ 리가 없어요, 할 리가 없어요"
+levels=[
+    {resource_name="TTMIK", level=4}
+]
+links=[]
+exercises=[
+    """
+    S -> 'There is no way that the {noun} just {verb:past}'
+    """,
+    """
+    S -> 'There is no way that the {noun} is {adj}'
+    """,
+]
