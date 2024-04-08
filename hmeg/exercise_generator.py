@@ -2,13 +2,15 @@ import random
 
 from nltk.parse.generate import generate
 from nltk import CFG
+import os
 
 from .registry import GrammarRegistry
 from .utils import apply_vocabulary
 from .vocabulary import Vocabulary
 
 
-DEFAULT_VOCABULARY_FILE = "hmeg/vocabs/minilex.toml"
+cur_dir = os.path.split(os.path.realpath(__file__))[0]
+DEFAULT_VOCABULARY_FILE = os.path.join(cur_dir, "vocabs/minilex.toml")
 
 
 class ExerciseGenerator:
