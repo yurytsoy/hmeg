@@ -28,6 +28,23 @@ class GrammarRegistry:
         return list(GrammarRegistry.topics)
 
     @staticmethod
+    def get_registered_levels() -> dict[str, list[int]]:
+        """
+        Returns information about registered levels for topics.
+        The levels are grouped by the resource and sorted in the ascending order.
+        """
+        res = dict()
+        for topic in GrammarRegistry.topics.values():
+            for level_descr in topic.levels:
+                if level_descr.resource_name not in res:
+                    res[level_descr.resource_name] = list()
+                res[level_descr.resource_name].append(level_descr.level)
+
+        for key in res:
+            res[key] = sorted(set(res[key]))
+        return res
+
+    @staticmethod
     def find_topics(topic_name: str) -> list[str]:
         """
         Find registered topic that fully or partially matches the provided name.
