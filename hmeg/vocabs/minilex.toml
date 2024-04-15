@@ -19,6 +19,7 @@ verbs = [
     "understand", "use",
     "wait", "walk", "want", "work", "worry", "write"
 ]
+
 nouns = [
     "accident", "address", "air", "anybody", "anything", "apartment",
     "bag", "beginning", "book", "bottom", "boy", "bread", "brother", "buy",
@@ -44,6 +45,7 @@ nouns = [
     "walk", "watch", "water", "way", "weather", "week", "wife", "will", "woman", "word", "work", "world", "worry",
     "year", "yesterday"
 ]
+
 adjectives = [
     "angry", "another", "any",
     "bad", "beautiful", "boring",
