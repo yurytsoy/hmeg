@@ -4,6 +4,19 @@ from hmeg import GrammarRegistry, utils
 
 
 class GrammarRegistryTest(unittest.TestCase):
+    def test_get_registered_levels(self):
+        GrammarRegistry.reset()
+
+        with self.subTest("Empty registry"):
+            levels_info = GrammarRegistry.get_registered_levels()
+            self.assertDictEqual(levels_info, {})
+
+        with self.subTest("Non empty registry"):
+            utils.register_grammar_topics()
+            levels_info = GrammarRegistry.get_registered_levels()
+            expected = {'King Sejong Institute Practical Korean': [3], 'TTMIK': [1, 2, 3, 4, 9]}
+            self.assertDictEqual(levels_info, expected)
+
     def test_find_topic(self):
         GrammarRegistry.reset()
 
