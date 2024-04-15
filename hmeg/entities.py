@@ -54,7 +54,14 @@ class VocabularyPlaceholders:
 
 
 @dataclasses.dataclass
+class TopicLevelInfo:
+    resource_name: str
+    level: int
+
+
+@dataclasses.dataclass
 class GrammarDescription:
     name: str
     links: list[str]
     exercises: list[str]
+    levels: list[TopicLevelInfo]
