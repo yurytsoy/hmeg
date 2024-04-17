@@ -26,7 +26,8 @@ verbs_singular_3rd = {
 
 
 class Vocabulary:
-    vocab_file: str  # file with the current vocabulary
+    vocab_file: str | None  # file with the current vocabulary
+    name: str | None
     adjectives: list[str]
     adverbs: list[str]
     nouns: list[str]
@@ -63,8 +64,13 @@ class Vocabulary:
         "school", "shop", "side", "street", "town", "work", "bathroom"
     ]
 
-    def __init__(self, vocab_file: str):
+    def __init__(self, vocab_file: str | None = None):
         self.vocab_file = vocab_file
+        self.name = None
+        self.adjectives = []
+        self.adverbs = []
+        self.nouns = []
+        self.verbs = []
         self._load()
 
     @staticmethod
@@ -72,12 +78,23 @@ class Vocabulary:
         return Vocabulary(vocab_file)
 
     def _load(self):
+        if self.vocab_file is None:
+            return
+
         with open(self.vocab_file, "r") as f:
             vocab_dict = toml.loads(f.read())
-            self.adjectives = vocab_dict.get("adjectives") or []
-            self.adverbs = vocab_dict.get("adverbs") or []
-            self.nouns = vocab_dict.get("nouns") or []
-            self.verbs = vocab_dict.get("verbs") or []
+
+        if "import" in vocab_dict:
+            import_dir = os.path.split(self.vocab_file)[0]
+            import_vocab = Vocabulary.load(os.path.join(import_dir, vocab_dict["import"]))
+        else:
+            import_vocab = Vocabulary()
+
+        self.name = vocab_dict.get("name")
+        self.adjectives = sorted(set(import_vocab.adjectives + (vocab_dict.get("adjectives") or [])))
+        self.adverbs = sorted(set(import_vocab.adverbs + (vocab_dict.get("adverbs") or [])))
+        self.nouns = sorted(set(import_vocab.nouns + (vocab_dict.get("nouns") or [])))
+        self.verbs = sorted(set(import_vocab.verbs + (vocab_dict.get("verbs") or [])))
 
     def random_verb(self) -> str:
         return random.choice(self.verbs)

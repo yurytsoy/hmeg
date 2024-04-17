@@ -1,0 +1,5 @@
+name = "Nanolex"
+nouns = [ "address", "air", "book", "buy", "change", "country", "day", "family", "food", "friend", "help", "home", "house", "key", "language", "left", "life", "love", "man", "money", "name", "need", "news", "now", "other", "page", "paper", "part", "people", "person", "place", "question", "right", "road", "room", "school", "shop", "show", "side", "something", "street", "tax", "time", "today", "top", "travel", "use", "water", "way", "week", "will", "work", "world", "year",]
+adverbs = [ "every", "next", "well",]
+adjectives = [ "another", "any", "different", "each", "every", "first", "free", "full", "good", "great", "high", "hot", "important", "last", "left", "little", "low", "new", "next", "no", "open", "other", "right", "same", "small", "some", "such", "young",]
+verbs = [ "buy", "come", "do", "find", "free", "have", "know", "learn", "let", "like", "live", "look", "love", "make", "name", "need", "place", "play", "read", "say", "see", "sell", "send", "show", "take", "think", "travel", "use", "want", "work",]

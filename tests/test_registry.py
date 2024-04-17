@@ -1,6 +1,6 @@
 import unittest
 
-from hmeg import GrammarRegistry, utils
+from hmeg import GrammarRegistry, usecases as uc
 
 
 class GrammarRegistryTest(unittest.TestCase):
@@ -12,7 +12,7 @@ class GrammarRegistryTest(unittest.TestCase):
             self.assertDictEqual(levels_info, {})
 
         with self.subTest("Non empty registry"):
-            utils.register_grammar_topics()
+            uc.register_grammar_topics()
             levels_info = GrammarRegistry.get_registered_levels()
             expected = {'King Sejong Institute Practical Korean': [3], 'TTMIK': [1, 2, 3, 4, 9]}
             self.assertDictEqual(levels_info, expected)
@@ -25,7 +25,7 @@ class GrammarRegistryTest(unittest.TestCase):
             self.assertEqual(topics, [])
 
         with self.subTest("Empty topic name"):
-            utils.register_grammar_topics()
+            uc.register_grammar_topics()
             topics = GrammarRegistry.find_topics("")
             self.assertEqual(topics, [])
 

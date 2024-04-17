@@ -5,7 +5,7 @@ from nltk import CFG
 import os
 
 from .registry import GrammarRegistry
-from .utils import apply_vocabulary
+from .usecases import apply_vocabulary
 from .vocabulary import Vocabulary
 
 
