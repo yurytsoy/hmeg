@@ -1,5 +1,6 @@
 from functools import partial
 import os
+import pandas as pd
 import re
 import toml
 
@@ -69,3 +70,56 @@ def apply_vocabulary(s: str, vocab: Vocabulary) -> str:
         )
 
     return s
+
+
+def split_vocabulary_top_n_words(input_vocab_file: str, top_n: int):
+    """
+    Splits input vocabulary into two non-overlapping vocabularies.
+    The first contains top-N words having the highest usage frequency.
+    And the second contains remaining words.
+
+    Requires file with frequencies of words from here:
+    * http://norvig.com/ngrams/count_1w100k.txt
+
+    Args
+    ----
+    input_vocab_file: str
+    top_n: int
+        Keep top_n most frequent words.
+    """
+
+    input_vocab = Vocabulary(input_vocab_file)
+    freq_df = pd.read_table("count_1w100k.txt", sep="\t", header=None)
+    freq_info = freq_df.set_index(0).to_dict()[1]
+
+    input_words = set(input_vocab.nouns + input_vocab.adjectives + input_vocab.adverbs + input_vocab.verbs)
+    input_words_freq = [freq_info.get(word.upper(), 0) for word in input_words]
+    filtered_words = pd.Series(index=input_words, data=input_words_freq).sort_values(ascending=False)[:top_n]
+
+    res_vocab = Vocabulary()
+    res_vocab.nouns = [word for word in input_vocab.nouns if word in filtered_words.index]
+    res_vocab.adverbs = [word for word in input_vocab.adverbs if word in filtered_words.index]
+    res_vocab.adjectives = [word for word in input_vocab.adjectives if word in filtered_words.index]
+    res_vocab.verbs = [word for word in input_vocab.verbs if word in filtered_words.index]
+
+    out_path = "out_vocab_incl.toml"
+    vocab_dict = {
+        "name": f"Included top-{top_n} words",
+        "nouns": [word for word in input_vocab.nouns if word in filtered_words.index],
+        "adverbs": [word for word in input_vocab.adverbs if word in filtered_words.index],
+        "adjectives": [word for word in input_vocab.adjectives if word in filtered_words.index],
+        "verbs": [word for word in input_vocab.verbs if word in filtered_words.index],
+    }
+    with open(out_path, "w") as f:
+        toml.dump(vocab_dict, f)
+
+    out_path = "out_vocab_excl.toml"
+    vocab_dict = {
+        "name": "Excluded words",
+        "nouns": [word for word in input_vocab.nouns if word not in filtered_words.index],
+        "adverbs": [word for word in input_vocab.adverbs if word not in filtered_words.index],
+        "adjectives": [word for word in input_vocab.adjectives if word not in filtered_words.index],
+        "verbs": [word for word in input_vocab.verbs if word not in filtered_words.index],
+    }
+    with open(out_path, "w") as f:
+        toml.dump(vocab_dict, f)

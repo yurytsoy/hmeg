@@ -1,6 +1,6 @@
 import unittest
 
-from hmeg import GrammarRegistry, utils, ExerciseGenerator
+from hmeg import GrammarRegistry, usecases, ExerciseGenerator
 from hmeg.entities import VocabularyPlaceholders
 
 
@@ -8,7 +8,7 @@ class TestExerciseGenerator(unittest.TestCase):
     @classmethod
     def setUp(cls):
         super().setUp(cls)
-        utils.register_grammar_topics("hmeg/topics/")
+        usecases.register_grammar_topics("hmeg/topics/")
 
     def test_generate_exercises(self):
         for topic in GrammarRegistry.topics:
