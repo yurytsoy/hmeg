@@ -1,0 +1,9 @@
+name = "Test vocabulary"
+
+verbs = ["arrive", "ask"]
+
+nouns = ["accident", "address"]
+
+adjectives = ["angry", "another"]
+
+adverbs = ["angrily"]

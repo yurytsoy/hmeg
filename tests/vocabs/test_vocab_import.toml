@@ -1,0 +1,11 @@
+import = "test_vocab.toml"
+
+name = "Vocabulary with import"
+
+verbs = ["become", "begin"]
+
+nouns = ["bag", "beginning"]
+
+adjectives = ["bad", "beautiful"]
+
+adverbs = ["badly", "beautifully"]
