@@ -65,3 +65,13 @@ class GrammarDescription:
     links: list[str]
     exercises: list[str]
     levels: list[TopicLevelInfo]
+
+    @staticmethod
+    def from_dict(d: dict) -> GrammarDescription:
+        res = GrammarDescription(
+            name=d["name"],
+            links=d["links"],
+            exercises=d["exercises"],
+            levels=[TopicLevelInfo(**level_descr) for level_descr in d.get("levels", [])],
+        )
+        return res

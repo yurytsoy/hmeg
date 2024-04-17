@@ -3,7 +3,7 @@ import os
 import re
 import toml
 
-from .entities import GrammarDescription, VocabularyPlaceholders, TopicLevelInfo
+from .entities import GrammarDescription, VocabularyPlaceholders
 from .registry import GrammarRegistry
 from .vocabulary import Vocabulary
 
@@ -29,12 +29,7 @@ def register_grammar_topics(grammar_dir: str | None = None):
             continue
         with open(os.path.join(grammar_dir, file), "r") as f:
             grammar_descr_dict = toml.loads(f.read())
-            grammar_descr = GrammarDescription(
-                name=grammar_descr_dict["name"],
-                links=grammar_descr_dict["links"],
-                exercises=grammar_descr_dict["exercises"],
-                levels=[TopicLevelInfo(**level_descr) for level_descr in grammar_descr_dict.get("levels", [])],
-            )
+            grammar_descr = GrammarDescription.from_dict(grammar_descr_dict)
             GrammarRegistry.register_grammar_topic(grammar_descr)
 
 

@@ -7,7 +7,7 @@ import numpy as np
 import sys
 import toml
 
-from hmeg import utils, ExerciseGenerator, GrammarRegistry, Vocabulary
+from hmeg import usecases as uc, ExerciseGenerator, GrammarRegistry, Vocabulary
 
 
 class Runner:
@@ -28,7 +28,7 @@ class Runner:
 
         with open(self.config_file, mode="r") as f:
             run_config = toml.loads(f.read())
-        utils.register_grammar_topics(run_config["topics_folder"])
+        uc.register_grammar_topics(run_config["topics_folder"])
         self.vocab = Vocabulary.load(run_config["vocab_file"])
         self.topic = topic or run_config["topic"]
         self.num_exercises = n or run_config["num_exercises"]
