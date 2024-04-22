@@ -1,8 +1,11 @@
 name="Past Tense / -았/었/였어요 (했어요)"
 levels=[
-    {resource_name="TTMIK", level=1}
+    {resource_name="TTMIK", level=1},
+    {resource_name="HTSK", level="Unit 1"},
 ]
-links=[]
+links=[
+    "https://www.howtostudykorean.com/unit1/unit-1-lessons-1-8/unit-1-lesson-5/#vpast"
+]
 exercises=[
     """
     S -> P V

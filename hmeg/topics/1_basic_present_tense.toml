@@ -1,8 +1,11 @@
 name="Basic Present Tense / -아요, -어요, -여요"
 levels=[
-    {resource_name="TTMIK", level=1}
+    {resource_name="TTMIK", level=1},
+    {resource_name="HTSK", level="Unit 1"},
 ]
-links=[]
+links=[
+    "https://www.howtostudykorean.com/unit1/unit-1-lessons-1-8/unit-1-lesson-5/#vpres"
+]
 exercises=[
     """
     S -> P V

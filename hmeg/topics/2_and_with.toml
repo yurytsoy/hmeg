@@ -1,8 +1,11 @@
 name="And, with / -하고, -(이)랑"
 levels=[
-    {resource_name="TTMIK", level=2}
+    {resource_name="TTMIK", level=2},
+    {resource_name="HTSK", level="Unit 1"},
 ]
-links=[]
+links=[
+    "https://www.howtostudykorean.com/unit1/unit-1-lessons-9-16/lesson-13/#kp1"
+]
 exercises=[
     """
     S -> '{noun} and {noun}'
