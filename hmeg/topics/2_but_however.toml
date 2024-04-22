@@ -1,8 +1,8 @@
 name="But, However / 그렇지만, 그런데"
 levels=[
     {resource_name="TTMIK", level=2},
-    {resource_name="HTSK", level="Level 2"},
-    {resource_name="HTSK", level="Level 4"},
+    {resource_name="HTSK", level="Unit 2"},
+    {resource_name="HTSK", level="Unit 4"},
 ]
 links=[
     "https://www.howtostudykorean.com/unit-2-lower-intermediate-korean-grammar/unit-2-lessons-42-50/lesson-47/",
