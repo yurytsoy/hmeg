@@ -1,8 +1,11 @@
 name="It can’t be … / -(으)ㄹ 리가 없어요, 할 리가 없어요"
 levels=[
-    {resource_name="TTMIK", level=4}
+    {resource_name="TTMIK", level=4},
+    {resource_name="HTSK", level="Unit 6"},
 ]
-links=[]
+links=[
+    "https://www.howtostudykorean.com/unit-6/lessons-126-133/lesson-133/#1331"
+]
 exercises=[
     """
     S -> 'There is no way that the {noun} just {verb:past}'

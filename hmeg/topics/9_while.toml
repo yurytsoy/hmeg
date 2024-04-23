@@ -1,9 +1,12 @@
 name="While / -(으)면서"
 levels=[
     {resource_name="TTMIK", level=9},
-    {resource_name="King Sejong Institute Practical Korean", level=3}
+    {resource_name="King Sejong Institute Practical Korean", level=3},
+    {resource_name="HTSK", level="Unit 3"},
 ]
-links=[]
+links=[
+    "https://www.howtostudykorean.com/unit-3-intermediate-korean-grammar/unit-3-lessons-59-66/lesson-62/#621"
+]
 exercises=[
     """
     S -> P V 'and' V

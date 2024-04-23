@@ -1,8 +1,10 @@
 name="Please do it for me. / -아/어/여 주세요"
 levels=[
-    {resource_name="TTMIK", level=2}
+    {resource_name="TTMIK", level=2},
+    {resource_name="HTSK", level="Unit 2"},
 ]
 links=[
+    "https://www.howtostudykorean.com/unit-2-lower-intermediate-korean-grammar/unit-2-lessons-34-41/lesson-41/#412",
     "https://learnkorean24.com/please-do-it-for-me/"
 ]
 exercises=[

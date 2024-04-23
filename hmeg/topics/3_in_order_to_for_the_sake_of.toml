@@ -1,8 +1,12 @@
 name="In order to, For the sake of / 위하다, 위해, 위해서"
 levels=[
-    {resource_name="TTMIK", level=3}
+    {resource_name="TTMIK", level=3},
+    {resource_name="HTSK", level="Unit 1"},
 ]
-links=[]
+links=[
+    "https://www.howtostudykorean.com/unit1/unit-1-lessons-9-16/lesson-13/#kp5",
+    "https://www.topikguide.com/noun-%EC%9D%84-%EB%A5%BC-%EC%9C%84%ED%95%B4%EC%84%9C-%EC%9C%84%ED%95%B4-and-verb-%EA%B8%B0-%EC%9C%84%ED%95%B4%EC%84%9C-%EC%9C%84%ED%95%B4-korean-grammar/"
+]
 exercises=[
     """
     S -> 'In order to {verb}' | 'For the sake of {verb:ing}'

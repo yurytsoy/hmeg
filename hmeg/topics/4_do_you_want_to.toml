@@ -1,8 +1,11 @@
 name="Do you want to …? / -(으)ㄹ래요?"
 levels=[
-    {resource_name="TTMIK", level=4}
+    {resource_name="TTMIK", level=4},
+    {resource_name="HTSK", level="Unit 2"},
 ]
-links=[]
+links=[
+    "https://www.howtostudykorean.com/unit-2-lower-intermediate-korean-grammar/unit-2-lessons-42-50/lesson-44/#442"
+]
 exercises=[
     """
     S -> 'Do you want to {verb}?'

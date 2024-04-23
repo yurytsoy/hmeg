@@ -1,8 +1,11 @@
 name="To gradually/eventually get to do something / -게 되다, 하게 되다"
 levels=[
-    {resource_name="TTMIK", level=4}
+    {resource_name="TTMIK", level=4},
+    {resource_name="HTSK", level="Unit 4"},
 ]
-links=[]
+links=[
+    "https://www.howtostudykorean.com/upper-intermediate-korean-grammar/unit-4-lessons-92-100/lesson-94/#941"
+]
 exercises=[
     """
     S -> P 'gradually got to {verb}'
