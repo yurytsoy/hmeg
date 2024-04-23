@@ -1,8 +1,11 @@
 name="Nothing but, Only / 밖에 + 부정형"
 levels=[
-    {resource_name="TTMIK", level=3}
+    {resource_name="TTMIK", level=3},
+    {resource_name="HTSK", level="Unit 3"},
 ]
-links=[]
+links=[
+    "https://www.howtostudykorean.com/unit-3-intermediate-korean-grammar/lessons-67-75/lesson-69/#691"
+]
 exercises=[
     """
     S -> P 'have nothing but {noun}'

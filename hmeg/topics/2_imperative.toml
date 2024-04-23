@@ -1,8 +1,11 @@
 name="Imperative / -(으)세요"
 levels=[
-    {resource_name="TTMIK", level=2}
+    {resource_name="TTMIK", level=2},
+    {resource_name="HTSK", level="Unit 2"},
 ]
-links=[]
+links=[
+    "https://www.howtostudykorean.com/unit-2-lower-intermediate-korean-grammar/unit-2-lessons-34-41/lesson-40/#401"
+]
 exercises=[
     """
     S -> '{verb}'

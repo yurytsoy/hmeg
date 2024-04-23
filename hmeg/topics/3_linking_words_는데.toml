@@ -1,8 +1,11 @@
 name="Linking Verbs with -는데 / noun + -인데, adjective + -ㄴ데"
 levels=[
-    {resource_name="TTMIK", level=3}
+    {resource_name="TTMIK", level=3},
+    {resource_name="HTSK", level="Unit 4"},
 ]
-links=[]
+links=[
+    "https://www.howtostudykorean.com/upper-intermediate-korean-grammar/unit-4-lessons-76-83/lesson-76/#763"
+]
 exercises=[
     """
     S -> '{verb} but {verb}' | '{verb} and {verb}'

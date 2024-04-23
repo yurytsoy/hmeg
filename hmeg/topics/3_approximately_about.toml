@@ -1,8 +1,15 @@
 name="Approximately, About / 쯤, 약, 정도"
 levels=[
-    {resource_name="TTMIK", level=3}
+    {resource_name="TTMIK", level=3},
+    {resource_name="HTSK", level="Unit 3"},
+    {resource_name="HTSK", level="Unit 5"},
 ]
-links=[]
+links=[
+    "https://www.howtostudykorean.com/unit-3-intermediate-korean-grammar/lessons-67-75/lesson-72/#new",
+    "https://learnkorean24.com/course/lesson-56/",
+    "https://www.topikguide.com/korean-grammar-noun-%EC%AF%A4-almost-around/",
+    "https://www.howtostudykorean.com/unit-5/lessons-101-108/lesson-103/#1031"
+]
 exercises=[
     """
     S -> C '{number:100} {noun:plural}'

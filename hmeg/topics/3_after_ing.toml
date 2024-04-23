@@ -1,8 +1,12 @@
 name="After -ing / 다음에"
 levels=[
-    {resource_name="TTMIK", level=3}
+    {resource_name="TTMIK", level=3},
+    {resource_name="HTSK", level="Unit 1"},
 ]
-links=[]
+links=[
+    "https://www.howtostudykorean.com/unit1/unit-1-lessons-17-25-2/lesson-24/#243",
+    "https://123learnkorean.wordpress.com/2009/08/25/%E3%84%B4%EC%9D%80-%EB%8B%A4%EC%9D%8C%EC%97%90-after-verb/",
+]
 exercises=[
     """
     S -> '{verb} after {verb:ing}'

@@ -1,8 +1,11 @@
 name="In front of, Behind, On top of, Under, Next to / 앞에, 옆에, 위에, 밑에, 뒤에"
 levels=[
-    {resource_name="TTMIK", level=3}
+    {resource_name="TTMIK", level=3},
+    {resource_name="HTSK", level="Unit 1"},
 ]
-links=[]
+links=[
+    "https://www.howtostudykorean.com/unit1/unit-1-lessons-1-8/unit-1-lesson-2/#beatt"
+]
 exercises=[
     """
     S -> '{noun} is' W '{noun}'

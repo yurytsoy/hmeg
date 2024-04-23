@@ -1,8 +1,11 @@
 name="Negative Sentences / 안, -지 않다"
 levels=[
-    {resource_name="TTMIK", level=1}
+    {resource_name="TTMIK", level=1},
+    {resource_name="HTSK", level="Unit 1"},
 ]
-links=[]
+links=[
+    "https://www.howtostudykorean.com/unit1/unit-1-lessons-1-8/unit-1-lesson-8/#negsent"
+]
 exercises=[
     """
     S -> P 'don`t' V

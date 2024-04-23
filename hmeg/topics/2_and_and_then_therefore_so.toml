@@ -1,8 +1,11 @@
 name="And, and then, therefore, so / 그리고, 그래서"
 levels=[
-    {resource_name="TTMIK", level=2}
+    {resource_name="TTMIK", level=2},
+    {resource_name="HTSK", level="Unit 2"},
 ]
-links=[]
+links=[
+    "https://www.howtostudykorean.com/unit-2-lower-intermediate-korean-grammar/unit-2-lessons-34-41/lesson-37/#375"
+]
 exercises=[
     """
     S -> V Pt V

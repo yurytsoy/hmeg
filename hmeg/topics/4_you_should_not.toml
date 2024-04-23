@@ -1,8 +1,11 @@
 name="You shouldn’t…, You’re not supposed to… / -(으)면 안 돼요, 하면 안 돼요"
 levels=[
-    {resource_name="TTMIK", level=4}
+    {resource_name="TTMIK", level=4},
+    {resource_name="HTSK", level="Unit 4"},
 ]
-links=[]
+links=[
+    "https://www.howtostudykorean.com/upper-intermediate-korean-grammar/unit-4-lessons-76-83/lesson-80/#802"
+]
 exercises=[
     """
     S -> P 'should not {verb}.'

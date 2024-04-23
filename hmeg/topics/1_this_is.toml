@@ -1,8 +1,11 @@
 name="This is ... / 이거/이것 ..."
 levels=[
-    {resource_name="TTMIK", level=1}
+    {resource_name="TTMIK", level=1},
+    {resource_name="HTSK", level="Unit 1"},
 ]
-links=[]
+links=[
+    "https://www.howtostudykorean.com/unit1/unit-1-lessons-1-8/unit-1-lesson-1/#tobe"
+]
 exercises=[
     """
     S -> 'This is' N

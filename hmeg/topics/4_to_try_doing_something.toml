@@ -1,8 +1,11 @@
 name="To try doing something / -아/어/여 보다, 해 보다"
 levels=[
-    {resource_name="TTMIK", level=4}
+    {resource_name="TTMIK", level=4},
+    {resource_name="HTSK", level="Unit 2"},
 ]
-links=[]
+links=[
+    "https://www.howtostudykorean.com/unit-2-lower-intermediate-korean-grammar/unit-2-lessons-26-33/lesson-32/#323"
+]
 exercises=[
     """
     S -> 'Try {verb:ing}.'

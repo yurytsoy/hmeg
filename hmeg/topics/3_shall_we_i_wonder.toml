@@ -1,8 +1,11 @@
 name="Shall we? / I wonder / -(으)ㄹ까요?"
 levels=[
-    {resource_name="TTMIK", level=3}
+    {resource_name="TTMIK", level=3},
+    {resource_name="HTSK", level="Unit 3"},
 ]
-links=[]
+links=[
+    "https://www.howtostudykorean.com/unit-3-intermediate-korean-grammar/unit-3-lessons-59-66/lesson-63/#633"
+]
 exercises=[
     """
     S -> 'Shall we {verb}' | P 'wonder if it is {adj}'
