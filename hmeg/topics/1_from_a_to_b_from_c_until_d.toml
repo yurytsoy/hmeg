@@ -14,5 +14,17 @@ exercises=[
     """
     S -> 'From' T 'until' T
     T -> '{weekday}' | '{season}'
+    """,
+    """
+    S -> P 'will wait until {number:100}:00'
+    P -> 'I' | 'they' | 'you' | 'we' | 'he' | 'she' | 'it'
+    """,
+    """
+    S -> P 'will go from {place} to {place}'
+    P -> 'I' | 'they' | 'you' | 'we' | 'he' | 'she' | 'it'
+    """,
+    """
+    S -> P 'will be at {place} from {number:100}:00'
+    P -> 'I' | 'they' | 'you' | 'we' | 'he' | 'she' | 'it'
     """
 ]

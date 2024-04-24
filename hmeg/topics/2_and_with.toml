@@ -9,5 +9,17 @@ links=[
 exercises=[
     """
     S -> '{noun} and {noun}'
+    """,
     """
+    S -> P 'see {noun} and {noun}'
+    P -> 'I' | 'You' | 'They' | 'We'
+    """,
+    """
+    S -> P 'sees {noun} and {noun}'
+    P -> 'He' | 'She' | 'It'
+    """,
+    """
+    S -> P 'bought {noun} and {noun}'
+    P -> 'I' | 'You' | 'They' | 'We' | 'He' | 'She' | 'It'
+    """,
 ]

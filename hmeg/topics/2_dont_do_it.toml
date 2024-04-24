@@ -8,6 +8,9 @@ links=[
 ]
 exercises=[
     """
-    S -> 'Don`t' '{verb}'
+    S -> 'Don`t {verb}'
+    """,
+    """
+    S -> 'Don`t {verb} like that!'
     """
 ]

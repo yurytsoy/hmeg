@@ -10,12 +10,10 @@ links=[
 exercises=[
     """
     S -> P 'might {verb}' T
-    P -> 'I' | 'you' | 'we' | 'they'
+    P -> 'I' | 'you' | 'we' | 'they' | 'he' | 'she' | 'it'
     T -> 'today' | 'tomorrow'
     """,
     """
-    S -> P 'might {verb}' T
-    P -> 'he' | 'she' | 'it'
-    T -> 'today' | 'tomorrow'
-    """
+    S -> '{noun} might change'
+    """,
 ]

@@ -18,4 +18,8 @@ exercises=[
     S -> P 'try {verb:ing}.'
     P -> 'I' | 'You' | 'They' | 'We'
     """,
+    """
+    S -> P 'tried {verb:ing}.'
+    P -> 'I' | 'You' | 'They' | 'We' | 'He' | 'She' | 'It'
+    """,
 ]

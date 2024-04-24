@@ -16,5 +16,9 @@ exercises=[
     S -> C P '{verb:3s}'
     C -> 'well then' | 'in that case' | 'if so'
     P -> 'he' | 'she' | 'it'
+    """,
     """
+    S -> 'If so' P 'not {verb:ing}'
+    P -> 'I am' | 'you are' | 'we are' | 'they are' | 'he is' | 'she is' | 'it is'
+    """,
 ]
