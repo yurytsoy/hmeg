@@ -34,6 +34,19 @@ def register_grammar_topics(grammar_dir: str | None = None):
             GrammarRegistry.register_grammar_topic(grammar_descr)
 
 
+def get_vocabulary_names() -> list[str]:
+    """
+    Returns list with names of the built-in vocabularies.
+    """
+    vocabs_dir = os.path.join(os.path.dirname(__file__), "vocabs")
+    res = []
+    for file in os.listdir(vocabs_dir):
+        with open(os.path.join(vocabs_dir, file), "r") as f:
+            vocab_info = toml.loads(f.read())
+        res.append(vocab_info["name"])
+    return res
+
+
 def apply_vocabulary(s: str, vocab: Vocabulary) -> str:
     """
     Takes input string and replaces placeholders with respective minilex entities.
