@@ -33,3 +33,7 @@ class TestUtils(unittest.TestCase):
             res = uc.apply_vocabulary(all_placeholders, self.vocab)
             for placeholder in VocabularyPlaceholders.to_list():
                 self.assertTrue(placeholder not in res)
+
+    def test_get_vocabulary_names(self):
+        vocabs = uc.get_vocabulary_names()
+        self.assertListEqual(vocabs, ["Minilex", "Nanolex"])
