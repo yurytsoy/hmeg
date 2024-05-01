@@ -23,6 +23,9 @@ verbs_singular_3rd = {
     'look for': 'looks for',
     'name': 'names',
 }
+verbs_progressive = {
+    'look for': 'looking for',
+}
 
 
 class Vocabulary:
@@ -114,7 +117,10 @@ class Vocabulary:
 
     def random_verb_progressive(self) -> str:
         cur_verb = conj.conjugate(self.random_verb())
-        conj_verb = cur_verb["indicative"]["indicative present continuous"]["I"]
+        conj_verb = verbs_progressive.get(
+            cur_verb.name,
+            cur_verb["indicative"]["indicative present continuous"]["I"]
+        )
         return conj_verb
 
     def random_noun(self) -> str:
