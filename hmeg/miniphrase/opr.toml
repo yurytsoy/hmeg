@@ -1,5 +1,7 @@
 name="Miniphrase: O, P, R"
-levels=[]
+levels=[
+    {resource_name="Miniphrase", level="1"},
+]
 links=[]
 exercises=[
     """
