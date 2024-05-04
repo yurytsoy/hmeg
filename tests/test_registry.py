@@ -21,6 +21,12 @@ class GrammarRegistryTest(unittest.TestCase):
             }
             self.assertDictEqual(levels_info, expected)
 
+        with self.subTest("With miniphrase"):
+            uc.register_grammar_topics(grammar_dir="hmeg/miniphrase")
+            levels_info = GrammarRegistry.get_registered_levels()
+            expected["The Art and Science of Learning Languages"] = []
+            self.assertDictEqual(levels_info, expected)
+
     def test_find_topic(self):
         GrammarRegistry.reset()
 

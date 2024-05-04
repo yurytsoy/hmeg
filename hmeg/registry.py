@@ -38,7 +38,8 @@ class GrammarRegistry:
             for level_descr in topic.levels:
                 if level_descr.resource_name not in res:
                     res[level_descr.resource_name] = list()
-                res[level_descr.resource_name].append(level_descr.level)
+                if level_descr.level:
+                    res[level_descr.resource_name].append(level_descr.level)
 
         for key in res:
             res[key] = sorted(set(res[key]))
