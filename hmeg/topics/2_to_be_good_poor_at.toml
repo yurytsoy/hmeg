@@ -1,6 +1,6 @@
 name="To be good/poor at … / 잘하다/못하다"
 levels=[
-    {resource_name="TTMIK", level=2},
+    {resource_name="TTMIK", level="Level 2"},
     {resource_name="HTSK", level="Unit 1"},
 ]
 links=[

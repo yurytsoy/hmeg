@@ -1,6 +1,6 @@
 name="Present Progressive / -고 있어요"
 levels=[
-    {resource_name="TTMIK", level=2},
+    {resource_name="TTMIK", level="Level 2"},
     {resource_name="HTSK", level="Unit 1"},
 ]
 links=[

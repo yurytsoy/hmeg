@@ -1,6 +1,6 @@
 name="Linking Verbs with -는데 / noun + -인데, adjective + -ㄴ데"
 levels=[
-    {resource_name="TTMIK", level=3},
+    {resource_name="TTMIK", level="Level 3"},
     {resource_name="HTSK", level="Unit 4"},
 ]
 links=[

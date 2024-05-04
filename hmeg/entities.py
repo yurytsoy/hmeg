@@ -56,7 +56,7 @@ class VocabularyPlaceholders:
 @dataclasses.dataclass
 class TopicLevelInfo:
     resource_name: str
-    level: int
+    level: int | str | None = None
 
 
 @dataclasses.dataclass

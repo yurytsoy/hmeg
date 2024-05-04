@@ -1,6 +1,6 @@
 name="It can’t be … / -(으)ㄹ 리가 없어요, 할 리가 없어요"
 levels=[
-    {resource_name="TTMIK", level=4},
+    {resource_name="TTMIK", level="Level 4"},
     {resource_name="HTSK", level="Unit 6"},
 ]
 links=[

@@ -1,6 +1,6 @@
 name="Before -ing / -기 전에"
 levels=[
-    {resource_name="TTMIK", level=3},
+    {resource_name="TTMIK", level="Level 3"},
     {resource_name="HTSK", level="Unit 1"},
     {resource_name="HTSK", level="Unit 2"},
 ]

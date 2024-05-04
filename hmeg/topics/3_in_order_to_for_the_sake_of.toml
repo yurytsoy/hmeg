@@ -1,6 +1,6 @@
 name="In order to, For the sake of / 위하다, 위해, 위해서"
 levels=[
-    {resource_name="TTMIK", level=3},
+    {resource_name="TTMIK", level="Level 3"},
     {resource_name="HTSK", level="Unit 1"},
 ]
 links=[
