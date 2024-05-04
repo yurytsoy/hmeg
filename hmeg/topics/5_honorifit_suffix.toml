@@ -1,0 +1,26 @@
+name="Honorific Suffix: -시-"
+levels=[
+    {resource_name="TTMIK", level="Level 5"},
+    {resource_name="HTSK", level="Unit 2"},
+]
+links=[
+    "https://www.howtostudykorean.com/unit-2-lower-intermediate-korean-grammar/unit-2-lessons-34-41/lesson-39/#391"
+]
+exercises=[
+    """
+    S -> P '{verb:3s}.'
+    P -> 'he' | 'she'
+    """,
+    """
+    S -> P '{verb}.'
+    P -> 'you' | 'they'
+    """,
+    """
+    S -> P '{verb:past}.'
+    P -> 'he' | 'she' | 'you' | 'they'
+    """,
+    """
+    S -> P 'will {verb}.'
+    P -> 'he' | 'she' | 'you' | 'they'
+    """,
+]

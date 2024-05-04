@@ -1,0 +1,14 @@
+name="Almost did … / -(으)ㄹ 뻔하다"
+levels=[
+    {resource_name="TTMIK", level="Level 5"},
+    {resource_name="HTSK", level="Unit 3"},
+]
+links=[
+    "https://www.howtostudykorean.com/unit-3-intermediate-korean-grammar/unit-3-lessons-59-66/lesson-66/#662"
+]
+exercises=[
+    """
+    S -> P 'almost {verb:past}.'
+    P -> 'he' | 'she' | 'it' | 'I' | 'you' | 'they' | 'we' |
+    """
+]

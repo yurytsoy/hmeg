@@ -1,0 +1,16 @@
+name="Noun + that is called / that people say is + noun / -(이)라는"
+levels=[
+    {resource_name="TTMIK", level="Level 5"},
+    {resource_name="HTSK", level="Unit 3"},
+]
+links=[
+    "https://www.howtostudykorean.com/unit-3-intermediate-korean-grammar/unit-3-lessons-51-58/lesson-52/#111"
+]
+exercises=[
+    """
+    S -> 'The {noun} is... (definition)'
+    """,
+    """
+    S -> '{place}? What is it?'
+    """,
+]

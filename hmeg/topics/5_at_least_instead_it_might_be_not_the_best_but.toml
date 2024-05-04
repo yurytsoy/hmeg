@@ -1,0 +1,17 @@
+name="At least, Instead, It might not be the best but … / -(이)라도"
+levels=[
+    {resource_name="TTMIK", level="Level 5"},
+    {resource_name="HTSK", level="Unit 5"},
+]
+links=[
+    "https://www.howtostudykorean.com/unit-5/lessons-109-116/lesson-111/#1111"
+]
+exercises=[
+    """
+    S -> 'At least do {verb:ing}'
+    """,
+    """
+    S -> 'At least' TUB '{noun:nonperson}'
+    TUB -> 'take' | 'use' | 'buy'
+    """,
+]
