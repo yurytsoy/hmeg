@@ -1,6 +1,6 @@
 name="After -ing / 다음에"
 levels=[
-    {resource_name="TTMIK", level=3},
+    {resource_name="TTMIK", level="Level 3"},
     {resource_name="HTSK", level="Unit 1"},
 ]
 links=[

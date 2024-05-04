@@ -27,7 +27,7 @@ Each grammar topic is defined by a structure, that includes sections:
 name="While / -(으)면서"
 levels=[
     {resource_name="TTMIK", level=9},
-    {resource_name="King Sejong Institute Practical Korean", level=3}
+    {resource_name="King Sejong Institute Practical Korean", level="3. Intermediate"}
 ]
 links=[]
 exercises=[

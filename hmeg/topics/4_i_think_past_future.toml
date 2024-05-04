@@ -1,6 +1,6 @@
 name="I think … (+ future tense) / -(으)ㄴ/(으)ㄹ/ㄴ 것 같다, 한 것 같다, 할 것 같다"
 levels=[
-    {resource_name="TTMIK", level=4},
+    {resource_name="TTMIK", level="Level 4"},
     {resource_name="HTSK", level="Unit 2"},
 ]
 links=[

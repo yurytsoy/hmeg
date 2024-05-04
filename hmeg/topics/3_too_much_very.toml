@@ -1,6 +1,6 @@
 name="Too much, Very / 너무"
 levels=[
-    {resource_name="TTMIK", level=3},
+    {resource_name="TTMIK", level="Level 3"},
     {resource_name="HTSK", level="Unit 1"},
 ]
 links=[

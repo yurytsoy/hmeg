@@ -1,6 +1,6 @@
 name="Negative Sentences / 안, -지 않다"
 levels=[
-    {resource_name="TTMIK", level=1},
+    {resource_name="TTMIK", level="Level 1"},
     {resource_name="HTSK", level="Unit 1"},
 ]
 links=[

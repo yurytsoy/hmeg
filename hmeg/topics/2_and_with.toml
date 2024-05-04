@@ -1,6 +1,6 @@
 name="And, with / -하고, -(이)랑"
 levels=[
-    {resource_name="TTMIK", level=2},
+    {resource_name="TTMIK", level="Level 2"},
     {resource_name="HTSK", level="Unit 1"},
 ]
 links=[

@@ -1,6 +1,6 @@
 name="Future Tense / -ㄹ/을 거예요, 할 거예요"
 levels=[
-    {resource_name="TTMIK", level=2},
+    {resource_name="TTMIK", level="Level 2"},
     {resource_name="HTSK", level="Unit 1"},
 ]
 links=[

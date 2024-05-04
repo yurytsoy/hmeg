@@ -1,6 +1,6 @@
 name="I want to… / -고 싶어요"
 levels=[
-    {resource_name="TTMIK", level=1},
+    {resource_name="TTMIK", level="Level 1"},
     {resource_name="HTSK", level="Unit 1"},
 ]
 links=[

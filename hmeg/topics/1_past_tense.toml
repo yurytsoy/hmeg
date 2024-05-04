@@ -1,6 +1,6 @@
 name="Past Tense / -았/었/였어요 (했어요)"
 levels=[
-    {resource_name="TTMIK", level=1},
+    {resource_name="TTMIK", level="Level 1"},
     {resource_name="HTSK", level="Unit 1"},
 ]
 links=[

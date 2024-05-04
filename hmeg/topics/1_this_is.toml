@@ -1,6 +1,6 @@
 name="This is ... / 이거/이것 ..."
 levels=[
-    {resource_name="TTMIK", level=1},
+    {resource_name="TTMIK", level="Level 1"},
     {resource_name="HTSK", level="Unit 1"},
 ]
 links=[

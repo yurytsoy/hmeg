@@ -1,6 +1,6 @@
 name="You shouldn’t…, You’re not supposed to… / -(으)면 안 돼요, 하면 안 돼요"
 levels=[
-    {resource_name="TTMIK", level=4},
+    {resource_name="TTMIK", level="Level 4"},
     {resource_name="HTSK", level="Unit 4"},
 ]
 links=[

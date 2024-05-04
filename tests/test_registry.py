@@ -15,7 +15,7 @@ class GrammarRegistryTest(unittest.TestCase):
             uc.register_grammar_topics()
             levels_info = GrammarRegistry.get_registered_levels()
             expected = {
-                'King Sejong Institute Practical Korean': [3],
+                'King Sejong Institute Practical Korean': ["3. Intermediate"],
                 'TTMIK': [1, 2, 3, 4, 9],
                 'HTSK': ["Unit 1", "Unit 2", "Unit 3", "Unit 4", "Unit 5", "Unit 6"]
             }

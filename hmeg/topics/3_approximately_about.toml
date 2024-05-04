@@ -1,6 +1,6 @@
 name="Approximately, About / 쯤, 약, 정도"
 levels=[
-    {resource_name="TTMIK", level=3},
+    {resource_name="TTMIK", level="Level 3"},
     {resource_name="HTSK", level="Unit 3"},
     {resource_name="HTSK", level="Unit 5"},
 ]

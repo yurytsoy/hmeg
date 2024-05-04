@@ -1,6 +1,6 @@
 name="Much (more), Much (less) / 훨씬"
 levels=[
-    {resource_name="TTMIK", level=4},
+    {resource_name="TTMIK", level="Level 4"},
     {resource_name="HTSK", level="Unit 2"},
 ]
 links=[

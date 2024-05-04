@@ -1,6 +1,6 @@
 name="From A To B, From C Until D / -에서/부터 -까지"
 levels=[
-    {resource_name="TTMIK", level=1},
+    {resource_name="TTMIK", level="Level 1"},
     {resource_name="HTSK", level="Unit 1"},
 ]
 links=[

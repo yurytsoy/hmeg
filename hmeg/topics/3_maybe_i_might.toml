@@ -1,6 +1,6 @@
 name="Maybe I might… / -(으)ㄹ 수도 있어요"
 levels=[
-    {resource_name="TTMIK", level=3},
+    {resource_name="TTMIK", level="Level 3"},
     {resource_name="HTSK", level="Unit 5"},
 ]
 links=[

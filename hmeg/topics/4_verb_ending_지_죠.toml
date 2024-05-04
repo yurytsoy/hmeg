@@ -1,6 +1,6 @@
 name="Verb ending -지요/-죠"
 levels=[
-    {resource_name="TTMIK", level=4},
+    {resource_name="TTMIK", level="Level 4"},
     {resource_name="HTSK", level="Unit 4"},
 ]
 links=[

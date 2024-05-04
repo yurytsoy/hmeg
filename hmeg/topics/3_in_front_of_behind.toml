@@ -1,6 +1,6 @@
 name="In front of, Behind, On top of, Under, Next to / 앞에, 옆에, 위에, 밑에, 뒤에"
 levels=[
-    {resource_name="TTMIK", level=3},
+    {resource_name="TTMIK", level="Level 3"},
     {resource_name="HTSK", level="Unit 1"},
 ]
 links=[
