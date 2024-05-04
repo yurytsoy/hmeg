@@ -16,7 +16,7 @@ class GrammarRegistryTest(unittest.TestCase):
             levels_info = GrammarRegistry.get_registered_levels()
             expected = {
                 'King Sejong Institute Practical Korean': ["3. Intermediate"],
-                'TTMIK': [1, 2, 3, 4, 9],
+                'TTMIK': ["Level 1", "Level 2", "Level 3", "Level 4", "Level 9"],
                 'HTSK': ["Unit 1", "Unit 2", "Unit 3", "Unit 4", "Unit 5", "Unit 6"]
             }
             self.assertDictEqual(levels_info, expected)
