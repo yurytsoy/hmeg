@@ -1,0 +1,17 @@
+name="While I was doing …, … and then … / -다가"
+levels=[
+    {resource_name="TTMIK", level="Level 5"},
+    {resource_name="HTSK", level="Unit 4"},
+]
+links=[
+    "https://www.howtostudykorean.com/upper-intermediate-korean-grammar/unit-4-lessons-84-91/lesson-88/#881"
+]
+exercises=[
+    """
+    S -> 'While {verb:ing}' P 'suddenly {verb:past}.'
+    P -> 'I' | 'you' | 'they' | 'we' | 'he' | 'she' | 'it'
+    """,
+    """
+    S -> '{noun} was {adj} and then became {adj}.'
+    """,
+]

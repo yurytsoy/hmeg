@@ -26,6 +26,10 @@ verbs_singular_3rd = {
 verbs_progressive = {
     'look for': 'looking for',
 }
+verbs_past = {
+    'borrow': 'borrowed',
+    'look for': 'looked for',
+}
 
 
 class Vocabulary:
@@ -63,7 +67,7 @@ class Vocabulary:
         "teacher", "wife", "woman"
     ]
     places = [
-        "airport", "apartment", "country", "flat", "home", "house", "road", "room",
+        "airport", "apartment", "country", "flat", "home", "hospital", "house", "road", "room",
         "school", "shop", "side", "street", "town", "work", "bathroom"
     ]
 
@@ -112,7 +116,10 @@ class Vocabulary:
 
     def random_verb_past(self) -> str:
         cur_verb = conj.conjugate(self.random_verb())
-        conj_verb = cur_verb["indicative"]["indicative past tense"]["I"]
+        conj_verb = verbs_past.get(
+            cur_verb.name,
+            cur_verb["indicative"]["indicative past tense"]["I"]
+        )
         return conj_verb
 
     def random_verb_progressive(self) -> str:
@@ -145,6 +152,10 @@ class Vocabulary:
         noun = self.random_noun_non_person()
         article = "an" if noun[0] in VOWELS else "a"
         return f"{article} {noun}"
+
+    def random_person(self) -> str:
+        res = random.choice(self.person_nouns)
+        return res
 
     def random_adjective(self) -> str:
         return random.choice(self.adjectives)

@@ -1,0 +1,23 @@
+name="Since, Because, As / -(으)니까"
+levels=[
+    {resource_name="TTMIK", level="Level 5"},
+    {resource_name="HTSK", level="Unit 4"},
+]
+links=[
+    "https://www.howtostudykorean.com/upper-intermediate-korean-grammar/unit-4-lessons-76-83/lesson-81/#811"
+]
+exercises=[
+    """
+    S -> P L 'it because it is {adj}.'
+    L -> 'like' | 'don`t like'
+    P -> 'I' | 'you' | 'they' | 'we'
+    """,
+    """
+    S -> P L 'it because it is {adj}.'
+    L -> 'likes' | 'doesn`t like'
+    P -> 'he' | 'she' | 'it'
+    """,
+    """
+    S -> 'I could not do it, because it was {adj}.'
+    """,
+]

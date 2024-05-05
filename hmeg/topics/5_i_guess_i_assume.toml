@@ -1,0 +1,28 @@
+name="I guess, I assume (Part 1) / -나 보다"
+levels=[
+    {resource_name="TTMIK", level="Level 5"},
+    {resource_name="HTSK", level="Unit 5"},
+]
+links=[
+    "https://www.howtostudykorean.com/unit-5/lessons-109-116/lesson-109/#1091"
+]
+exercises=[
+    """
+    S -> P G 'this is the {noun}.'
+    G -> 'guess' | 'assume'
+    P -> 'he' | 'she' | 'it'
+    """,
+    """
+    S -> P G 'this is the {noun}.'
+    G -> 'guess' | 'assume'
+    P -> 'I' | 'you' | 'they' | 'we' |
+    """,
+    """
+    S -> 'I guess' P '{verb:past}.'
+    P -> 'I' | 'you' | 'they' | 'we' | 'he' | 'she' | 'it'
+    """,
+    """
+    S -> P 'guess {noun} is {adj}.'
+    P -> 'I' | 'you' | 'they' | 'we'
+    """,
+]

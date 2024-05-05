@@ -1,0 +1,26 @@
+name="Whether or not / -(으)ㄴ/는지"
+levels=[
+    {resource_name="TTMIK", level="Level 5"},
+    {resource_name="HTSK", level="Unit 2"},
+]
+links=[
+    "https://www.howtostudykorean.com/unit-2-lower-intermediate-korean-grammar/unit-2-lessons-26-33/lesson-30/#301"
+]
+exercises=[
+    """
+    S -> P 'don`t know if it is {adj}.'
+    P -> 'I' | 'you' | 'they' | 'we'
+    """,
+    """
+    S -> P 'don`t know what {noun} is.'
+    P -> 'I' | 'you' | 'they' | 'we'
+    """,
+    """
+    S -> P 'don`t know where {noun} is.'
+    P -> 'I' | 'you' | 'they' | 'we'
+    """,
+    """
+    S -> P 'doesn`t know where {noun} is.'
+    P -> 'he' | 'she' | 'it'
+    """,
+]

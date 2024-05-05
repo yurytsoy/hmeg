@@ -1,0 +1,16 @@
+name="You know, Isn`t it, You see…, Come on… / -잖아(요)"
+levels=[
+    {resource_name="TTMIK", level="Level 5"},
+    {resource_name="HTSK", level="Unit 4"},
+]
+links=[
+    "https://www.howtostudykorean.com/upper-intermediate-korean-grammar/unit-4-lessons-84-91/lesson-90/#901"
+]
+exercises=[
+    """
+    S -> 'You should know that {noun:nonperson} is {adj}.'
+    """,
+    """
+    S -> '{person} told you it was {noun:nonperson}!'
+    """,
+]

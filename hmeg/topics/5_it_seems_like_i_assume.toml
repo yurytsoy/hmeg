@@ -1,0 +1,19 @@
+name="It seems like … / I assume … / -(으)려나 보다"
+levels=[
+    {resource_name="TTMIK", level="Level 5"},
+#    {resource_name="HTSK", level="Unit 4"},
+]
+links=[
+    "https://mykoreanramblings.com/i-assume/"
+]
+exercises=[
+    """
+    S -> 'It seems like {person} is going to {verb}.'
+    """,
+    """
+    S -> 'It seems like {person} was going to {verb}.'
+    """,
+    """
+    S -> 'It seems like {noun} is going to be {adj}.'
+    """,
+]
