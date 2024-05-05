@@ -1,3 +1,4 @@
+from dataclasses import asdict
 import random
 import unittest
 
@@ -37,3 +38,11 @@ class TestUtils(unittest.TestCase):
     def test_get_vocabulary_names(self):
         vocabs = uc.get_vocabulary_names()
         self.assertListEqual(vocabs, ["Minilex", "Nanolex"])
+
+    def test_get_vocabularies_info(self):
+        vocabs = uc.get_vocabularies_info()
+        expected = [
+            {'name': 'Minilex', 'num_adjectives': 90, 'num_adverbs': 69, 'num_nouns': 133, 'num_verbs': 75, 'num_words': 367},
+            {'name': 'Nanolex', 'num_adjectives': 28, 'num_adverbs': 3, 'num_nouns': 50, 'num_verbs': 28, 'num_words': 109}
+        ]
+        self.assertListEqual([asdict(vocab) for vocab in vocabs], expected)
