@@ -1,0 +1,16 @@
+name="They said that they had done …, they said that they would … / -았/었/였다고, -(으)ㄹ 거라고"
+levels=[
+    {resource_name="TTMIK", level="Level 5"},
+    {resource_name="HTSK", level="Unit 3"},
+]
+links=[
+    "https://www.howtostudykorean.com/unit-3-intermediate-korean-grammar/unit-3-lessons-51-58/lesson-52/#522"
+]
+exercises=[
+    """
+    S -> '{person} said {person} would {verb}.'
+    """,
+    """
+    S -> '{person} said {person} {verb:past}.'
+    """,
+]

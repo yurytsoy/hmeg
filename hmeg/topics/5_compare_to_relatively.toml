@@ -1,0 +1,16 @@
+name="Compared to, Relatively / -에 비해서 -ㄴ/은/는 편이다"
+levels=[
+    {resource_name="TTMIK", level="Level 5"},
+    {resource_name="HTSK", level="Unit 4"},
+    {resource_name="HTSK", level="Unit 5"},
+]
+links=[
+    "https://www.howtostudykorean.com/upper-intermediate-korean-grammar/unit-4-lessons-84-91/lesson-89/#892",
+    "https://www.howtostudykorean.com/unit-5/lessons-109-116/lesson-112/#1122"
+]
+exercises=[
+    """
+    S -> 'Compared to {noun:nonperson} the {noun:nonperson} is' ML '{adj}.'
+    ML -> 'more' | 'less'
+    """,
+]

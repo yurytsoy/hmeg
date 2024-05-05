@@ -1,0 +1,13 @@
+name="To tell someone to do something / Verb + -(으)라고 + Verb"
+levels=[
+    {resource_name="TTMIK", level="Level 5"},
+    {resource_name="HTSK", level="Unit 3"},
+]
+links=[
+    "https://www.howtostudykorean.com/unit-3-intermediate-korean-grammar/unit-3-lessons-51-58/lesson-54/#541"
+]
+exercises=[
+    """
+    S -> '{person} told {person} to {verb}.'
+    """,
+]

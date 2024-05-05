@@ -1,0 +1,16 @@
+name="To have no other choice but to… / -(으)ㄹ 수밖에 없다"
+levels=[
+    {resource_name="TTMIK", level="Level 5"},
+    {resource_name="HTSK", level="Unit 3"},
+]
+links=[
+    "https://www.howtostudykorean.com/unit-3-intermediate-korean-grammar/lessons-67-75/lesson-69/#692"
+]
+exercises=[
+    """
+    S -> '{person} has no choice but {verb}.'
+    """,
+    """
+    S -> 'I had no choice but {verb}.'
+    """,
+]

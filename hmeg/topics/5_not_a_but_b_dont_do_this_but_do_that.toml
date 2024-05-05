@@ -1,0 +1,19 @@
+name="Not A But B, Don’t do THIS but do THAT / 말고, -지 말고"
+levels=[
+    {resource_name="TTMIK", level="Level 5"},
+    {resource_name="HTSK", level="Unit 3"},
+]
+links=[
+    "https://www.howtostudykorean.com/unit-3-intermediate-korean-grammar/lessons-67-75/lesson-73/#733"
+]
+exercises=[
+    """
+    S -> 'Instead of {noun:nonperson} buy {noun:nonperson}.'
+    """,
+    """
+    S -> '{person} needs {noun:nonperson}, not {noun:nonperson}.'
+    """,
+    """
+    S -> 'Instead of {verb:ing} try {verb:ing}.'
+    """,
+]
