@@ -5,6 +5,16 @@ import dataclasses
 VOWELS = "aeiou"
 
 
+@dataclasses.dataclass
+class VocabularyInfo:
+    name: str
+    num_words: int
+    num_nouns: int
+    num_verbs: int
+    num_adjectives: int
+    num_adverbs: int
+
+
 class VocabularyPlaceholders:
     Adjective = "{adj}"  # adjective
     Adverb = "{adverb}"  # adverb

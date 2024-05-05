@@ -4,7 +4,7 @@ import pandas as pd
 import re
 import toml
 
-from .entities import GrammarDescription, VocabularyPlaceholders
+from .entities import GrammarDescription, VocabularyPlaceholders, VocabularyInfo
 from .registry import GrammarRegistry
 from .vocabulary import Vocabulary
 
@@ -44,6 +44,27 @@ def get_vocabulary_names() -> list[str]:
         with open(os.path.join(vocabs_dir, file), "r") as f:
             vocab_info = toml.loads(f.read())
         res.append(vocab_info["name"])
+    return res
+
+
+def get_vocabularies_info() -> list[VocabularyInfo]:
+    """
+    Returns list with names of the built-in vocabularies.
+    """
+    vocabs_dir = os.path.join(os.path.dirname(__file__), "vocabs")
+    res = []
+    for file in os.listdir(vocabs_dir):
+        vocab = Vocabulary(os.path.join(vocabs_dir, file))
+        res.append(
+            VocabularyInfo(
+                name=vocab.name,
+                num_words=len(vocab.nouns) + len(vocab.verbs) + len(vocab.adjectives) + len(vocab.adverbs),
+                num_nouns=len(vocab.nouns),
+                num_verbs=len(vocab.verbs),
+                num_adjectives=len(vocab.adjectives),
+                num_adverbs=len(vocab.adverbs),
+            )
+        )
     return res
 
 
