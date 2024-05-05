@@ -191,3 +191,8 @@ class Vocabulary:
 def load_minilex() -> Vocabulary:
     cur_dir = os.path.split(__file__)[0]
     return Vocabulary.load(os.path.join(cur_dir, "vocabs", "minilex.toml"))
+
+
+def load_nanolex() -> Vocabulary:
+    cur_dir = os.path.split(__file__)[0]
+    return Vocabulary.load(os.path.join(cur_dir, "vocabs", "nanolex.toml"))
