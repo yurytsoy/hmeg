@@ -153,6 +153,10 @@ class Vocabulary:
         article = "an" if noun[0] in VOWELS else "a"
         return f"{article} {noun}"
 
+    def random_person(self) -> str:
+        res = random.choice(self.person_nouns)
+        return res
+
     def random_adjective(self) -> str:
         return random.choice(self.adjectives)
 

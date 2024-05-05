@@ -62,6 +62,7 @@ def apply_vocabulary(s: str, vocab: Vocabulary) -> str:
         VocabularyPlaceholders.NounPlural: vocab.random_noun_plural,
         VocabularyPlaceholders.NounNonPerson: vocab.random_noun_non_person,
         VocabularyPlaceholders.ANounNonPerson: vocab.random_anoun_non_person,
+        VocabularyPlaceholders.Person: vocab.random_person,
         VocabularyPlaceholders.Number100: partial(vocab.random_number, max=100),
         VocabularyPlaceholders.Number1000: partial(vocab.random_number, max=1000),
         VocabularyPlaceholders.Number100k: partial(vocab.random_number, max=100_000),

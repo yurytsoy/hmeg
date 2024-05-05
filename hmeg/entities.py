@@ -20,6 +20,7 @@ class VocabularyPlaceholders:
     Number100 = "{number:100}"  # number below 100
     Number1000 = "{number:1000}"  # number below 1000
     Number100k = "{number:100000}"  # number below 100000
+    Person = "{person}"  # place or location
     Place = "{place}"  # place or location
     # Pronoun = "{pronoun}"  # personal pronoun: I, we, they, you
     # PronounSingular3rd = "{pronoun:3s}"  # personal pronoun for 3rd person, singular: he, she, it
