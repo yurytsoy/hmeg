@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "hmeg"
-version = "0.1.4"
+version = "0.1.5"
 description = "Generator of exercises for practicing speaking for language learning."
 authors = ["Yury Choi <yurytsoy@gmail.com>"]
 license = "MIT"
