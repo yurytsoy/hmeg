@@ -2,6 +2,7 @@ name="It is about to …, I am planning to … / -(으)려고 하다"
 levels=[
     {resource_name="TTMIK", level="Level 5"},
     {resource_name="HTSK", level="Unit 2"},
+    {resource_name="King Sejong Institute Practical Korean", level="2. Beginner"},
 ]
 links=[
     "https://www.howtostudykorean.com/unit-2-lower-intermediate-korean-grammar/unit-2-lessons-26-33/lesson-32/#321"

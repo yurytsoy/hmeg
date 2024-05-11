@@ -2,6 +2,7 @@ name="You know, Isn`t it, You see…, Come on… / -잖아(요)"
 levels=[
     {resource_name="TTMIK", level="Level 5"},
     {resource_name="HTSK", level="Unit 4"},
+    {resource_name="King Sejong Institute Practical Korean", level="4. Intermediate"},
 ]
 links=[
     "https://www.howtostudykorean.com/upper-intermediate-korean-grammar/unit-4-lessons-84-91/lesson-90/#901"

@@ -2,6 +2,7 @@ name="Have, Don’t have, There is, There isn’t / 있어요, 없어요"
 levels=[
     {resource_name="TTMIK", level="Level 1"},
     {resource_name="HTSK", level="Unit 1"},
+    {resource_name="King Sejong Institute Practical Korean", level="1. Beginner"},
 ]
 links=[]
 exercises=[

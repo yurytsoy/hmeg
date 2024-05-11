@@ -2,6 +2,7 @@ name="Negative Sentences / 안, -지 않다"
 levels=[
     {resource_name="TTMIK", level="Level 1"},
     {resource_name="HTSK", level="Unit 1"},
+    {resource_name="King Sejong Institute Practical Korean", level="1. Beginner"},
 ]
 links=[
     "https://www.howtostudykorean.com/unit1/unit-1-lessons-1-8/unit-1-lesson-8/#negsent"

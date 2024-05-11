@@ -2,6 +2,7 @@ name="Since, Because, As / -(으)니까"
 levels=[
     {resource_name="TTMIK", level="Level 5"},
     {resource_name="HTSK", level="Unit 4"},
+    {resource_name="King Sejong Institute Practical Korean", level="2. Beginner"},
 ]
 links=[
     "https://www.howtostudykorean.com/upper-intermediate-korean-grammar/unit-4-lessons-76-83/lesson-81/#811"

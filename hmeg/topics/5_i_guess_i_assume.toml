@@ -2,6 +2,7 @@ name="I guess, I assume (Part 1) / -나 보다"
 levels=[
     {resource_name="TTMIK", level="Level 5"},
     {resource_name="HTSK", level="Unit 5"},
+    {resource_name="King Sejong Institute Practical Korean", level="4. Intermediate"},
 ]
 links=[
     "https://www.howtostudykorean.com/unit-5/lessons-109-116/lesson-109/#1091"
