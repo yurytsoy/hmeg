@@ -2,6 +2,7 @@ name="Too much, Very / 너무"
 levels=[
     {resource_name="TTMIK", level="Level 3"},
     {resource_name="HTSK", level="Unit 1"},
+    {resource_name="Korean Grammar in Use", level="Beginning"},
 ]
 links=[
     "https://www.howtostudykorean.com/unit1/unit-1-lessons-1-8/unit-1-lesson-3/"

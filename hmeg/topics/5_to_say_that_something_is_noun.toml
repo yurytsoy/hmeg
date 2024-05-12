@@ -2,6 +2,7 @@ name="(To say) that something/someone is + noun / 명사 + -(이)라고 (말하�
 levels=[
     {resource_name="TTMIK", level="Level 5"},
     {resource_name="HTSK", level="Unit 3"},
+    {resource_name="Korean Grammar in Use", level="Beginning"},
 ]
 links=[
     "https://www.howtostudykorean.com/unit-3-intermediate-korean-grammar/unit-3-lessons-51-58/lesson-52/#523"

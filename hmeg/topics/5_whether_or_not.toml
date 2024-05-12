@@ -2,6 +2,7 @@ name="Whether or not / -(으)ㄴ/는지"
 levels=[
     {resource_name="TTMIK", level="Level 5"},
     {resource_name="HTSK", level="Unit 2"},
+    {resource_name="Korean Grammar in Use", level="Intermediate"},
 ]
 links=[
     "https://www.howtostudykorean.com/unit-2-lower-intermediate-korean-grammar/unit-2-lessons-26-33/lesson-30/#301"

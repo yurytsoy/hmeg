@@ -2,6 +2,7 @@ name="But still, Nevertheless / 그래도"
 levels=[
     {resource_name="TTMIK", level="Level 3"},
     {resource_name="HTSK", level="Unit 2"},
+    {resource_name="Korean Grammar in Use", level="Beginning"},
 ]
 links=[
     "https://www.howtostudykorean.com/unit-2-lower-intermediate-korean-grammar/unit-2-lessons-42-50/lesson-48/#new",

@@ -2,6 +2,8 @@ name="To gradually/eventually get to do something / -게 되다, 하게 되다"
 levels=[
     {resource_name="TTMIK", level="Level 4"},
     {resource_name="HTSK", level="Unit 4"},
+    {resource_name="Korean Grammar in Use", level="Beginning"},
+    {resource_name="Korean Grammar in Use", level="Intermediate"},
 ]
 links=[
     "https://www.howtostudykorean.com/upper-intermediate-korean-grammar/unit-4-lessons-92-100/lesson-94/#941"

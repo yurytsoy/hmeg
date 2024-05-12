@@ -2,6 +2,7 @@ name="Maybe I might… / -(으)ㄹ 수도 있어요"
 levels=[
     {resource_name="TTMIK", level="Level 3"},
     {resource_name="HTSK", level="Unit 5"},
+    {resource_name="Korean Grammar in Use", level="Beginning"},
 ]
 links=[
     "https://www.howtostudykorean.com/unit-5/lessons-101-108/lesson-107/#1073c",

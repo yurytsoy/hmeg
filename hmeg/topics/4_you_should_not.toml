@@ -2,6 +2,7 @@ name="You shouldn’t…, You’re not supposed to… / -(으)면 안 돼요, �
 levels=[
     {resource_name="TTMIK", level="Level 4"},
     {resource_name="HTSK", level="Unit 4"},
+    {resource_name="Korean Grammar in Use", level="Beginning"},
 ]
 links=[
     "https://www.howtostudykorean.com/upper-intermediate-korean-grammar/unit-4-lessons-76-83/lesson-80/#802"
