@@ -4,6 +4,7 @@ levels=[
     {resource_name="HTSK", level="Unit 2"},
     {resource_name="King Sejong Institute Practical Korean", level="2. Beginner"},
     {resource_name="Korean Grammar in Use", level="Beginning"},
+    {resource_name="Oh, my Korean!", level="1A"},
 ]
 links=[
     "https://www.howtostudykorean.com/unit-2-lower-intermediate-korean-grammar/unit-2-lessons-34-41/lesson-40/#401"

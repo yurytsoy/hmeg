@@ -4,6 +4,7 @@ levels=[
     {resource_name="HTSK", level="Unit 4"},
     {resource_name="King Sejong Institute Practical Korean", level="2. Beginner"},
     {resource_name="Korean Grammar in Use", level="Beginning"},
+    {resource_name="Oh, my Korean!", level="3A"},
 ]
 links=[
     "https://www.howtostudykorean.com/upper-intermediate-korean-grammar/unit-4-lessons-76-83/lesson-83/#830"

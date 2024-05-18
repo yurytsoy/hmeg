@@ -4,6 +4,8 @@ levels=[
     {resource_name="HTSK", level="Unit 4"},
     {resource_name="HTSK", level="Unit 5"},
     {resource_name="Korean Grammar in Use", level="Intermediate"},
+    {resource_name="Oh, my Korean!", level="2B"},
+    {resource_name="Oh, my Korean!", level="3A"},
 ]
 links=[
     "https://www.howtostudykorean.com/upper-intermediate-korean-grammar/unit-4-lessons-84-91/lesson-89/#892",

@@ -3,6 +3,7 @@ levels=[
     {resource_name="TTMIK", level="Level 5"},
     {resource_name="HTSK", level="Unit 5"},
     {resource_name="Korean Grammar in Use", level="Intermediate"},
+    {resource_name="Oh, my Korean!", level="3B"},
 ]
 links=[
     "https://www.howtostudykorean.com/unit-5/lessons-109-116/lesson-111/#1111"

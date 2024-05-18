@@ -2,6 +2,7 @@ name="They said that they had done …, they said that they would … / -았/었
 levels=[
     {resource_name="TTMIK", level="Level 5"},
     {resource_name="HTSK", level="Unit 3"},
+    {resource_name="Oh, my Korean!", level="2B"},
 ]
 links=[
     "https://www.howtostudykorean.com/unit-3-intermediate-korean-grammar/unit-3-lessons-51-58/lesson-52/#522"

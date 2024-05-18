@@ -4,6 +4,7 @@ levels=[
     {resource_name="King Sejong Institute Practical Korean", level="3. Intermediate"},
     {resource_name="HTSK", level="Unit 3"},
     {resource_name="Korean Grammar in Use", level="Intermediate"},
+    {resource_name="Oh, my Korean!", level="2B"},
 ]
 links=[
     "https://www.howtostudykorean.com/unit-3-intermediate-korean-grammar/unit-3-lessons-59-66/lesson-62/#621"

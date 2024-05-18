@@ -5,6 +5,7 @@ levels=[
     {resource_name="King Sejong Institute Practical Korean", level="2. Beginner"},
     {resource_name="King Sejong Institute Practical Korean", level="4. Intermediate"},
     {resource_name="Korean Grammar in Use", level="Beginning"},
+    {resource_name="Oh, my Korean!", level="2A"},
 ]
 links=[
     "https://www.howtostudykorean.com/unit-2-lower-intermediate-korean-grammar/unit-2-lessons-26-33/lesson-32/#323"

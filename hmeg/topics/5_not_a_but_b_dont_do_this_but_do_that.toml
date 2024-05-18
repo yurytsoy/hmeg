@@ -2,6 +2,7 @@ name="Not A But B, Don’t do THIS but do THAT / 말고, -지 말고"
 levels=[
     {resource_name="TTMIK", level="Level 5"},
     {resource_name="HTSK", level="Unit 3"},
+    {resource_name="Oh, my Korean!", level="3B"},
 ]
 links=[
     "https://www.howtostudykorean.com/unit-3-intermediate-korean-grammar/lessons-67-75/lesson-73/#733"

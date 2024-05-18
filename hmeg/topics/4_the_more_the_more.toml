@@ -2,6 +2,7 @@ name="The more … the more … / -(으)면 -(으)ㄹ수록"
 levels=[
     {resource_name="TTMIK", level="Level 4"},
     {resource_name="HTSK", level="Unit 6"},
+    {resource_name="Oh, my Korean!", level="2B"},
 ]
 links=[
     "https://www.howtostudykorean.com/unit-6/lessons-126-133/lesson-132/#1321"

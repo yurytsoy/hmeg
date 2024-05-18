@@ -3,6 +3,7 @@ levels=[
     {resource_name="TTMIK", level="Level 5"},
     {resource_name="HTSK", level="Unit 3"},
     {resource_name="Korean Grammar in Use", level="Intermediate"},
+    {resource_name="Oh, my Korean!", level="3A"},
 ]
 links=[
     "https://www.howtostudykorean.com/unit-3-intermediate-korean-grammar/lessons-67-75/lesson-73/#731"
