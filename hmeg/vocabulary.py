@@ -5,27 +5,17 @@ Class for managing interchangeable vocabulary.
 from __future__ import annotations
 
 import inflect
-from mlconjug3 import Conjugator
 import os
 import random
 import toml
 
 from .entities import VOWELS
+from .verb_conjugator import VerbConjugator
 
 
-conj = Conjugator(language="en")
 p = inflect.engine()
 
 # dictionary with fixes for conjugation of the mlconjug3
-verbs_singular_3rd = {
-    'borrow': 'borrows',
-    'hurt': 'hurts',
-    'look for': 'looks for',
-    'name': 'names',
-}
-verbs_progressive = {
-    'look for': 'looking for',
-}
 verbs_past = {
     'borrow': 'borrowed',
     'look for': 'looked for',
@@ -107,28 +97,13 @@ class Vocabulary:
         return random.choice(self.verbs)
 
     def random_verb_singular_3rd(self) -> str:
-        cur_verb = conj.conjugate(self.random_verb())
-        conj_verb = verbs_singular_3rd.get(
-            cur_verb.name,
-            cur_verb["indicative"]["indicative present"]["he/she/it"]
-        )
-        return conj_verb
+        return VerbConjugator.present_singular(self.random_verb())
 
     def random_verb_past(self) -> str:
-        cur_verb = conj.conjugate(self.random_verb())
-        conj_verb = verbs_past.get(
-            cur_verb.name,
-            cur_verb["indicative"]["indicative past tense"]["I"]
-        )
-        return conj_verb
+        return VerbConjugator.past_simple(self.random_verb())
 
     def random_verb_progressive(self) -> str:
-        cur_verb = conj.conjugate(self.random_verb())
-        conj_verb = verbs_progressive.get(
-            cur_verb.name,
-            cur_verb["indicative"]["indicative present continuous"]["I"]
-        )
-        return conj_verb
+        return VerbConjugator.continuous(self.random_verb())
 
     def random_noun(self) -> str:
         return random.choice(self.nouns)
