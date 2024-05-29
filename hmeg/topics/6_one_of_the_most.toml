@@ -1,0 +1,18 @@
+name=" One of the most … / 가장 ~ 중의 하나"
+levels=[
+    {resource_name="TTMIK", level="Level 6"},
+]
+links=[
+    "https://www.howtostudykorean.com/unit1/unit-1-lessons-17-25-2/lesson-22/#223"
+]
+exercises=[
+    """
+    S -> 'One of the best {noun:plural}.'
+    """,
+    """
+    S -> 'One of the worst {noun:plural}.'
+    """,
+    """
+    S -> 'One of the {place}s I visit the most.'
+    """,
+]

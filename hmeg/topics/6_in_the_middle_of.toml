@@ -1,0 +1,16 @@
+name=" I’m in the middle of …-ing / -는 중이에요"
+levels=[
+    {resource_name="TTMIK", level="Level 6"},
+    {resource_name="HTSK", level="Unit 2"},
+]
+links=[
+    "https://www.howtostudykorean.com/unit-2-lower-intermediate-korean-grammar/unit-2-lessons-26-33/lesson-33/#332"
+]
+exercises=[
+    """
+    S -> 'I`m in the middle of {verb:ing}'
+    """,
+    """
+    S -> '{person} in the middle of {verb:ing}'
+    """,
+]

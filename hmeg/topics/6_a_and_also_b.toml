@@ -1,0 +1,12 @@
+name="To do A and also B / -(으)ㄹ 겸"
+levels=[
+    {resource_name="TTMIK", level="Level 6"},
+]
+links=[
+    "https://www.koreantopik.com/2017/03/l2g21-v-n-grammar-and-alsoexpress-2.html"
+]
+exercises=[
+    """
+    S -> '{person} {verb:3s} and also {verb:3s}'
+    """,
+]
