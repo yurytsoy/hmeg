@@ -2,9 +2,12 @@ name="I thought I would …, I didn’t think you would … / -(으)ㄴ/ㄹ 줄 
 levels=[
     {resource_name="TTMIK", level="Level 6"},
     {resource_name="HTSK", level="Unit 4"},
+    {resource_name="King Sejong Institute Practical Korean", level="3. Intermediate"},
+    {resource_name="Oh, my Korean!", level="2B"},
 ]
 links=[
-    "https://www.howtostudykorean.com/upper-intermediate-korean-grammar/unit-4-lessons-84-91/lesson-85/#851"
+    "https://www.howtostudykorean.com/upper-intermediate-korean-grammar/unit-4-lessons-84-91/lesson-85/#851",
+    "http://ohmykorean.com/?p=1840"
 ]
 exercises=[
     """

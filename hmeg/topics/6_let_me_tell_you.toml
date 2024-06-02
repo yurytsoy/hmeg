@@ -2,9 +2,13 @@ name="Let me tell you… / -거든(요)"
 levels=[
     {resource_name="TTMIK", level="Level 6"},
     {resource_name="HTSK", level="Unit 4"},
+    {resource_name="King Sejong Institute Practical Korean", level="3. Intermediate"},
+    {resource_name="Oh, my Korean!", level="3A"},
 ]
 links=[
-    "https://www.howtostudykorean.com/upper-intermediate-korean-grammar/unit-4-lessons-84-91/lesson-91/#911"
+    "https://www.howtostudykorean.com/upper-intermediate-korean-grammar/unit-4-lessons-84-91/lesson-91/#911",
+    "http://ohmykorean.com/?p=183",
+    "http://ohmykorean.com/?p=211",
 ]
 exercises=[
     """

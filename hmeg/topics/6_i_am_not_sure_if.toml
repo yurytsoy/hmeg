@@ -2,9 +2,12 @@ name="I’m not sure if … / -(으/느)ㄴ지 잘 모르겠어요."
 levels=[
     {resource_name="TTMIK", level="Level 6"},
     {resource_name="HTSK", level="Unit 2"},
+    {resource_name="King Sejong Institute Practical Korean", level="4. Intermediate"},
+    {resource_name="Oh, my Korean!", level="2B"},
 ]
 links=[
-    "https://www.howtostudykorean.com/unit-2-lower-intermediate-korean-grammar/unit-2-lessons-26-33/lesson-30/#301"
+    "https://www.howtostudykorean.com/unit-2-lower-intermediate-korean-grammar/unit-2-lessons-26-33/lesson-30/#301",
+    "http://ohmykorean.com/?p=315"
 ]
 exercises=[
     """

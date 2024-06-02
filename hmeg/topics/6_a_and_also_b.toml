@@ -1,9 +1,11 @@
 name="To do A and also B / -(으)ㄹ 겸"
 levels=[
     {resource_name="TTMIK", level="Level 6"},
+    {resource_name="Oh, my Korean!", level="4"},
 ]
 links=[
-    "https://www.koreantopik.com/2017/03/l2g21-v-n-grammar-and-alsoexpress-2.html"
+    "https://www.koreantopik.com/2017/03/l2g21-v-n-grammar-and-alsoexpress-2.html",
+    "http://ohmykorean.com/?p=1857"
 ]
 exercises=[
     """

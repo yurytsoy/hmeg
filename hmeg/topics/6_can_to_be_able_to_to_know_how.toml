@@ -2,9 +2,11 @@ name="Can, to be able to, to know how to / -(으)ㄹ 수 있다, -(으)ㄹ 줄 �
 levels=[
     {resource_name="TTMIK", level="Level 6"},
     {resource_name="HTSK", level="Unit 4"},
+    {resource_name="Oh, my Korean!", level="2B"},
 ]
 links=[
-    "https://www.howtostudykorean.com/upper-intermediate-korean-grammar/unit-4-lessons-84-91/lesson-85/#851"
+    "https://www.howtostudykorean.com/upper-intermediate-korean-grammar/unit-4-lessons-84-91/lesson-85/#851",
+    "http://ohmykorean.com/?p=1840"
 ]
 exercises=[
     """
