@@ -1,0 +1,17 @@
+name="I DID do it, I DO like it / -기는 하다"
+levels=[
+    {resource_name="TTMIK", level="Level 6"},
+    {resource_name="HTSK", level="Unit 5"},
+]
+links=[
+    "https://mykoreanramblings.com/however/",
+    "https://www.howtostudykorean.com/unit-5/lessons-101-108/lesson-104/#1043"
+]
+exercises=[
+    """
+    S -> '{person} actually did {verb}, but ...'
+    """,
+    """
+    S -> '{noun:nonperson} actually was {adj}, but ...'
+    """,
+]

@@ -1,0 +1,16 @@
+name="To improve, to change, to increase / -아/어/여지다 Part 2"
+levels=[
+    {resource_name="TTMIK", level="Level 6"},
+    {resource_name="HTSK", level="Unit 1"},
+]
+links=[
+    "https://www.howtostudykorean.com/unit1/unit-1-lessons-17-25-2/lesson-18/#a"
+]
+exercises=[
+    """
+    S -> '{noun:nonperson} became more {adj}.'
+    """,
+    """
+    S -> '{noun:nonperson} changed to be less {adj}.'
+    """,
+]

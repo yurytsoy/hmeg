@@ -1,0 +1,19 @@
+name="Can, to be able to, to know how to / -(으)ㄹ 수 있다, -(으)ㄹ 줄 알다"
+levels=[
+    {resource_name="TTMIK", level="Level 6"},
+    {resource_name="HTSK", level="Unit 4"},
+]
+links=[
+    "https://www.howtostudykorean.com/upper-intermediate-korean-grammar/unit-4-lessons-84-91/lesson-85/#851"
+]
+exercises=[
+    """
+    S -> 'Do you know how to make {noun:nonperson}?'
+    """,
+    """
+    S -> '{person} knows how to {verb}.'
+    """,
+    """
+    S -> 'Can {person} {verb}?'
+    """,
+]

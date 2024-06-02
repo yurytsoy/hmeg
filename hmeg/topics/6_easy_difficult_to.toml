@@ -1,0 +1,13 @@
+name="Easy/difficult to + V / -기 쉽다/어렵다"
+levels=[
+    {resource_name="TTMIK", level="Level 6"},
+]
+links=[
+    "https://123learnkorean.wordpress.com/2009/08/25/%EA%B8%B0-%EC%89%BD%EB%8B%A4%EC%96%B4%EB%A0%B5%EB%8B%A4-easyhard-to-verb/"
+]
+exercises=[
+    """
+    S -> '{noun:nonperson} was' ED 'to {verb}.'
+    ED -> 'easy' | 'difficult'
+    """,
+]

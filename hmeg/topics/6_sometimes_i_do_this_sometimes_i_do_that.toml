@@ -1,0 +1,15 @@
+name="Sometimes I do this, sometimes I do that / 어떨 때는 -고, 어떨 때는 -아/어/여요"
+levels=[
+    {resource_name="TTMIK", level="Level 6"},
+]
+links=[
+    "https://study-korean.tumblr.com/post/104513071351/%EC%96%B4%EB%96%A8-%EB%95%8C-in-what-situation-at-what-time-%EC%96%B4%EB%96%BB%EB%8B%A4-to"
+]
+exercises=[
+    """
+    S -> 'Sometimes {person} {verb:3s} and sometimes {verb:3s}.'
+    """,
+    """
+    S -> 'Sometimes {noun:nonperson} is {adj} and sometimes it is {adj}.'
+    """,
+]

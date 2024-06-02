@@ -1,0 +1,18 @@
+name="It depends on … / -에 따라 달라요"
+levels=[
+    {resource_name="TTMIK", level="Level 6"},
+    {resource_name="HTSK", level="Unit 5"},
+]
+links=[
+    "https://study-korean.tumblr.com/post/102000873881/noun-%EC%97%90-%EB%94%B0%EB%9D%BC%EC%84%9C-%EB%8B%A4%EB%A5%B4%EB%8B%A4-it-depends-on-%EC%97%90-%EB%94%B0%EB%9D%BC",
+    "https://mykoreanramblings.com/it-depends-on/",
+    "https://www.howtostudykorean.com/unit-5/lessons-101-108/lesson/#833",
+]
+exercises=[
+    """
+    S -> 'It depends on {noun:nonperson}'
+    """,
+    """
+    S -> 'It depends on {place}'
+    """,
+]

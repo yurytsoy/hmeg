@@ -1,0 +1,19 @@
+name="Let me tell you… / -거든(요)"
+levels=[
+    {resource_name="TTMIK", level="Level 6"},
+    {resource_name="HTSK", level="Unit 4"},
+]
+links=[
+    "https://www.howtostudykorean.com/upper-intermediate-korean-grammar/unit-4-lessons-84-91/lesson-91/#911"
+]
+exercises=[
+    """
+    S -> 'Because {person} is {verb:ing}.'
+    """,
+    """
+    S -> 'Because {noun:nonperson} is {adj}.'
+    """,
+    """
+    S -> 'Because this is {noun:nonperson}.'
+    """,
+]

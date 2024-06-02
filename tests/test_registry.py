@@ -57,6 +57,7 @@ class GrammarRegistryTest(unittest.TestCase):
             expected = [
                 'The more … the more … / -(으)면 -(으)ㄹ수록',
                 'You shouldn’t…, You’re not supposed to… / -(으)면 안 돼요, 하면 안 돼요',
+                'Either A or B, Or / -거나, -(이)나, 아니면',
                 'While / -(으)면서',
                 'If, In case / 만약, -(으)면',
                 'Well then, In that case, If so / 그러면, 그럼'

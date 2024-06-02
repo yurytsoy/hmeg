@@ -1,0 +1,15 @@
+name="The thing that is called, what they call … / -(이)라는 것"
+levels=[
+    {resource_name="TTMIK", level="Level 6"},
+]
+links=[
+    "https://koreangrammardifferently.wordpress.com/2017/10/03/%EC%9D%B4%EB%9D%BC%EB%8A%94-%EA%B2%83-%EB%8A%94%EC%9D%80%EB%8B%A4%EB%8A%94-%EA%B2%83/"
+]
+exercises=[
+    """
+    S -> 'The thing that is called {noun:nonperson} is ...'
+    """,
+    """
+    S -> 'What is {noun:nonperson} for you?'
+    """,
+]
