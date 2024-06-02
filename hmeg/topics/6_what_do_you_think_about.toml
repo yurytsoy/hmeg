@@ -1,0 +1,16 @@
+name="What do you think about …? / 어떻게 생각하세요? / 어떤 것 같아요?"
+levels=[
+    {resource_name="TTMIK", level="Level 6"},
+    {resource_name="HTSK", level="Unit 1"},
+]
+links=[
+    "https://www.howtostudykorean.com/unit1/unit-1-lessons-17-25-2/lesson-22/#223"
+]
+exercises=[
+    """
+    S -> 'What do you think about {noun:nonperson}?'
+    """,
+    """
+    S -> 'What do you think about {place}?'
+    """,
+]

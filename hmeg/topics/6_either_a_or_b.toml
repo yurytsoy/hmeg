@@ -1,0 +1,21 @@
+name="Either A or B, Or / -거나, -(이)나, 아니면"
+levels=[
+    {resource_name="TTMIK", level="Level 6"},
+    {resource_name="HTSK", level="Unit 3"},
+    {resource_name="Oh, my Korean!", level="2B"},
+]
+links=[
+    "https://www.howtostudykorean.com/unit-3-intermediate-korean-grammar/unit-3-lessons-51-58/lesson-58/",
+    "http://ohmykorean.com/?p=309"
+]
+exercises=[
+    """
+    S -> '{person} needs {noun:nonperson} or {noun:nonperson}.'
+    """,
+    """
+    S -> '{person} will go to {place} or {place}.'
+    """,
+    """
+    S -> 'Will finish by {weekday} or {weekday}.'
+    """,
+]

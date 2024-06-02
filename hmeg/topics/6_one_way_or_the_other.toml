@@ -1,0 +1,14 @@
+name="One way or the other / 어차피"
+levels=[
+    {resource_name="TTMIK", level="Level 6"},
+]
+links=[
+]
+exercises=[
+    """
+    S -> '{person} will {verb} anyway.'
+    """,
+    """
+    S -> 'Anyway {noun} was {adj}.'
+    """,
+]

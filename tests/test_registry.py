@@ -16,10 +16,10 @@ class GrammarRegistryTest(unittest.TestCase):
             levels_info = GrammarRegistry.get_registered_levels()
             expected = {
                 'King Sejong Institute Practical Korean': ["1. Beginner", "2. Beginner", "3. Intermediate", "4. Intermediate"],
-                'TTMIK': ["Level 1", "Level 2", "Level 3", "Level 4", "Level 5", "Level 9"],
+                'TTMIK': ["Level 1", "Level 2", "Level 3", "Level 4", "Level 5", "Level 6", "Level 9"],
                 'HTSK': ["Unit 1", "Unit 2", "Unit 3", "Unit 4", "Unit 5", "Unit 6"],
                 'Korean Grammar in Use': ['Beginning', 'Intermediate'],
-                'Oh, my Korean!': ['1A', '1B', '2A', '2B', '3A', '3B'],
+                'Oh, my Korean!': ['1A', '1B', '2A', '2B', '3A', '3B', "4"],
             }
             self.assertDictEqual(levels_info, expected)
 
@@ -57,6 +57,7 @@ class GrammarRegistryTest(unittest.TestCase):
             expected = [
                 'The more … the more … / -(으)면 -(으)ㄹ수록',
                 'You shouldn’t…, You’re not supposed to… / -(으)면 안 돼요, 하면 안 돼요',
+                'Either A or B, Or / -거나, -(이)나, 아니면',
                 'While / -(으)면서',
                 'If, In case / 만약, -(으)면',
                 'Well then, In that case, If so / 그러면, 그럼'

@@ -1,0 +1,17 @@
+name="How about …? / ~ 어때요?"
+levels=[
+    {resource_name="TTMIK", level="Level 6"},
+    {resource_name="HTSK", level="Unit 1"},
+    {resource_name="King Sejong Institute Practical Korean", level="3. Intermediate"},
+]
+links=[
+    "https://www.howtostudykorean.com/unit1/unit-1-lessons-17-25-2/lesson-22/#223"
+]
+exercises=[
+    """
+    S -> 'How about {noun:nonperson}?'
+    """,
+    """
+    S -> 'How about {place}?'
+    """,
+]

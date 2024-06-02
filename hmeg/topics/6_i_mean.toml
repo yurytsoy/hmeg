@@ -1,0 +1,19 @@
+name="I mean… / 그러니까, 제 말 뜻은, -라고요, 말이에요"
+levels=[
+    {resource_name="TTMIK", level="Level 6"},
+    {resource_name="HTSK", level="Unit 5"},
+    {resource_name="Oh, my Korean!", level="3B"},
+]
+links=[
+    "https://www.howtostudykorean.com/unit-5/lessons-101-108/lesson-101/#1013",
+    "http://ohmykorean.com/?p=92"
+]
+exercises=[
+    """
+    S -> 'I mean' W 'is {noun}?'
+    W -> 'what' | 'where'
+    """,
+    """
+    S -> 'What I mean is {noun:nonperson} is {adj}'
+    """,
+]

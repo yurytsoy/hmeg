@@ -1,0 +1,21 @@
+name="While you are at it / -(으)ㄴ/는 김에"
+levels=[
+    {resource_name="TTMIK", level="Level 6"},
+    {resource_name="HTSK", level="Unit 5"},
+    {resource_name="Oh, my Korean!", level="4"},
+]
+links=[
+    "https://www.howtostudykorean.com/unit-5/lessons-109-116/lesson-114/",
+    "http://ohmykorean.com/?p=2280",
+]
+exercises=[
+    """
+    S -> 'While buying {noun:nonperson} let`s also buy {noun:nonperson}.'
+    """,
+    """
+    S -> 'While studying about {noun:nonperson} why don`t we also study {noun:nonperson}?'
+    """,
+    """
+    S -> 'While we are talking about {noun:nonperson} let`s also look for {noun}.'
+    """,
+]

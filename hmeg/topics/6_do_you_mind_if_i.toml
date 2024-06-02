@@ -1,0 +1,15 @@
+name="Do you mind if I …? / -아/어/여도 돼요?"
+levels=[
+    {resource_name="TTMIK", level="Level 6"},
+    {resource_name="HTSK", level="Unit 2"},
+    {resource_name="Oh, my Korean!", level="2A"},
+]
+links=[
+    "https://www.howtostudykorean.com/unit-2-lower-intermediate-korean-grammar/unit-2-lessons-42-50/lesson-49/",
+    "http://ohmykorean.com/?p=389"
+]
+exercises=[
+    """
+    S -> 'Do you mind if I {verb}?'
+    """,
+]
