@@ -5,6 +5,7 @@ Class for managing interchangeable vocabulary.
 from __future__ import annotations
 
 import inflect
+import numpy as np
 import os
 import random
 import toml
@@ -149,6 +150,31 @@ class Vocabulary:
 
     def random_number(self, max) -> str:
         return str(random.randint(0, max))
+
+    def random_number_large(self) -> str:
+        # ranges:
+        # 1 -- 5k -- 5M -- regular prices
+        # 2 -- 3M -- 50M -- car price
+        # 3 -- 20M -- 5B -- housing range (loan, purchase)
+        # 4 -- 50M -- 10B -- small business related
+        # 5 -- 1B -- 100B -- medium business related
+        category = np.random.choice([1, 2, 3, 4, 5], p=[0.5, 0.2, 0.15, 0.1, 0.05])
+        mins = {
+            1: 5000,
+            2: 3 * 10**6,
+            3: 20 * 10 ** 6,
+            4: 50 * 10**6,
+            5: 10**9,
+        }
+        maxes = {
+            1: 5 * 10**6,
+            2: 50 * 10**6,
+            3: 5 * 10**9,
+            4: 10 * 10**9,
+            5: 100 * 10**9
+        }
+        res = random.randint(mins[category], maxes[category])
+        return f"{res:,}"
 
     def random_place(self) -> str:
         return random.choice(self.places)

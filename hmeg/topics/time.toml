@@ -1,0 +1,25 @@
+name="Time and duration"
+levels=[
+    {resource_name="TTMIK", level="Level 2"},
+    {resource_name="HTSK", level="Unit 1"},
+    {resource_name="King Sejong Institute Practical Korean", level="1. Beginner"},
+    {resource_name="Korean Grammar in Use", level="Beginning"},
+    {resource_name="Oh, my Korean!", level="1A"},
+]
+links=[
+    "https://www.howtostudykorean.com/unit1/unit-1-lessons-9-16/unit-1-lesson-10/#ktime"
+]
+exercises=[
+    """
+    S -> 'The time is {number:12}:{number:60} am.'
+    """,
+    """
+    S -> 'The time is {number:12}:{number:60} pm.'
+    """,
+    """
+    S -> 'After {number:60} hours {number:60} minutes'
+    """,
+    """
+    S -> 'During {number:60} hours {number:60} minutes'
+    """
+]
