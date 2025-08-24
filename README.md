@@ -1,6 +1,6 @@
-[![Unit-tests](https://github.com/yurytsoy/hmeg/actions/workflows/tests.yml/badge.svg)](https://github.com/yurytsoy/hmeg/actions/workflows/tests.yml)
+# hmeg -- speaking and translation exercises generator
 
-# hmeg
+[![Unit-tests](https://github.com/yurytsoy/hmeg/actions/workflows/tests.yml/badge.svg)](https://github.com/yurytsoy/hmeg/actions/workflows/tests.yml)
 
 Help me, Erik Gunnemark -- library for generation of exercises for practicing of some basic speaking constructs.
 The (very hopeful) idea is that mastering these blocks can help with faster speaking and constructing more
