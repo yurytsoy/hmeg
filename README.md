@@ -1,3 +1,5 @@
+[![Unit-tests](https://github.com/yurytsoy/hmeg/actions/workflows/tests.yml/badge.svg)](https://github.com/yurytsoy/hmeg/actions/workflows/tests.yml)
+
 # hmeg
 
 Help me, Erik Gunnemark -- library for generation of exercises for practicing of some basic speaking constructs.
