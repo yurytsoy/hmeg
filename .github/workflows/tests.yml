@@ -2,7 +2,7 @@ name: Unit-tests
 on: [push]
 jobs:
   tests:
-    runs-on: home
+    runs-on: ubuntu-latest
     steps:
 
       - uses: actions/checkout@v4
