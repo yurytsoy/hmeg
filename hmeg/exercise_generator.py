@@ -18,8 +18,9 @@ class ExerciseGenerator:
     def generate_exercises(topic_name: str, num: int, vocab: Vocabulary | None = None) -> list[str]:
         """
         Generates list of random translation exercises for the given topic.
-
-        The results are represented as templates with placeholders for nouns, verbs, ....
+        The generation proceeds in 2 steps:
+        1. Generate list of templates wrt selected grammar topic. The result contains placeholders for nouns, verbs, ....
+        2. Fill-in placeholders according to the given vocabulary.
 
         See also: `apply_vocabulary`
         """
