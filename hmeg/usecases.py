@@ -25,7 +25,7 @@ def register_grammar_topics(grammar_dir: str | None = None):
     grammar_dir = grammar_dir or default_grammar_dir
 
     # iterate over files in `grammar_dir`, load descriptions of topics and exercises and register them.
-    for file in os.listdir(grammar_dir):
+    for file in sorted(os.listdir(grammar_dir)):
         if not file.endswith(".toml"):
             continue
         with open(os.path.join(grammar_dir, file), "r") as f:
@@ -40,7 +40,7 @@ def get_vocabulary_names() -> list[str]:
     """
     vocabs_dir = os.path.join(os.path.dirname(__file__), "vocabs")
     res = []
-    for file in os.listdir(vocabs_dir):
+    for file in sorted(os.listdir(vocabs_dir)):
         with open(os.path.join(vocabs_dir, file), "r") as f:
             vocab_info = toml.loads(f.read())
         res.append(vocab_info["name"])
