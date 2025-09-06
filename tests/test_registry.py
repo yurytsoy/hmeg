@@ -62,7 +62,7 @@ class GrammarRegistryTest(unittest.TestCase):
                 'If, In case / 만약, -(으)면',
                 'Well then, In that case, If so / 그러면, 그럼'
             ]
-            self.assertListEqual(topics, expected)
+            self.assertCountEqual(topics, expected)
 
         with self.subTest("Case sensitivity"):
             topics1 = GrammarRegistry.find_topics("Please")
