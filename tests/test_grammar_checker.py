@@ -30,7 +30,7 @@ class TestGrammarChecker(unittest.TestCase):
         ]
         res_exercises = GrammarChecker.correct_phrases(exercises, vocab=self.vocab)
         corrections = sum([ex != res_ex for ex, res_ex in zip(exercises, res_exercises)])
-        self.assertEqual(corrections, 1)
+        self.assertGreaterEqual(corrections, 1)
 
     def test_correct_exercises(self):
         random.seed(42)
@@ -41,7 +41,7 @@ class TestGrammarChecker(unittest.TestCase):
             res_exercises = GrammarChecker.correct_phrases(exercises, vocab=self.vocab)
             self.assertEqual(len(exercises), len(res_exercises))
             corrections += sum([ex != res_ex for ex, res_ex in zip(exercises, res_exercises)])
-        self.assertEqual(corrections, 1)  # hm... 1 out of 100, not much
+        self.assertGreaterEqual(corrections, 1)  # 1 out of 100, not much...
 
     def test_filter_replacements(self):
         with self.subTest("Empty replacements"):

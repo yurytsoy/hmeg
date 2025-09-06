@@ -53,7 +53,7 @@ def get_vocabularies_info() -> list[VocabularyInfo]:
     """
     vocabs_dir = os.path.join(os.path.dirname(__file__), "vocabs")
     res = []
-    for file in os.listdir(vocabs_dir):
+    for file in sorted(os.listdir(vocabs_dir)):
         vocab = Vocabulary(os.path.join(vocabs_dir, file))
         res.append(
             VocabularyInfo(
