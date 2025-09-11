@@ -2,7 +2,7 @@
 name = "hmeg"
 version = "0.1.5"
 description = "Generator of exercises for practicing speaking for language learning."
-authors = [{name="Yury Choi", email="yurytsoy@gmail.com"}]
+authors = ["Yury Choi <yurytsoy@gmail.com>"]
 license = "MIT"
 readme = "README.md"
 repository = "https://github.com/yurytsoy/hmeg"
@@ -18,6 +18,7 @@ pandas = "^2.2.2"
 language-tool-python = "^2.9.4"
 python-levenshtein = "^0.27.1"
 spacy = "^3.8.7"
+transformers = "^4.56.1"
 
 
 [build-system]

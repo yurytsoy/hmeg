@@ -3,7 +3,7 @@ import unittest
 import random
 
 from hmeg import usecases, GrammarChecker, GrammarRegistry, ExerciseGenerator, Vocabulary, load_minilex
-from hmeg.grammar_checker import filter_replacements
+from hmeg.grammar_checker import filter_replacements, rank_candidates_decoder
 
 
 class TestGrammarChecker(unittest.TestCase):
@@ -69,3 +69,27 @@ class TestGrammarChecker(unittest.TestCase):
         with self.subTest("Replacements is not from vocabulary"):
             res = filter_replacements(original="word", replacements=["bar", "apartment", "clean"], vocab=self.vocab)
             self.assertEqual(res, ["apartment", "clean"])
+
+    def test_rank_candidates_decoder(self):
+        with self.subTest("Original 1 token, replacements 1 token"):
+            res = rank_candidates_decoder(
+                context="Quick brown foks jumped",
+                original="foks",
+                replacements=["box", "fox", "sox", "crocs"]
+            )
+            print(res)
+
+        with self.subTest("Original 1 token, replacements multiple tokens"):
+            ...
+
+        with self.subTest("Original multiple tokens, replacements 1 token"):
+            ...
+
+        with self.subTest("Original multiple tokens, replacements multiple tokens"):
+            ...
+
+        with self.subTest("Context equals to original"):
+            ...
+
+        with self.subTest("Context much larger than original"):
+            ...
