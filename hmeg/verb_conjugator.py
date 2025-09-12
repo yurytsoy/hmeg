@@ -651,6 +651,7 @@ class VerbConjugator:
     @staticmethod
     def continuous(verb: str):
         exceptions = {
+            "begin": "beginning",
             "let": "letting",
             "look for": "looking for",
             "wait": "waiting",

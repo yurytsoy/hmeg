@@ -93,6 +93,10 @@ class Vocabulary:
         self.adverbs = sorted(set(import_vocab.adverbs + (vocab_dict.get("adverbs") or [])))
         self.nouns = sorted(set(import_vocab.nouns + (vocab_dict.get("nouns") or [])))
         self.verbs = sorted(set(import_vocab.verbs + (vocab_dict.get("verbs") or [])))
+        self.set_ = set(self.adjectives).union(self.adverbs).union(self.nouns).union(self.verbs)
+
+    def __contains__(self, word: str) -> bool:
+        return word.lower() in self.set_
 
     def random_verb(self) -> str:
         return random.choice(self.verbs)
