@@ -74,6 +74,33 @@ def rank_replacements(match: ltp.Match, method: str = "minilm") -> list[tuple[st
     ...
 
 
+def rank_candidates_kenlm(context: str, original: str, replacements: list[str]) -> list[tuple[str, float]]:
+    import sentencepiece as spm
+    import kenlm
+
+    # Load SentencePiece model (from the same repo)
+    sp = spm.SentencePieceProcessor(model_file="lm/en.sp.model")
+    tokens = sp.encode(context, out_type=str)
+    print("Tokens:", tokens)
+
+    # todo: find context before the replacements
+    og_tokens = sp.encode(original, out_type=str)
+    subctx_offset = find_subctx_offset(tokens, og_tokens)
+
+    # Load KenLM binary model
+    res = []
+    lm = kenlm.LanguageModel("lm/en.arpa.bin")
+    original_score = lm.score(" ".join(tokens[:subctx_offset] + og_tokens), bos=True, eos=True)
+    res.append((original, original_score))
+
+    for replacement in replacements:
+        r_tokens = sp.encode(replacement, out_type=str)
+        cur_score = lm.score(" ".join(tokens[:subctx_offset] + r_tokens), bos=True, eos=True)
+        res.append((replacement, cur_score))
+
+    return res
+
+
 def rank_candidates_decoder(context: str, original: str, replacements: list[str]) -> list[tuple[str, float]]:
     """
     Uses decoder-based ranking of candidate replacements:
@@ -86,6 +113,7 @@ def rank_candidates_decoder(context: str, original: str, replacements: list[str]
     tokenizer = AutoTokenizer.from_pretrained(model_name)
     model = AutoModelForCausalLM.from_pretrained(model_name)
 
+    # fixme: what if original appears multiple times in the context?
     subctx = context[:context.index(original)]  # context before the replacement
     repls = [original] + replacements  # combine all replacements, putting the original first.
     batch = [subctx + repl for repl in repls]
@@ -102,6 +130,7 @@ def rank_candidates_decoder(context: str, original: str, replacements: list[str]
     log_probs = torch.nn.functional.log_softmax(shift_logits, dim=-1)
     token_log_probs = log_probs.gather(-1, shift_labels.unsqueeze(-1)).squeeze(-1)
 
+    # todo: double-check masking
     subctx_offset = len(tokenizer(subctx.rstrip()).input_ids)
     shift_mask = tokens.attention_mask[:, 1:].clone()
     shift_mask[:, :subctx_offset-1] = 0
@@ -152,3 +181,16 @@ def filter_replacements(original: str, replacements: list[str], vocab: Vocabular
     # TODO: sort replacements based on the Levenshtein distance
 
     return replacements
+
+
+def find_subctx_offset(tokens: list[str], subset: list[str]) -> int:
+    """
+    Takes on input two lists and returns index in the first list from which the second list can be found.
+    If second list is not part/sublist of the first list, then return -1.
+    """
+    if not subset or len(subset) > len(tokens):
+        return -1
+    for k in range(len(tokens) - len(subset) + 1):
+        if tokens[k:k+len(subset)] == subset:
+            return k
+    return -1
