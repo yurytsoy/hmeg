@@ -161,3 +161,16 @@ def split_vocabulary_top_n_words(input_vocab_file: str, top_n: int):
     }
     with open(out_path, "w") as f:
         toml.dump(vocab_dict, f)
+
+
+def find_sublist_index(full: list[str], sublist: list[str]) -> int:
+    """
+    Takes on input two lists and returns index in the first list from which the second list can be found.
+    If second list is not part/sublist of the first list, then return -1.
+    """
+    if not sublist or len(sublist) > len(full):
+        return -1
+    for k in range(len(full) - len(sublist) + 1):
+        if full[k:k+len(sublist)] == sublist:
+            return k
+    return -1
