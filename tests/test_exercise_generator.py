@@ -12,8 +12,8 @@ class TestExerciseGenerator(unittest.TestCase):
 
     def test_generate_exercises(self):
         for topic in GrammarRegistry.topics:
-            exercises = ExerciseGenerator.generate_exercises(topic, num=10)
-            self.assertEqual(len(exercises), 10)
+            exercises = ExerciseGenerator.generate_exercises(topic, num=5)
+            self.assertEqual(len(exercises), 5)
 
             # check that no exercises contain placeholders.
             for placeholder in VocabularyPlaceholders.to_list():

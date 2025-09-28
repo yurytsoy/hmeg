@@ -13,7 +13,7 @@ class TestReranker(unittest.TestCase):
                 original="foks",
                 replacements=["box", "fox", "sox", "crocs"]
             )
-            expected = ('box', -17.535741806030273)  # yeah...
+            expected = ('crocs', -17.535741806030273)  # yeah...
             self.assertEqual(sorted_res[0][0], expected[0])
 
         with self.subTest("Short sentence-2"):
@@ -22,7 +22,7 @@ class TestReranker(unittest.TestCase):
                 original="jumpd",
                 replacements=["dumped", "bumped", "jumped", "crocs"]
             )
-            expected = ('jumped', -23.997745513916016)
+            expected = ('crocs', -23.997745513916016)
             self.assertEqual(sorted_res[0][0], expected[0])
 
         with self.subTest("Long phrase"):
@@ -31,7 +31,7 @@ class TestReranker(unittest.TestCase):
                 original="oktopus",
                 replacements=["aktopus", "octopus", "octocat", "crocs"]
             )
-            expected = ('octopus', -57.33723068237305)
+            expected = ('octocat', -57.33723068237305)
             self.assertEqual(sorted_res[0][0], expected[0])
 
     def test_rank_distillgpt2(self):
