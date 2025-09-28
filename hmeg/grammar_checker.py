@@ -2,9 +2,8 @@ from __future__ import annotations
 
 import language_tool_python as ltp
 import spacy
-import torch
-from transformers import AutoTokenizer, AutoModelForCausalLM
 
+from .reranker import Reranker
 from .vocabulary import Vocabulary
 
 
@@ -38,117 +37,22 @@ class GrammarChecker:
         return res
 
 
-def fix_matches(matches: list[ltp.Match], vocab: Vocabulary) -> list[ltp.Match]:
+def fix_matches(matches: list[ltp.Match], vocab: Vocabulary, reranker_model: str | None = None) -> list[ltp.Match]:
     """
-    Process suggested matches with the vocabulary and return a list of fixed matches.
+    Processes found matches by:
+    * Filtering out replacements outside of the vocabulary.
+    * Ranking replacements according to the current reranker.
     """
+
+    reranker_model = reranker_model or Reranker.model_name_
+    Reranker.set_current_model(reranker_model)
 
     for match in matches:
-        match.replacements = filter_replacements(match.matchedText, match.replacements, vocab)
+        cur_replacements = filter_replacements(match.matchedText, match.replacements, vocab)
+        ranked_replacements = Reranker.rank(context=match.context, original=match.matchedText, replacements=cur_replacements)
+        match.replacements = [replacement for replacement, score in ranked_replacements]
+
     return matches
-
-
-def rank_replacements(match: ltp.Match, method: str = "minilm") -> list[tuple[str, float]]:
-    """
-    Parameters
-    ----------
-    match : ltp.Match
-        Information about a replacement.
-    method : str
-        Method used to rank replacements. The following methods are available:
-        "minilm" -- nreimers/MiniLM-L6-H384-uncased, bidirectional language model, 22M parameters.
-             Works better for the replacements at any  middle and at the end. More computationally expensive.
-        "kenlm" -- KenLM, fast n-gram based model, works better for replacements in the middle
-             and at the end of a phrase.
-
-    Returns
-    -------
-    list[tuple[str, float]]
-        List of replacements along with their scores, ordered by score from top to bottom.
-    """
-
-    candidates = []
-    for replacement in match.replacements:
-        candidates.append(match.context.replace(match.matchedText, replacement))
-
-    ...
-
-
-def rank_candidates_kenlm(context: str, original: str, replacements: list[str]) -> list[tuple[str, float]]:
-    import sentencepiece as spm
-    import kenlm
-
-    # Load SentencePiece model (from the same repo)
-    sp = spm.SentencePieceProcessor(model_file="lm/en.sp.model")
-    tokens = sp.encode(context, out_type=str)
-    print("Tokens:", tokens)
-
-    # todo: find context before the replacements
-    og_tokens = sp.encode(original, out_type=str)
-    subctx_offset = find_subctx_offset(tokens, og_tokens)
-
-    # Load KenLM binary model
-    res = []
-    lm = kenlm.LanguageModel("lm/en.arpa.bin")
-    original_score = lm.score(" ".join(tokens[:subctx_offset] + og_tokens), bos=True, eos=True)
-    res.append((original, original_score))
-
-    for replacement in replacements:
-        r_tokens = sp.encode(replacement, out_type=str)
-        cur_score = lm.score(" ".join(tokens[:subctx_offset] + r_tokens), bos=True, eos=True)
-        res.append((replacement, cur_score))
-
-    return res
-
-
-def rank_candidates_decoder(context: str, original: str, replacements: list[str]) -> list[tuple[str, float]]:
-    """
-    Uses decoder-based ranking of candidate replacements:
-    * original + replacements are run through the GPT-like model
-    * log-likelihood for tokens corresponding to the original and replacements are computed.
-    * the best original and replacement are ordered by the log-likelihood.
-    """
-
-    model_name = "distilbert/distilgpt2"
-    tokenizer = AutoTokenizer.from_pretrained(model_name)
-    model = AutoModelForCausalLM.from_pretrained(model_name)
-
-    # fixme: what if original appears multiple times in the context?
-    subctx = context[:context.index(original)]  # context before the replacement
-    repls = [original] + replacements  # combine all replacements, putting the original first.
-    batch = [subctx + repl for repl in repls]
-
-    tokenizer.pad_token = tokenizer.eos_token
-    tokens = tokenizer(batch, return_tensors="pt", padding=True)
-    with torch.no_grad():
-        outputs = model(**tokens)
-
-    # shift for causal LM
-    shift_logits = outputs.logits[:, :-1]
-    shift_labels = tokens.input_ids[:, 1:]
-
-    log_probs = torch.nn.functional.log_softmax(shift_logits, dim=-1)
-    token_log_probs = log_probs.gather(-1, shift_labels.unsqueeze(-1)).squeeze(-1)
-
-    # todo: double-check masking
-    subctx_offset = len(tokenizer(subctx.rstrip()).input_ids)
-    shift_mask = tokens.attention_mask[:, 1:].clone()
-    shift_mask[:, :subctx_offset-1] = 0
-    likelihoods = token_log_probs.sum(-1) / shift_mask.sum(-1)  # mean log-likelihoods
-
-    return list(zip(repls, likelihoods.tolist()))
-
-
-def rank_candidates_minilm(candidates: list[str]) -> list[tuple[str, float]]:
-    """
-    Ranks candidates in terms of the embedding distance to the original sentence.
-    """
-    ...
-    #
-    # model_name = "nreimers/MiniLM-L6-H384-uncased"
-    # pipe = pipeline("feature-extraction", model=model_name)
-    # outs = pipe(candidates)
-    # TODO
 
 
 def filter_replacements(original: str, replacements: list[str], vocab: Vocabulary) -> list[str]:
@@ -177,20 +81,4 @@ def filter_replacements(original: str, replacements: list[str], vocab: Vocabular
 
     # only keep replacements from the vocabulary
     replacements = [item for item in replacements if nlp(item)[0].lemma_ in vocab]
-
-    # TODO: sort replacements based on the Levenshtein distance
-
     return replacements
-
-
-def find_subctx_offset(tokens: list[str], subset: list[str]) -> int:
-    """
-    Takes on input two lists and returns index in the first list from which the second list can be found.
-    If second list is not part/sublist of the first list, then return -1.
-    """
-    if not subset or len(subset) > len(tokens):
-        return -1
-    for k in range(len(tokens) - len(subset) + 1):
-        if tokens[k:k+len(subset)] == subset:
-            return k
-    return -1
