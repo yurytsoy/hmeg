@@ -1,9 +1,11 @@
+import os
 import unittest
 
 from hmeg.reranker import Reranker
 
 
 class TestReranker(unittest.TestCase):
+    @unittest.skipIf(not os.path.exists("lm/en.arpa.bin"), "Download the KenLM model and tokenizer first (eg from: https://huggingface.co/edugp/kenlm)")
     def test_rank_kenlm(self):
         with self.subTest("Short sentence-1"):
             sorted_res = Reranker.rank(
