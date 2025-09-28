@@ -1,3 +1,4 @@
+import os
 import unittest
 
 import random
@@ -6,6 +7,7 @@ from hmeg import usecases, GrammarChecker, GrammarRegistry, ExerciseGenerator, V
 from hmeg.grammar_checker import filter_replacements
 
 
+@unittest.skipIf(not os.path.exists("lm/en.arpa.bin"), "Download the KenLM model and tokenizer first (eg from: https://huggingface.co/edugp/kenlm)")
 class TestGrammarChecker(unittest.TestCase):
     @classmethod
     def setUp(cls):
