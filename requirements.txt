@@ -1,6 +1,6 @@
 fire==0.6.0
 inflect==7.5.0
-kenlm==0.2.0
+kenlm==0.3.0
 language_tool_python==2.9.4
 nltk==3.9.1
 numpy==2.0.2
@@ -10,4 +10,4 @@ spacy==3.8.7
 toml==0.10.2
 torch==2.8.0
 torchvision==0.23.0
-transformers==4.56.1
+transformers==4.56.2

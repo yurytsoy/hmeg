@@ -9,19 +9,20 @@ repository = "https://github.com/yurytsoy/hmeg"
 
 [tool.poetry.dependencies]
 python =  ">=3.9,<3.14"
+fire = "^0.6.0"
 inflect = "^7.0.0"
+kenlm = "^0.3.0"
+language-tool-python = "^2.9.4"
 nltk = "^3.8.1"
 numpy = "^2.0.0"
-fire = "^0.6.0"
-toml = "^0.10.2"
 pandas = "^2.2.2"
-language-tool-python = "^2.9.4"
 python-levenshtein = "^0.27.1"
+sentencepiece = "^0.2.1"
 spacy = "^3.8.7"
+toml = "^0.10.2"
 torch = "^2.8.0"
 torchvision = "^0.23.0"
 transformers = "^4.56.1"
-sentencepiece = "^0.2.1"
 
 
 [build-system]
