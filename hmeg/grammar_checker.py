@@ -1,12 +1,16 @@
 from __future__ import annotations
 
+import atexit
 import language_tool_python as ltp
+import requests
 import spacy
 
 from .reranker import Reranker
 from .vocabulary import Vocabulary
 
 
+####################################################
+# Init NLP
 try:
     nlp = spacy.load("en_core_web_sm")
 except OSError:
@@ -15,8 +19,39 @@ except OSError:
     nlp = spacy.load("en_core_web_sm")
 
 
-tool = ltp.LanguageTool('en-US')
+####################################################
+# Init local Language Tool server
+def get_language_tool():
+    def is_lt_server_running():
+        LT_URL = f"http://localhost:{LT_PORT}/v2/check"
 
+        try:
+            args = "text=foo&language=en"
+            response = requests.post(f"{LT_URL}?{args}", timeout=2)
+            return response.status_code == 200
+        except requests.RequestException:
+            return False
+
+    LT_PORT = 8081  # fixme: what if LT is running on a different port?
+
+    if is_lt_server_running():
+        return ltp.LanguageTool('en-US', remote_server=f"localhost:{LT_PORT}")
+    else:
+        return ltp.LanguageTool('en-US', host='localhost')
+
+
+language_tool = get_language_tool()
+
+
+####################################################
+# Cleanup
+def on_exit():
+    language_tool.close()
+
+atexit.register(on_exit)
+
+
+####################################################
 
 class GrammarChecker:
     @staticmethod
@@ -31,13 +66,14 @@ class GrammarChecker:
 
         res = []
         for phrase in phrases:
-            matches = tool.check(phrase)
-            matches = fix_matches(matches, vocab)
+            matches = language_tool.check(phrase)
+            matches = fix_and_rank_matches(matches, vocab)
             res.append(ltp.utils.correct(phrase, matches))
+
         return res
 
 
-def fix_matches(matches: list[ltp.Match], vocab: Vocabulary, reranker_model: str | None = None) -> list[ltp.Match]:
+def fix_and_rank_matches(matches: list[ltp.Match], vocab: Vocabulary, reranker_model: str | None = None) -> list[ltp.Match]:
     """
     Processes found matches by:
     * Filtering out replacements outside of the vocabulary.
