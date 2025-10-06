@@ -45,6 +45,18 @@ class Reranker:
                 raise NotImplementedError(f"Unknown model name {model_name}")
 
         Reranker.model_name_ = model_name
+        Reranker.unload_unused_models()
+
+    @staticmethod
+    def unload_unused_models():
+        """
+        Unloads all models and their tokenizers except for the model in `model_name_`.
+        """
+        cur_models = list(Reranker.models_)
+        for model_name in cur_models:
+            if model_name == Reranker.model_name_:
+                continue
+            Reranker.unload_model(model_name)
 
     @staticmethod
     def unload_model(model_name: str) -> bool:
