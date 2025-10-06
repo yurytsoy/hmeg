@@ -1,9 +1,11 @@
 from __future__ import annotations
 
 import kenlm
+import os
 import sentencepiece as spm
 import torch
 from transformers import AutoTokenizer, AutoModelForCausalLM
+import warnings
 
 from hmeg.usecases import find_sublist_index
 
@@ -25,12 +27,17 @@ class Reranker:
         if model_name not in Reranker.models_:
 
             if model_name == Reranker.Models.kenlm_en:
+                if not os.path.exists("lm/en.arpa.bin"):
+                    raise RuntimeError("The KenLM model is not found. Download the KenLM model and tokenizer first (eg from: https://huggingface.co/edugp/kenlm)")
+
                 Reranker.models_[Reranker.Models.kenlm_en] = kenlm.LanguageModel("lm/en.arpa.bin")
                 Reranker.tokenizers_[Reranker.Models.kenlm_en] = spm.SentencePieceProcessor(model_file="lm/en.sp.model")
 
             elif model_name == Reranker.Models.distillgpt2:
                 Reranker.models_[Reranker.Models.distillgpt2] = AutoModelForCausalLM.from_pretrained(model_name)
-                Reranker.tokenizers_[Reranker.Models.distillgpt2] = AutoTokenizer.from_pretrained(model_name)
+                tokenizer = AutoTokenizer.from_pretrained(model_name)
+                tokenizer.pad_token = tokenizer.eos_token
+                Reranker.tokenizers_[Reranker.Models.distillgpt2] = tokenizer
 
             else:
                 raise NotImplementedError(f"Unknown model name {model_name}")
@@ -46,7 +53,7 @@ class Reranker:
         return False
 
     @staticmethod
-    def rank(context: str, original: str, replacements: list[str]) -> list[tuple[str, float]]:
+    def rank(context: str, original: str, replacements: list[str], full_sentence_score: bool = False) -> list[tuple[str, float]]:
         if Reranker.model_name_ not in Reranker.models_:  # load on demand
             Reranker.set_current_model(Reranker.model_name_)
 
@@ -58,46 +65,77 @@ class Reranker:
             context=context,
             original=original,
             replacements=replacements,
+            full_sentence_score=full_sentence_score
         )
         res = method[Reranker.model_name_](**kwargs)
         sorted_res = sorted(res, key=lambda k: k[1], reverse=True)
         return sorted_res
 
     @staticmethod
-    def rank_kenlm_en(context: str, original: str, replacements: list[str]) -> list[tuple[str, float]]:
+    def prepare_candidates(context: str, original: str, replacements: list[str], full_context: bool = False) -> list[str]:
+        """
+        Prepare candidate phrases for ranking.
+
+        Note:
+        * if `original` is encountered several times in the `context`, then only the **1st** occurrence
+          will be replaced to generate candidates.
+
+        Parameters
+        ----------
+        context: str
+            Context for evaluation of ranking.
+        original: str
+            Original part of the context.
+        replacements: list[str]
+            Replacements for the `original`, that will be evaluated for ranking.
+        full_context: bool, default=False
+            Indicates whether candidates should use full context (True) or only part of the context before
+            the `original` (False).
+        """
+
+        count = context.count(original)
+        if count == 0:
+            raise ValueError(f"Original '{original}' not in context '{context}'")
+
+        if count > 1:
+            warnings.warn(f"Original '{original}' is present in context multiple times. The first occurrence will be used.", UserWarning, stacklevel=2)
+
+        subctx = None
+        if not full_context:
+            subctx = context.split(original)[0]
+            res = [subctx + original]
+        else:
+            res = [context]
+
+        for replacement in replacements:
+            if full_context:
+                res.append(context.replace(original, replacement, 1))
+            else:
+                res.append(subctx + replacement)
+        return res
+
+    @staticmethod
+    def rank_kenlm_en(context: str, original: str, replacements: list[str], full_sentence_score: bool = False) -> list[tuple[str, float]]:
         tokenizer: spm.SentencePieceProcessor = Reranker.tokenizers_[Reranker.Models.kenlm_en]
         model: kenlm.LanguageModel = Reranker.models_[Reranker.Models.kenlm_en]
 
-        tokens = tokenizer.encode(context, out_type=str)
-
-        # find context before the replacements
-        og_tokens = tokenizer.encode(original, out_type=str)
-        subctx_offset = find_sublist_index(tokens, og_tokens)
-
-        # Run KenLM ranker
         res = []
-        original_score = model.score(" ".join(tokens[:subctx_offset] + og_tokens), bos=True, eos=True)
-        res.append((original, original_score))
-
-        for replacement in replacements:
-            r_tokens = tokenizer.encode(replacement, out_type=str)
-            cur_score = model.score(" ".join(tokens[:subctx_offset] + r_tokens), bos=True, eos=True)
-            res.append((replacement, cur_score))
+        all_replacements = [original] + replacements
+        candidates = Reranker.prepare_candidates(context, original, replacements, full_context=full_sentence_score)
+        for idx, candidate in enumerate(candidates):
+            tokens = tokenizer.encode(candidate, out_type=str)
+            cur_score = model.score(" ".join(tokens), bos=True, eos=True)
+            res.append((all_replacements[idx], cur_score))
 
         return res
 
     @staticmethod
-    def rank_distillgpt2(context: str, original: str, replacements: list[str]) -> list[tuple[str, float]]:
+    def rank_distillgpt2(context: str, original: str, replacements: list[str], full_sentence_score: bool = False) -> list[tuple[str, float]]:
         model = Reranker.models_[Reranker.Models.distillgpt2]
         tokenizer = Reranker.tokenizers_[Reranker.Models.distillgpt2]
 
-        # fixme: what if original appears multiple times in the context?
-        subctx = context[:context.index(original)]  # context before the replacement
-        repls = [original] + replacements  # combine all replacements, putting the original first.
-        batch = [subctx + repl for repl in repls]
-
-        tokenizer.pad_token = tokenizer.eos_token
-        tokens = tokenizer(batch, return_tensors="pt", padding=True)
+        candidates = Reranker.prepare_candidates(context, original, replacements, full_context=full_sentence_score)
+        tokens = tokenizer(candidates, return_tensors="pt", padding=True)
         with torch.no_grad():
             outputs = model(**tokens)
 
@@ -108,10 +146,8 @@ class Reranker:
         log_probs = torch.nn.functional.log_softmax(shift_logits, dim=-1)
         token_log_probs = log_probs.gather(-1, shift_labels.unsqueeze(-1)).squeeze(-1)
 
-        # todo: double-check masking
-        subctx_offset = len(tokenizer(subctx.rstrip()).input_ids)
         shift_mask = tokens.attention_mask[:, 1:].clone()
-        shift_mask[:, :subctx_offset - 1] = 0
-        likelihoods = token_log_probs.sum(-1) / shift_mask.sum(-1)  # mean log-likelihoods
+        likelihoods = (shift_mask * token_log_probs).sum(-1) / shift_mask.sum(-1)
 
-        return list(zip(repls, likelihoods.tolist()))
+        all_replacements = [original] + replacements
+        return list(zip(all_replacements, likelihoods.tolist()))
