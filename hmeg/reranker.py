@@ -7,8 +7,6 @@ import torch
 from transformers import AutoTokenizer, AutoModelForCausalLM
 import warnings
 
-from hmeg.usecases import find_sublist_index
-
 
 class Reranker:
     class Models:
@@ -34,7 +32,11 @@ class Reranker:
                 Reranker.tokenizers_[Reranker.Models.kenlm_en] = spm.SentencePieceProcessor(model_file="lm/en.sp.model")
 
             elif model_name == Reranker.Models.distillgpt2:
-                Reranker.models_[Reranker.Models.distillgpt2] = AutoModelForCausalLM.from_pretrained(model_name)
+                device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+                model = AutoModelForCausalLM.from_pretrained(model_name)
+                model.to(device)
+                Reranker.models_[Reranker.Models.distillgpt2] = model
+
                 tokenizer = AutoTokenizer.from_pretrained(model_name)
                 tokenizer.pad_token = tokenizer.eos_token
                 Reranker.tokenizers_[Reranker.Models.distillgpt2] = tokenizer
@@ -136,17 +138,17 @@ class Reranker:
 
         candidates = Reranker.prepare_candidates(context, original, replacements, full_context=full_sentence_score)
         tokens = tokenizer(candidates, return_tensors="pt", padding=True)
+        tokens.to(torch.device("cuda" if torch.cuda.is_available() else "cpu"))
         with torch.no_grad():
             outputs = model(**tokens)
 
         # shift for causal LM
         shift_logits = outputs.logits[:, :-1]
         shift_labels = tokens.input_ids[:, 1:]
-
         log_probs = torch.nn.functional.log_softmax(shift_logits, dim=-1)
         token_log_probs = log_probs.gather(-1, shift_labels.unsqueeze(-1)).squeeze(-1)
 
-        shift_mask = tokens.attention_mask[:, 1:].clone()
+        shift_mask = tokens.attention_mask[:, 1:]
         likelihoods = (shift_mask * token_log_probs).sum(-1) / shift_mask.sum(-1)
 
         all_replacements = [original] + replacements
