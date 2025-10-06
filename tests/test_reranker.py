@@ -55,6 +55,8 @@ class TestReranker(unittest.TestCase):
 
     @unittest.skipIf(not os.path.exists("lm/en.arpa.bin"), "Download the KenLM model and tokenizer first (eg from: https://huggingface.co/edugp/kenlm)")
     def test_rank_kenlm(self):
+        Reranker.set_current_model(Reranker.Models.kenlm_en)
+
         with self.subTest("Short sentence-1"):
             sorted_res = Reranker.rank(
                 context="Quick brown foks jumped",
@@ -84,6 +86,8 @@ class TestReranker(unittest.TestCase):
 
     @unittest.skipIf(not os.path.exists("lm/en.arpa.bin"), "Download the KenLM model and tokenizer first (eg from: https://huggingface.co/edugp/kenlm)")
     def test_rank_kenlm_full_context(self):
+        Reranker.set_current_model(Reranker.Models.kenlm_en)
+
         with self.subTest("Short sentence-1"):
             sorted_res = Reranker.rank(
                 context="Quick brown foks jumped",
