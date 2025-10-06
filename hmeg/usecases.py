@@ -2,6 +2,7 @@ from functools import partial
 import os
 import pandas as pd
 import re
+import socket
 import toml
 
 from .entities import GrammarDescription, VocabularyPlaceholders, VocabularyInfo
@@ -174,3 +175,15 @@ def find_sublist_index(full: list[str], sublist: list[str]) -> int:
         if full[k:k+len(sublist)] == sublist:
             return k
     return -1
+
+
+def is_port_in_use(port: int, host: str = "127.0.0.1") -> bool:
+    """
+    Checks whether the given port is in use.
+    """
+    with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
+        try:
+            s.bind((host, port))
+            return False  # Port is free
+        except OSError:
+            return True  # Port is in use

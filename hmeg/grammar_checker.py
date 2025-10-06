@@ -6,6 +6,7 @@ import requests
 import spacy
 
 from .reranker import Reranker
+from .usecases import is_port_in_use
 from .vocabulary import Vocabulary
 
 
@@ -22,8 +23,12 @@ except OSError:
 ####################################################
 # Init local Language Tool server
 def get_language_tool():
-    def is_lt_server_running():
-        LT_URL = f"http://localhost:{LT_PORT}/v2/check"
+    """
+    Get or create `LanguageTool` instance.
+    """
+
+    def is_lt_server_running(port: int):
+        LT_URL = f"http://localhost:{port}/v2/check"
 
         try:
             args = "text=foo&language=en"
@@ -32,12 +37,13 @@ def get_language_tool():
         except requests.RequestException:
             return False
 
-    LT_PORT = 8081  # fixme: what if LT is running on a different port?
-
-    if is_lt_server_running():
-        return ltp.LanguageTool('en-US', remote_server=f"localhost:{LT_PORT}")
-    else:
-        return ltp.LanguageTool('en-US', host='localhost')
+    ports = [ltp.LanguageTool._MIN_PORT + k for k in range(10)]
+    for port in ports:
+        if is_port_in_use(port) and is_lt_server_running(port):
+            return ltp.LanguageTool('en-US', remote_server=f"localhost:{port}")
+        else:
+            return ltp.LanguageTool('en-US', host='localhost')
+    raise RuntimeError(f"All ports are in use by other services (tested ports: {ports})")
 
 
 language_tool = get_language_tool()
