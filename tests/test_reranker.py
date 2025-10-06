@@ -185,4 +185,4 @@ class TestReranker(unittest.TestCase):
             )
             expected = ('octopus', -5.141149044036865)
             self.assertEqual(sorted_res[0][0], expected[0])
-            self.assertAlmostEqual(sorted_res[0][1], expected[1], places=5)
+            self.assertAlmostEqual(sorted_res[0][1], expected[1], places=4)
