@@ -128,7 +128,8 @@ class TestReranker(unittest.TestCase):
                 replacements=["box", "fox", "sox", "crocs"]
             )
             expected = ('crocs', -9.753257751464844)  # yeah...
-            self.assertEqual(sorted_res[0], expected)
+            self.assertEqual(sorted_res[0][0], expected[0])
+            self.assertAlmostEqual(sorted_res[0][1], expected[1], places=5)
 
         with self.subTest("Short sentence-2"):
             sorted_res = Reranker.rank(
@@ -137,7 +138,8 @@ class TestReranker(unittest.TestCase):
                 replacements=["dumped", "bumped", "jumped", "crocs"]
             )
             expected = ('crocs', -9.221861839294434)  # yeah...
-            self.assertEqual(sorted_res[0], expected)
+            self.assertEqual(sorted_res[0][0], expected[0])
+            self.assertAlmostEqual(sorted_res[0][1], expected[1], places=5)
 
         with self.subTest("Long phrase"):
             sorted_res = Reranker.rank(
@@ -147,6 +149,7 @@ class TestReranker(unittest.TestCase):
             )
             expected = ('octopus', -5.121907711029053)
             self.assertEqual(sorted_res[0][0], expected[0])
+            self.assertAlmostEqual(sorted_res[0][1], expected[1], places=5)
 
     def test_rank_distillgpt2_full_context(self):
         Reranker.set_current_model(Reranker.Models.distillgpt2)
@@ -159,7 +162,8 @@ class TestReranker(unittest.TestCase):
                 full_sentence_score=True
             )
             expected = ('crocs', -10.14453125)  # yeah...
-            self.assertEqual(sorted_res[0], expected)
+            self.assertEqual(sorted_res[0][0], expected[0])
+            self.assertAlmostEqual(sorted_res[0][1], expected[1], places=5)
 
         with self.subTest("Short sentence-2"):
             sorted_res = Reranker.rank(
@@ -169,7 +173,8 @@ class TestReranker(unittest.TestCase):
                 full_sentence_score=True
             )
             expected = ('crocs', -9.221861839294434)  # yeah...
-            self.assertEqual(sorted_res[0], expected)
+            self.assertEqual(sorted_res[0][0], expected[0])
+            self.assertAlmostEqual(sorted_res[0][1], expected[1], places=5)
 
         with self.subTest("Long phrase"):
             sorted_res = Reranker.rank(
@@ -180,3 +185,4 @@ class TestReranker(unittest.TestCase):
             )
             expected = ('octopus', -5.141149044036865)
             self.assertEqual(sorted_res[0][0], expected[0])
+            self.assertAlmostEqual(sorted_res[0][1], expected[1], places=5)

@@ -9,6 +9,15 @@ import warnings
 
 
 class Reranker:
+    """
+    Class for GEC which can use various underlying models. The class behaves as a singleton object and is intended
+    to have 1 "active" preloaded model, which is selected using `Reranker.set_current_model` method.
+
+    Ranking can be performed using either the entire sentence or only correction span via `Reranker.rank` method.
+
+    The list of supported models is given in the `Reranker.Models` subclass.
+    """
+
     class Models:
         kenlm_en = "kenlm/en"
         distillgpt2 = "distilbert/distilgpt2"
@@ -22,6 +31,18 @@ class Reranker:
 
     @staticmethod
     def set_current_model(model_name: str):
+        """
+        Select model which will be used for reranking.
+
+        If selected model can use CUDA device, then it will be automatically sent onto the device.
+
+        Unloads models that were previously loaded / selected.
+
+        Parameters
+        ----------
+        model_name : str
+            Model name available in the `Reranker.Models`.
+        """
         if model_name not in Reranker.models_:
 
             if model_name == Reranker.Models.kenlm_en:
@@ -60,6 +81,14 @@ class Reranker:
 
     @staticmethod
     def unload_model(model_name: str) -> bool:
+        """
+        Unload selected model and its tokenizer.
+
+        Returns
+        -------
+        bool
+            `True` if the model was unloaded, `False` otherwise (eg if model was not previously loaded).
+        """
         if model_name in Reranker.models_:
             del Reranker.models_[model_name]
             del Reranker.tokenizers_[model_name]
@@ -68,6 +97,30 @@ class Reranker:
 
     @staticmethod
     def rank(context: str, original: str, replacements: list[str], full_sentence_score: bool = False) -> list[tuple[str, float]]:
+        """
+        Rank `replacements` of the `original` text in the given `context` using log-likelihood score.
+
+        Ranking is performed using model `Reranker.model_name_` (see `Reranker.set_current_model`).
+
+        Parameters
+        ----------
+        context : str
+            Context, inside which the original text is defined, and where the replacement happens.
+        original : str
+            Original part of the context that needs to be ranked agains the `replacements`.
+        replacements : list[str]
+            Suggested replacements for `original`.
+        full_sentence_score : bool, default=False
+            Indicates whether scoring should be performed on the full sentence (True) or only on the
+            correction span (False), that includes context before the original and the replacement. The former is
+            more accurate, but more computationally expensive.
+
+        Return
+        ------
+        list[tuple[str, float]]
+            List of replacements and their log-likelihood scores. The first item always corresponds to `original`.
+            The scores for replacements are listed in the same order as items in the `replacements`.
+        """
         if Reranker.model_name_ not in Reranker.models_:  # load on demand
             Reranker.set_current_model(Reranker.model_name_)
 
