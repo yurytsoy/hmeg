@@ -26,7 +26,7 @@ class Reranker:
     models_ : dict[str, object] = dict()
     tokenizers_ : dict[str, object] = dict()
 
-    def __init__(self, model_name: str | None = None) -> None:
+    def __init__(self, model_name: str | None = None):
         Reranker.set_current_model(model_name or Reranker.Models.kenlm_en)
 
     @staticmethod
@@ -56,11 +56,11 @@ class Reranker:
                 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
                 model = AutoModelForCausalLM.from_pretrained(model_name)
                 model.to(device)
-                Reranker.models_[Reranker.Models.distillgpt2] = model
+                Reranker.models_[model_name] = model
 
                 tokenizer = AutoTokenizer.from_pretrained(model_name)
                 tokenizer.pad_token = tokenizer.eos_token
-                Reranker.tokenizers_[Reranker.Models.distillgpt2] = tokenizer
+                Reranker.tokenizers_[model_name] = tokenizer
 
             else:
                 raise NotImplementedError(f"Unknown model name {model_name}")

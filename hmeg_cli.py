@@ -7,7 +7,7 @@ import numpy as np
 import sys
 import toml
 
-from hmeg import usecases as uc, ExerciseGenerator, GrammarRegistry, Vocabulary
+from hmeg import usecases as uc, ExerciseGenerator, GrammarChecker, GrammarRegistry, Reranker, Vocabulary
 
 
 class Runner:
@@ -29,9 +29,13 @@ class Runner:
         with open(self.config_file, mode="r") as f:
             run_config = toml.loads(f.read())
         uc.register_grammar_topics(run_config["topics_folder"])
+        self.grammar_correction_model = run_config.get("grammar_correction")
         self.vocab = Vocabulary.load(run_config["vocab_file"])
         self.topic = topic or run_config["topic"]
         self.num_exercises = n or run_config["num_exercises"]
+
+        if self.grammar_correction_model is not None:
+            Reranker.set_current_model(self.grammar_correction_model)
 
     def list(self):
         """
@@ -70,6 +74,11 @@ class Runner:
             attempts += cur_topic_num_exercises
             if attempts > self.num_exercises ** 2:
                 break
+
+        if self.grammar_correction_model is not None:
+            print(f"Using grammar correction model: {self.grammar_correction_model}")
+            GrammarChecker.correct_phrases(exercises, vocab=self.vocab)
+
         # shuffle exercises
         random.shuffle(exercises)
         for idx, exercise in enumerate(exercises):
