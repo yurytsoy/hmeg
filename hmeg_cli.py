@@ -26,15 +26,34 @@ class Runner:
         """
         self.config_file = config or "hmeg.conf"
 
-        with open(self.config_file, mode="r") as f:
-            run_config = toml.loads(f.read())
-        uc.register_grammar_topics(run_config["topics_folder"])
-        self.grammar_correction_model = run_config.get("grammar_correction")
-        self.vocab = Vocabulary.load(run_config["vocab_file"])
-        self.topic = topic or run_config["topic"]
-        self.num_exercises = max(5, n or run_config["number_exercises"])
-        self.num_exercises = min(self.num_exercises, 100)
+        try:
+            with open(self.config_file, mode="r") as f:
+                run_config = toml.load(f)
+        except FileNotFoundError as e:
+            raise FileNotFoundError(f"Config file `{self.config_file}` not found.") from e
 
+        topics_folder = run_config.get("topics_folder")
+        if not topics_folder:
+            raise KeyError("`topics_folder` missing in config.")
+        uc.register_grammar_topics(topics_folder)
+
+        vocab_file = run_config.get("vocab_file")
+        if not vocab_file:
+            raise KeyError("`vocab_file` missing in config.")
+        self.vocab = Vocabulary.load(vocab_file)
+
+        self.topic = topic or run_config.get("topic")
+        if not self.topic:
+            raise KeyError("`topic` missing in config and not provided as argument.")
+
+        configured_num = n or run_config.get("number_exercises", 10)
+        try:
+            configured_num = int(configured_num)
+        except Exception:
+            configured_num = 10
+        self.num_exercises = max(5, min(configured_num, 100))
+
+        self.grammar_correction_model = run_config.get("grammar_correction")
         if self.grammar_correction_model is not None:
             Reranker.set_current_model(self.grammar_correction_model)
 
@@ -63,9 +82,10 @@ class Runner:
 
         exercises = []
         attempts = 0
+        num_exercises_per_topic = max(1, self.num_exercises // len(topics))
         while len(exercises) < self.num_exercises:
             cur_topic = np.random.choice(topics)
-            cur_topic_num_exercises = min(self.num_exercises // len(topics), self.num_exercises - len(exercises))
+            cur_topic_num_exercises = min(num_exercises_per_topic, self.num_exercises - len(exercises))
             cur_topic_exercises = ExerciseGenerator.generate_exercises(
                 topic_name=cur_topic, num=cur_topic_num_exercises, vocab=self.vocab
             )
@@ -80,7 +100,6 @@ class Runner:
             print(f"Using grammar correction model: {self.grammar_correction_model}")
             GrammarChecker.correct_phrases(exercises, vocab=self.vocab)
 
-        # shuffle exercises
         random.shuffle(exercises)
         for idx, exercise in enumerate(exercises):
             print(f"{idx + 1}. {exercise}")
