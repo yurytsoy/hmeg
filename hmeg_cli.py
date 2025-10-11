@@ -11,7 +11,7 @@ from hmeg import usecases as uc, ExerciseGenerator, GrammarChecker, GrammarRegis
 
 
 class Runner:
-    def __init__(self, config: str | None = None, topic: str | None = None, n: int = 10):
+    def __init__(self, config: str | None = None, topic: str | None = None, n: int = 0):
         """
         Supported commands:
         * run
@@ -32,7 +32,8 @@ class Runner:
         self.grammar_correction_model = run_config.get("grammar_correction")
         self.vocab = Vocabulary.load(run_config["vocab_file"])
         self.topic = topic or run_config["topic"]
-        self.num_exercises = n or run_config["num_exercises"]
+        self.num_exercises = max(5, n or run_config["number_exercises"])
+        self.num_exercises = min(self.num_exercises, 100)
 
         if self.grammar_correction_model is not None:
             Reranker.set_current_model(self.grammar_correction_model)
