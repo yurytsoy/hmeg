@@ -9,12 +9,11 @@ from hmeg.grammar_checker import filter_replacements
 
 @unittest.skipIf(not os.path.exists("lm/en.arpa.bin"), "Download the KenLM model and tokenizer first (eg from: https://huggingface.co/edugp/kenlm)")
 class TestGrammarChecker(unittest.TestCase):
-    @classmethod
-    def setUp(cls):
-        super().setUp(cls)
+    def setUp(self):
+        super().setUp()
         usecases.register_grammar_topics("hmeg/topics/")
 
-        cls.vocab = load_minilex()
+        self.vocab = load_minilex()
 
     def test_correct_phrases_futurama(self):
         """

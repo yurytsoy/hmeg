@@ -98,7 +98,7 @@ class Runner:
 
         if self.grammar_correction_model is not None:
             print(f"Using grammar correction model: {self.grammar_correction_model}")
-            GrammarChecker.correct_phrases(exercises, vocab=self.vocab)
+            exercises = GrammarChecker.correct_phrases(exercises, vocab=self.vocab)
 
         random.shuffle(exercises)
         for idx, exercise in enumerate(exercises):

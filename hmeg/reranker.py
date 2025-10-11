@@ -199,11 +199,11 @@ class Reranker:
     @staticmethod
     def rank_distillgpt2(context: str, original: str, replacements: list[str], full_sentence_score: bool = False) -> list[tuple[str, float]]:
         model = Reranker.models_[Reranker.Models.distillgpt2]
-        tokenizer = Reranker.tokenizers_[Reranker.Models.distillgpt2]
+        device = next(model.parameters()).device
 
         candidates = Reranker.prepare_candidates(context, original, replacements, full_context=full_sentence_score)
-        tokens = tokenizer(candidates, return_tensors="pt", padding=True)
-        tokens.to(torch.device("cuda" if torch.cuda.is_available() else "cpu"))
+        tokenizer = Reranker.tokenizers_[Reranker.Models.distillgpt2]
+        tokens = tokenizer(candidates, return_tensors="pt", padding=True).to(device)
         with torch.no_grad():
             outputs = model(**tokens)
 
