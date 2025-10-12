@@ -28,7 +28,7 @@ class Runner:
 
         try:
             with open(self.config_file, mode="r") as f:
-                run_config = toml.load(f)
+                run_config = toml.loads(f.read())
         except FileNotFoundError as e:
             raise FileNotFoundError(f"Config file `{self.config_file}` not found.") from e
 

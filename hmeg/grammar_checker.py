@@ -99,9 +99,9 @@ def fix_and_rank_matches(matches: list[ltp.Match], vocab: Vocabulary, reranker_m
 
 def filter_replacements(original: str, replacements: list[str], vocab: Vocabulary) -> list[str]:
     """
-    Heuristic removal of suggested replacements.
-    # * if original text is not all caps, then remove all-caps suggestions
-    # * remove suggestions, which are not part of the vocabulary.
+    Heuristic removal of suggested replacements:
+    - If the original text is not all caps, then remove all-caps suggestions.
+    - Remove suggestions, which are not part of the vocabulary.
     """
 
     if not replacements:

@@ -172,7 +172,7 @@ def find_sublist_index(full: list[str], sublist: list[str]) -> int:
     if not sublist or len(sublist) > len(full):
         return -1
     for k in range(len(full) - len(sublist) + 1):
-        if full[k:k+len(sublist)] == sublist:
+        if full[k:k + len(sublist)] == sublist:
             return k
     return -1
 

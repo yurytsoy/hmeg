@@ -20,7 +20,6 @@ class Reranker:
 
     class Models:
         kenlm_en = "kenlm/en"
-        # distillgpt2 = "distilbert/distilgpt2"
         distillgpt2 = "distilgpt2"
 
     model_name_: str = Models.kenlm_en
