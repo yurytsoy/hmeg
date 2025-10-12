@@ -165,7 +165,7 @@ class Reranker:
             raise ValueError(f"Original '{original}' not in context '{context}'")
 
         if count > 1:
-            warnings.warn(f"Original '{original}' is present in context multiple times. The first occurrence will be used.", UserWarning, stacklevel=2)
+            warnings.warn(f"Original '{original}' is present in context multiple times. Only the first occurrence will be replaced when generating candidates.", UserWarning, stacklevel=2)
 
         subctx = None
         if not full_context:

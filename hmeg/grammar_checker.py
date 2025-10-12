@@ -63,7 +63,8 @@ language_tool = get_language_tool()
 ####################################################
 # Cleanup
 def on_exit():
-    language_tool.close()
+    if "language_tool" in globals():
+        language_tool.close()
 
 atexit.register(on_exit)
 
