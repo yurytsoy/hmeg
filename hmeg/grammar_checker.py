@@ -93,9 +93,31 @@ class GrammarChecker:
 
 def fix_and_rank_matches(matches: list[ltp.Match], vocab: Vocabulary, reranker_model: str | None = None) -> list[ltp.Match]:
     """
-    Processes found matches by:
-    * Filtering out replacements outside of the vocabulary.
-    * Ranking replacements according to the current reranker.
+    Filters out suggested replacements that are not in the provided vocabulary.
+
+    Filters replacements for each match so only words present in `vocab` remain, then ranks the
+    remaining replacements using the specified reranker model. The function mutates the input
+    `matches` in-place (each match's `replacements` is updated).
+
+    Parameters
+    ----------
+    matches : list[ltp.Match]
+        List of matches detected by the language tool.
+    vocab : Vocabulary
+        Vocabulary object used to filter valid replacements.
+    reranker_model : str | None, optional
+        Name of the reranker model to use for ranking replacements. Defaults to None
+        (uses `Reranker.model_name_`).
+
+    Returns
+    -------
+    list[ltp.Match]
+        The list of matches with their replacements filtered to only include vocabulary words,
+        and ranked according to the reranker model.
+
+    Notes
+    -----
+    - Ranks the remaining replacements using the specified reranker model.
     """
 
     reranker_model = reranker_model or Reranker.model_name_
@@ -111,9 +133,35 @@ def fix_and_rank_matches(matches: list[ltp.Match], vocab: Vocabulary, reranker_m
 
 def filter_replacements(original: str, replacements: list[str], vocab: Vocabulary) -> list[str]:
     """
-    Heuristic removal of suggested replacements:
-    - If the original text is not all caps, then remove all-caps suggestions.
-    - Remove suggestions, which are not part of the vocabulary.
+    Heuristic filtering of suggested replacements.
+
+    Applies a small set of heuristics to remove unlikely replacements before ranking:
+    - If `original` is not all upper-case, drop suggestions that are all upper-case; otherwise keep only
+      all upper-case suggestions.
+    - Tokenize each candidate with the module-level `nlp` pipeline and form a list of token lemmas,
+      ignoring tokens listed in the module-level `IGNORE_LEMMATIZATION_TOKENS` (for example, `n't`).
+    - Keep a replacement only if every remaining token lemma is present in `vocab`.
+
+    Parameters
+    ----------
+    original : str
+        The original part of the context that is considered for replacement.
+    replacements : list[str]
+        Candidate replacement strings.
+    vocab : Vocabulary
+        Vocabulary object that restricts acceptable replacements.
+
+    Returns
+    -------
+    list[str]
+        A new list containing replacements that passed the heuristics. The input `replacements`
+        list is not modified.
+
+    Notes
+    -----
+    - Tokenization and lemmatization are performed with the module-level `nlp` pipeline.
+    - Tokens whose text appears in `IGNORE_LEMMATIZATION_TOKENS` are excluded from vocabulary checks.
+    - The function is conservative: if no replacements remain after filtering, an empty list is returned.
     """
 
     if not replacements:

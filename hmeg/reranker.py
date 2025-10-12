@@ -162,7 +162,7 @@ class Reranker:
 
         count = context.count(original)
         if count == 0:
-            raise ValueError(f"Original '{original}' not in context '{context}'")
+            raise ValueError(f"Original text '{original}' not found in context '{context}'. Ensure the original text exists exactly as specified in the context.")
 
         if count > 1:
             warnings.warn(f"Original '{original}' is present in context multiple times. Only the first occurrence will be replaced when generating candidates.", UserWarning, stacklevel=2)
