@@ -16,6 +16,6 @@ exercises=[
     """,
     """
     S -> 'This was' N
-    N -> '{noun}'
+    N -> '{a:noun}'
     """
 ]

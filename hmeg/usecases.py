@@ -2,6 +2,7 @@ from functools import partial
 import os
 import pandas as pd
 import re
+import socket
 import toml
 
 from .entities import GrammarDescription, VocabularyPlaceholders, VocabularyInfo
@@ -161,3 +162,28 @@ def split_vocabulary_top_n_words(input_vocab_file: str, top_n: int):
     }
     with open(out_path, "w") as f:
         toml.dump(vocab_dict, f)
+
+
+def find_sublist_index(full: list[str], sublist: list[str]) -> int:
+    """
+    Takes on input two lists and returns index in the first list from which the second list can be found.
+    If second list is not part/sublist of the first list, then return -1.
+    """
+    if not sublist or len(sublist) > len(full):
+        return -1
+    for k in range(len(full) - len(sublist) + 1):
+        if full[k:k + len(sublist)] == sublist:
+            return k
+    return -1
+
+
+def is_port_in_use(port: int, host: str = "127.0.0.1") -> bool:
+    """
+    Checks whether the given port is in use.
+    """
+    with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
+        try:
+            s.bind((host, port))
+            return False  # Port is free
+        except OSError:
+            return True  # Port is in use
