@@ -17,7 +17,7 @@ class TestGrammarChecker(unittest.TestCase):
 
     def test_correct_phrases_futurama(self):
         """
-        Just for funs and giggles.
+        Just for fun and giggles.
         """
         exercises = [
             "No, I'm ... doesn't",

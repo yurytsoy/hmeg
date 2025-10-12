@@ -121,6 +121,10 @@ def filter_replacements(original: str, replacements: list[str], vocab: Vocabular
     if not replacements:
         return []
 
-    # only keep replacements from the vocabulary
-    replacements = [item for item in replacements if nlp(item)[0].lemma_ in vocab]
-    return replacements
+    # only keep replacements that match the vocabulary.
+    docs = list(nlp.pipe(replacements))
+    res = []
+    for item, doc in zip(replacements, docs):
+        if all(token.lemma_ in vocab for token in doc):
+            res.append(item)
+    return res

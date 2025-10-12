@@ -49,7 +49,7 @@ class Runner:
         configured_num = n or run_config.get("number_exercises", 10)
         try:
             configured_num = int(configured_num)
-        except Exception:
+        except (ValueError, TypeError):
             configured_num = 10
         self.num_exercises = max(5, min(configured_num, 100))
 
