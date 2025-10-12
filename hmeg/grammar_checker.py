@@ -125,6 +125,9 @@ def filter_replacements(original: str, replacements: list[str], vocab: Vocabular
     docs = list(nlp.pipe(replacements))
     res = []
     for item, doc in zip(replacements, docs):
-        if all(token.lemma_ in vocab for token in doc):
+        # handle contractions such as "doesn't", "haven't" etc, when the replacement is broken in 2 tokens,
+        #   one of which is "n't", which does not belong to the vocabulary.
+        lemmas = [tok.lemma_ for tok in doc if tok.text.lower() not in ("n't", "n\u2019t", "\u2019t")]
+        if all(lemma in vocab for lemma in lemmas):
             res.append(item)
     return res
