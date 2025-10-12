@@ -103,7 +103,7 @@ class TestReranker(unittest.TestCase):
                 context="Quick brown fox jumpd",
                 original="jumpd",
                 replacements=["dumped", "bumped", "jumped", "crocs"],
-                full_sentence_score = True
+                full_sentence_score=True
             )
             expected = ('jumped', -23.997745513916016)
             self.assertEqual(sorted_res[0], expected)

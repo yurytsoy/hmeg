@@ -10,6 +10,12 @@ from .usecases import is_port_in_use
 from .vocabulary import Vocabulary
 
 
+# In the cases when suggested replacement contains "doesn't", "haven't" etc, it is broken in 2 tokens,
+#   one of which is "n't", which: (1) does not belong to the vocabulary as it is not a word;
+#   (2) not required for lemmatization anyways, and thus can be ignored.
+IGNORE_LEMMATIZATION_TOKENS = ["n't", "n\u2019t", "\u2019t"]
+
+
 ####################################################
 # Init NLP
 try:
@@ -130,9 +136,7 @@ def filter_replacements(original: str, replacements: list[str], vocab: Vocabular
     docs = list(nlp.pipe(replacements))
     res = []
     for item, doc in zip(replacements, docs):
-        # handle contractions such as "doesn't", "haven't" etc, when the replacement is broken in 2 tokens,
-        #   one of which is "n't", which does not belong to the vocabulary.
-        lemmas = [tok.lemma_ for tok in doc if tok.text.lower() not in ("n't", "n\u2019t", "\u2019t")]
+        lemmas = [tok.lemma_ for tok in doc if tok.text.lower() not in IGNORE_LEMMATIZATION_TOKENS]
         if all(lemma in vocab for lemma in lemmas):
             res.append(item)
     return res
