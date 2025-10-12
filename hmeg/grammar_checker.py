@@ -37,12 +37,17 @@ def get_language_tool():
         except requests.RequestException:
             return False
 
+    # Note: the code below inherently assumes that LT is trying to use ports starting from `LanguageTool._MIN_PORT`
     ports = [ltp.LanguageTool._MIN_PORT + k for k in range(10)]
     for port in ports:
-        if is_port_in_use(port) and is_lt_server_running(port):
-            return ltp.LanguageTool('en-US', remote_server=f"localhost:{port}")
-        else:
-            return ltp.LanguageTool('en-US', host='localhost')
+        if is_port_in_use(port):
+            if is_lt_server_running(port):
+                return ltp.LanguageTool('en-US', remote_server=f"localhost:{port}")
+            # Port is in use but not running LanguageTool, try next port
+            continue
+
+        # Port is free, try to start a new LanguageTool server here.
+        return ltp.LanguageTool('en-US', host='localhost')
     raise RuntimeError(f"All ports are in use by other services (tested ports: {ports})")
 
 

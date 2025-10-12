@@ -23,8 +23,8 @@ class Reranker:
         distillgpt2 = "distilgpt2"
 
     model_name_: str = Models.kenlm_en
-    models_ : dict[str, object] = dict()
-    tokenizers_ : dict[str, object] = dict()
+    models_: dict[str, object] = dict()
+    tokenizers_: dict[str, object] = dict()
 
     def __init__(self, model_name: str | None = None):
         Reranker.set_current_model(model_name or Reranker.Models.kenlm_en)
