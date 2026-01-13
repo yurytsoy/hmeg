@@ -8,13 +8,14 @@ readme = "README.md"
 repository = "https://github.com/yurytsoy/hmeg"
 
 [tool.poetry.dependencies]
-python =  ">=3.9,<3.14"
+python = ">=3.9,<3.14"
 fire = "^0.6.0"
 inflect = "^7.0.0"
 kenlm = "^0.3.0"
 language-tool-python = "^2.9.4"
 nltk = "^3.8.1"
 numpy = "^2.0.0"
+openai = "^2.15.0"
 pandas = "^2.2.2"
 python-levenshtein = "^0.27.1"
 sentencepiece = "^0.2.1"
@@ -23,6 +24,8 @@ toml = "^0.10.2"
 torch = "^2.8.0"
 torchvision = "^0.23.0"
 transformers = "^4.56.1"
+dotenv = "^0.9.9"
+orjson = "^3.11.5"
 
 
 [build-system]
