@@ -1,6 +1,8 @@
 from __future__ import annotations
 
 import kenlm
+from openai import OpenAI
+import orjson
 import os
 import sentencepiece as spm
 import torch
@@ -21,6 +23,7 @@ class Reranker:
     class Models:
         kenlm_en = "kenlm/en"
         distillgpt2 = "distilgpt2"
+        openai = "openai"
 
     model_name_: str = Models.kenlm_en
     models_: dict[str, object] = dict()
@@ -61,6 +64,9 @@ class Reranker:
                 tokenizer = AutoTokenizer.from_pretrained(model_name)
                 tokenizer.pad_token = tokenizer.eos_token
                 Reranker.tokenizers_[model_name] = tokenizer
+
+            elif model_name == Reranker.Models.openai:
+                ...
 
             else:
                 raise NotImplementedError(f"Unknown model name {model_name}")
@@ -127,6 +133,7 @@ class Reranker:
         method = {
             Reranker.Models.kenlm_en: Reranker.rank_kenlm_en,
             Reranker.Models.distillgpt2: Reranker.rank_distillgpt2,
+            Reranker.Models.openai: Reranker.rank_openai,
         }
         kwargs = dict(
             context=context,
@@ -218,3 +225,51 @@ class Reranker:
 
         all_replacements = [original] + replacements
         return list(zip(all_replacements, likelihoods.tolist()))
+
+    @staticmethod
+    def rank_openai(context: str, original: str, replacements: list[str], full_sentence_score: bool = False) -> list[tuple[str, float]]:
+        client = OpenAI()
+        response = client.responses.create(
+            model="gpt-5-nano",
+            input=f"""
+            ```json
+            {{
+                "context": "{context}",
+                "original": "{original}",
+                "replacements": {replacements},
+                "full_sentence_score": "{full_sentence_score}",
+            }}
+            ```
+            """,
+            instructions="""
+            Given a context phrase containing an original word, original word, and set of candidate replacements,
+                identify, which word fits the context the best.
+
+            If full_sentence_score is True, then decide the best candidate based on the full sentence. Otherwise,
+                decide the best candidate using only the correction span.
+
+            Return json containing a list of candidates sorted from the most fitting to the least fitting.
+
+            Example input:
+            ```json
+            {
+                "context": "Quick brown foks jumped",
+                "original": "foks",
+                "replacements": ["box", "fox", "sox", "crocs"],
+                "full_sentence_score": true
+            }
+            ```
+
+            Example output:
+            ```json
+            {
+                "results": ["box", "fox", "sox", "crocs", "foks"]
+            }
+            ```
+            """
+        )
+
+        json_start = response.output_text.find("{")
+        json_end = response.output_text.rfind("}") + 1
+        res = orjson.loads(response.output_text[json_start:json_end])
+        return [(item, -(idx + 1)) for idx, item in enumerate(res["results"])]

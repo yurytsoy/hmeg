@@ -1,7 +1,11 @@
 import os
 import unittest
 
+from dotenv import load_dotenv
+
 from hmeg.reranker import Reranker
+
+load_dotenv()
 
 
 class TestReranker(unittest.TestCase):
@@ -186,3 +190,68 @@ class TestReranker(unittest.TestCase):
             expected = ('octopus', -5.141149044036865)
             self.assertEqual(sorted_res[0][0], expected[0])
             self.assertAlmostEqual(sorted_res[0][1], expected[1], places=4)
+
+    @unittest.skipIf(os.getenv("OPENAI_API_KEY") is None, "OPENAI_API_KEY is not set")
+    def test_rank_openai(self):
+        Reranker.set_current_model(Reranker.Models.openai)
+
+        with self.subTest("Short sentence-1"):
+            sorted_res = Reranker.rank(
+                context="Quick brown foks jumped",
+                original="foks",
+                replacements=["box", "fox", "sox", "crocs"]
+            )
+            expected = ('fox', -1.0)
+            self.assertEqual(sorted_res[0], expected)
+
+        with self.subTest("Short sentence-2"):
+            sorted_res = Reranker.rank(
+                context="Quick brown fox jumpd",
+                original="jumpd",
+                replacements=["dumped", "bumped", "jumped", "crocs"]
+            )
+            expected = ('jumped', -1.0)
+            self.assertEqual(sorted_res[0], expected)
+
+        with self.subTest("Long phrase"):
+            sorted_res = Reranker.rank(
+                context="All year long, the grasshopper kept burying acorns for winter while the oktopus mooched off his girlfriend and watched TV.",
+                original="oktopus",
+                replacements=["aktopus", "octopus", "octocat", "crocs"]
+            )
+            expected = ('octopus', -1.0)
+            self.assertEqual(sorted_res[0], expected)
+
+    @unittest.skipIf(os.getenv("OPENAI_API_KEY") is None, "OPENAI_API_KEY is not set")
+    def test_rank_openai_full_context(self):
+        Reranker.set_current_model(Reranker.Models.openai)
+
+        with self.subTest("Short sentence-1"):
+            sorted_res = Reranker.rank(
+                context="Quick brown foks jumped",
+                original="foks",
+                replacements=["box", "fox", "sox", "crocs"],
+                full_sentence_score=True
+            )
+            expected = ('fox', -1.0)
+            self.assertEqual(sorted_res[0], expected)
+
+        with self.subTest("Short sentence-2"):
+            sorted_res = Reranker.rank(
+                context="Quick brown fox jumpd",
+                original="jumpd",
+                replacements=["dumped", "bumped", "jumped", "crocs"],
+                full_sentence_score=True
+            )
+            expected = ('jumped', -1.0)
+            self.assertEqual(sorted_res[0], expected)
+
+        with self.subTest("Long phrase"):
+            sorted_res = Reranker.rank(
+                context="All year long, the grasshopper kept burying acorns for winter while the oktopus mooched off his girlfriend and watched TV.",
+                original="oktopus",
+                replacements=["aktopus", "octopus", "octocat", "crocs"],
+                full_sentence_score=True
+            )
+            expected = ('octopus', -1.0)
+            self.assertEqual(sorted_res[0], expected)
