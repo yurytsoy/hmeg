@@ -2,11 +2,7 @@ import os
 import unittest
 from unittest.mock import patch
 
-from dotenv import load_dotenv
-
 from hmeg.reranker import Reranker
-
-load_dotenv()
 
 
 class TestReranker(unittest.TestCase):
@@ -192,7 +188,6 @@ class TestReranker(unittest.TestCase):
             self.assertEqual(sorted_res[0][0], expected[0])
             self.assertAlmostEqual(sorted_res[0][1], expected[1], places=4)
 
-    @unittest.skipIf(os.getenv("OPENAI_API_KEY") is None, "OPENAI_API_KEY is not set")
     def test_rank_openai(self):
         Reranker.set_current_model(Reranker.Models.openai)
 
@@ -209,7 +204,6 @@ class TestReranker(unittest.TestCase):
             kwargs["full_sentence_score"] = False
             self.assertEqual(ranker.call_args[1], kwargs)
 
-    @unittest.skipIf(os.getenv("OPENAI_API_KEY") is None, "OPENAI_API_KEY is not set")
     def test_rank_openai_full_context(self):
         Reranker.set_current_model(Reranker.Models.openai)
 
