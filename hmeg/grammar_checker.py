@@ -1,12 +1,10 @@
 from __future__ import annotations
 
-import atexit
 import language_tool_python as ltp
-import requests
 import spacy
 
+from .language_tool_manager import LanguageToolManager
 from .reranker import Reranker
-from .usecases import is_port_in_use
 from .vocabulary import Vocabulary
 
 
@@ -25,51 +23,8 @@ except OSError:
     download("en_core_web_sm")
     nlp = spacy.load("en_core_web_sm")
 
-
 ####################################################
-# Init local Language Tool server
-def get_language_tool():
-    """
-    Get or create `LanguageTool` instance.
-    """
 
-    def is_lt_server_running(port: int):
-        LT_URL = f"http://localhost:{port}/v2/check"
-
-        try:
-            args = "text=foo&language=en"
-            response = requests.post(f"{LT_URL}?{args}", timeout=2)
-            return response.status_code == 200
-        except requests.RequestException:
-            return False
-
-    # Note: the code below inherently assumes that LT is trying to use ports starting from `LanguageTool._MIN_PORT`
-    ports = [ltp.LanguageTool._MIN_PORT + k for k in range(10)]
-    for port in ports:
-        if is_port_in_use(port):
-            if is_lt_server_running(port):
-                return ltp.LanguageTool('en-US', remote_server=f"localhost:{port}")
-            # Port is in use but not running LanguageTool, try next port
-            continue
-
-        # Port is free, try to start a new LanguageTool server here.
-        return ltp.LanguageTool('en-US', host='localhost')
-    raise RuntimeError(f"All ports are in use by other services (tested ports: {ports})")
-
-
-language_tool = get_language_tool()
-
-
-####################################################
-# Cleanup
-def on_exit():
-    if "language_tool" in globals():
-        language_tool.close()
-
-atexit.register(on_exit)
-
-
-####################################################
 
 class GrammarChecker:
     @staticmethod
@@ -81,7 +36,9 @@ class GrammarChecker:
 
         Returns a list of fixed phrases.
         """
-
+        language_tool_manager = LanguageToolManager()
+        language_tool = language_tool_manager.get_language_tool()
+        
         res = []
         for phrase in phrases:
             matches = language_tool.check(phrase)
