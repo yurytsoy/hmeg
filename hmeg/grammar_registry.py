@@ -1,5 +1,5 @@
 """
-Factory for generation of exercises for the given topic.
+Registry for the grammar topics.
 """
 
 from __future__ import annotations

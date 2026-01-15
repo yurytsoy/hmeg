@@ -6,7 +6,7 @@ import socket
 import toml
 
 from .entities import GrammarDescription, VocabularyPlaceholders, VocabularyInfo
-from .registry import GrammarRegistry
+from .grammar_registry import GrammarRegistry
 from .vocabulary import Vocabulary
 
 

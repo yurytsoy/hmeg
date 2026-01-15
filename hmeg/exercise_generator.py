@@ -4,7 +4,7 @@ from nltk.parse.generate import generate
 from nltk import CFG
 import os
 
-from .registry import GrammarRegistry
+from .grammar_registry import GrammarRegistry
 from .usecases import apply_vocabulary
 from .vocabulary import Vocabulary
 
