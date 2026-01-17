@@ -56,16 +56,13 @@ system_instructions: |
 
   Example output:
   ```json
-  {
-      "results": ["box", "fox", "sox", "crocs", "foks"]
-  }
+  {"results": ["box", "fox", "sox", "crocs", "foks"]}
   ```
 
 user_prompt_template: |
-  context: {context}
-  original: {original}
-  replacements: {replacements}
-  full_sentence_score: {full_sentence_score}
+  ```json
+  {{context: {context}, original: {original}, replacements: {replacements}, full_sentence_score: {full_sentence_score}}}
+  ```
 
 safety:
   max_response_length_chars: 4000
