@@ -231,23 +231,110 @@ class Reranker:
 
     @staticmethod
     def rank_openai(context: str, original: str, replacements: list[str], full_sentence_score: bool = False) -> list[tuple[str, float]]:
+        """
+        Rank candidate replacements using an OpenAI chat completion-based reranker.
+
+        This method:
+        - Loads a prompt template via `PromptLoader` (prompt id `v1/reranker/openai`),
+        - Renders the user prompt with the provided `context`, `original`, `replacements` and
+          `full_sentence_score` flag,
+        - Calls the OpenAI Chat Completions API using the prompt's LLM configuration and system
+          instructions, and
+        - Parses an ordered JSON `{"results": [...]}` object from the model response and converts
+          it into a list of `(replacement, score)` pairs where scores are negative integers
+          (higher is better; first item corresponds to the original).
+
+        Parameters
+        ----------
+        context : str
+            Full sentence or surrounding text in which the `original` substring appears.
+        original : str
+            The original substring in `context` to be replaced/ranked.
+        replacements : list[str]
+            Candidate replacement strings to be ranked. The first returned item corresponds to
+            `original`; subsequent items correspond to `replacements` in the same order.
+        full_sentence_score : bool, optional
+            If True, candidates are scored using the full `context`; otherwise a truncated
+            context around `original` is used (default False).
+
+        Returns
+        -------
+        list[tuple[str, float]]
+            List of `(replacement, score)` tuples ordered by the model's ranking. Scores are
+            negative integers produced as `-(rank_index + 1)` where a less-negative value
+            indicates a better (higher) rank.
+
+        Raises
+        ------
+        ValueError
+            If the OpenAI response does not contain a valid JSON object with the expected
+            `results` list, or if JSON parsing fails.
+        Exception
+            Any network/API errors raised by the OpenAI client or other unexpected failures
+            (these are not swallowed by this function).
+
+        Notes
+        -----
+        - This function performs network I/O and may incur API costs and latency.
+        - The prompt id `v1/reranker/openai` and the prompt's `llm` configuration dictate
+          the specific model and generation parameters used.
+        - The function ensures that a `PromptLoader` is available (creates one if needed).
+        """
+
+        def parse_completion(output_text: str) -> list[str]:
+            """
+            Extract ordered replacements from OpenAI response.
+
+            Parameters
+            ----------
+            output_text: str
+                OpenAI response.
+
+            Returns
+            -------
+            list[str]
+                Decoded replacements.
+            """
+
+            json_start = output_text.find("{")
+            json_end = output_text.rfind("}")
+
+            if json_start == -1 or json_end == -1 or json_end < json_start:
+                raise ValueError(f"Could not find valid JSON object in OpenAI response: {output_text!r}")
+
+            json_str = output_text[json_start: json_end + 1]
+
+            try:
+                res = orjson.loads(json_str)
+            except orjson.JSONDecodeError as e:
+                raise ValueError(f"Failed to decode JSON from OpenAI response: {e}") from e
+
+            if not isinstance(res, dict) or "results" not in res:
+                raise ValueError(f"OpenAI response JSON does not contain expected 'results' field: {res!r}")
+
+            results = res["results"]
+
+            if not isinstance(results, list):
+                raise ValueError(f"'results' field in OpenAI response JSON is not a list: {results!r}")
+
+            return results
+
         if Reranker.prompt_loader_ is None:
             Reranker.prompt_loader_ = PromptLoader()
 
         prompt_id = "v1/reranker/openai"
         prompt = Reranker.prompt_loader_.load(prompt_id)
-        user_msg = prompt.user_prompt_template.format(
+        user_msg = prompt.render_user_prompt(
             context=context, original=original, replacements=replacements, full_sentence_score=full_sentence_score
         )
 
         client = OpenAI()
-        response = client.responses.create(
+        response = client.chat.completions.create(
             model=prompt.llm.model,
-            input=user_msg,
-            instructions=prompt.system_instructions
+            messages=[
+                {"role": "system", "content": prompt.system_instructions},
+                {"role": "user", "content": user_msg},
+            ],
         )
-
-        json_start = response.output_text.find("{")
-        json_end = response.output_text.rfind("}") + 1
-        res = orjson.loads(response.output_text[json_start:json_end])
-        return [(item, -(idx + 1)) for idx, item in enumerate(res["results"])]
+        results = parse_completion(response.choices[0].message.content or "")
+        return [(item, -(idx + 1)) for idx, item in enumerate(results)]

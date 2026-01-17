@@ -39,7 +39,7 @@ system_instructions: |
 
   Sorting guidance:
   - Promote replacement's rank for faithful meaning preservation, correct grammar, natural phrasing, and concise corrections.
-  - Promote replacements that alter facts, remove or change named entities, introduce ambiguity, hallucinate content, or produce unnatural wording.
+  - Demote the rank of replacements that alter facts, remove or change named entities, introduce ambiguity, hallucinate content, or produce unnatural wording.
   - If full_sentence_score is True, then rank replacements based on the full sentence. Otherwise, decide ranking using only the correction span.
 
   Safety and factuality:
@@ -62,7 +62,7 @@ system_instructions: |
 
 user_prompt_template: |
   ```json
-  {{context: {context}, original: {original}, replacements: {replacements}, full_sentence_score: {full_sentence_score}}}
+  {{"context": "{context}", "original": "{original}", "replacements": "{replacements}", "full_sentence_score": "{full_sentence_score}"}}
   ```
 
 safety:
