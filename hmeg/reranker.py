@@ -9,6 +9,8 @@ import torch
 from transformers import AutoTokenizer, AutoModelForCausalLM
 import warnings
 
+from hmeg.prompt_loader import PromptLoader
+
 
 class Reranker:
     """
@@ -28,6 +30,7 @@ class Reranker:
     model_name_: str = Models.kenlm_en
     models_: dict[str, object] = dict()
     tokenizers_: dict[str, object] = dict()
+    prompt_loader_: PromptLoader | None = None
 
     def __init__(self, model_name: str | None = None):
         Reranker.set_current_model(model_name or Reranker.Models.kenlm_en)
@@ -228,45 +231,22 @@ class Reranker:
 
     @staticmethod
     def rank_openai(context: str, original: str, replacements: list[str], full_sentence_score: bool = False) -> list[tuple[str, float]]:
+        if Reranker.prompt_loader_ is None:
+            Reranker.prompt_loader_ = PromptLoader()
+
+        prompt_id = "v1/reranker/openai"
+        prompt = Reranker.prompt_loader_.load(prompt_id)
+        model = prompt["llm"]["model"]
+        user_msg = prompt["user_prompt_template"].format(
+            context=context, original=original, replacements=replacements, full_sentence_score=full_sentence_score
+        )
+        system_msg = prompt["system_instructions"]
+
         client = OpenAI()
         response = client.responses.create(
-            model="gpt-5-nano",
-            input=f"""
-            ```json
-            {{
-                "context": "{context}",
-                "original": "{original}",
-                "replacements": {replacements},
-                "full_sentence_score": "{full_sentence_score}",
-            }}
-            ```
-            """,
-            instructions="""
-            Given a context phrase containing an original word, original word, and set of candidate replacements,
-                identify, which word fits the context the best.
-
-            If full_sentence_score is True, then decide the best candidate based on the full sentence. Otherwise,
-                decide the best candidate using only the correction span.
-
-            Return json containing a list of candidates sorted from the most fitting to the least fitting.
-
-            Example input:
-            ```json
-            {
-                "context": "Quick brown foks jumped",
-                "original": "foks",
-                "replacements": ["box", "fox", "sox", "crocs"],
-                "full_sentence_score": true
-            }
-            ```
-
-            Example output:
-            ```json
-            {
-                "results": ["box", "fox", "sox", "crocs", "foks"]
-            }
-            ```
-            """
+            model=model,
+            input=user_msg,
+            instructions=system_msg
         )
 
         json_start = response.output_text.find("{")
