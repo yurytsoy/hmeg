@@ -341,6 +341,7 @@ class Reranker:
                 {"role": "system", "content": prompt.system_instructions},
                 {"role": "user", "content": user_msg},
             ],
+            reasoning_effort="low"
         )
         results = parse_completion(response.choices[0].message.content or "")
         return [(item, -(idx + 1)) for idx, item in enumerate(results)]
