@@ -23,7 +23,7 @@ class LLMConfig:
 
     def to_dict(self) -> dict[str, Any]:
         base = {
-            "provider": self.provider.value,
+            "provider": self.provider,
             "model": self.model,
         }
         if self.temperature is not None:
