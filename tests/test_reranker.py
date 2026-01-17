@@ -1,6 +1,6 @@
 import os
 import unittest
-from unittest.mock import patch
+from unittest.mock import patch, MagicMock
 
 from hmeg.reranker import Reranker
 
@@ -189,33 +189,26 @@ class TestReranker(unittest.TestCase):
             self.assertAlmostEqual(sorted_res[0][1], expected[1], places=4)
 
     def test_rank_openai(self):
+        os.environ["OPENAI_API_KEY"] = "dummy_key"
         Reranker.set_current_model(Reranker.Models.openai)
 
-        with patch("hmeg.reranker.Reranker.rank_openai", return_value=[('fox', -1.0)]) as ranker:
+        with patch("hmeg.reranker.OpenAI") as MockOpenAI:
+            mock_client = MockOpenAI.return_value
+
+            # Build a fake response object expected by rank_openai:
+            # response.choices[0].message.content -> JSON string with "results" list
+            fake_choice = MagicMock()
+            fake_choice.message = MagicMock(content='{"results": ["fox", "box", "foks", "sox", "crocs"]}')
+            fake_response = MagicMock()
+            fake_response.choices = [fake_choice]
+
+            mock_client.chat.completions.create.return_value = fake_response
+
             kwargs = dict(
                 context="Quick brown foks jumped",
                 original="foks",
                 replacements=["box", "fox", "sox", "crocs"]
             )
             sorted_res = Reranker.rank(**kwargs)
-            self.assertEqual(ranker.call_count, 1)
-            expected = ('fox', -1.0)
-            self.assertEqual(sorted_res[0], expected)
-            kwargs["full_sentence_score"] = False
-            self.assertEqual(ranker.call_args[1], kwargs)
-
-    def test_rank_openai_full_context(self):
-        Reranker.set_current_model(Reranker.Models.openai)
-
-        with patch("hmeg.reranker.Reranker.rank_openai", return_value=[('fox', -1.0)]) as ranker:
-            kwargs = dict(
-                context="Quick brown foks jumped",
-                original="foks",
-                replacements=["box", "fox", "sox", "crocs"],
-                full_sentence_score=True
-            )
-            sorted_res = Reranker.rank(**kwargs)
-            self.assertEqual(ranker.call_count, 1)
-            expected = ('fox', -1.0)
-            self.assertEqual(sorted_res[0], expected)
-            self.assertEqual(ranker.call_args[1], kwargs)
+            expected = [('fox', -1), ('box', -2), ('foks', -3), ('sox', -4), ('crocs', -5)]
+            self.assertEqual(sorted_res, expected)

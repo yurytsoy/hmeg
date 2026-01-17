@@ -255,7 +255,7 @@ class Reranker:
             `original`; subsequent items correspond to `replacements` in the same order.
         full_sentence_score : bool, optional
             If True, candidates are scored using the full `context`; otherwise a truncated
-            context around `original` is used (default False).
+            context before `original` is used (default False).
 
         Returns
         -------
