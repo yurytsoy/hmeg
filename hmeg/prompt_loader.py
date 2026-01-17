@@ -4,6 +4,8 @@ from pathlib import Path
 from typing import Any, Dict, Optional
 import yaml
 
+from hmeg.entities import Prompt
+
 
 class PromptLoader:
     """
@@ -33,7 +35,7 @@ class PromptLoader:
             raise ValueError(f"Prompt id looks outside base prompts directory: {prompt_id}") from exc
         return resolved
 
-    def load(self, prompt_id: str) -> Any:
+    def load(self, prompt_id: str) -> Prompt:
         """
         Load and parse YAML for the given prompt_id.
         Returns the parsed YAML (usually a dict).
@@ -46,11 +48,12 @@ class PromptLoader:
         if not path.exists():
             raise FileNotFoundError(f"Prompt file not found for id '{prompt_id}': {path}")
 
-        with path.open("r", encoding="utf-8") as f:
-            data = yaml.safe_load(f)
 
-        self._cache[prompt_id] = data
-        return data
+        with path.open("r", encoding="utf-8") as f:
+            prompt = Prompt.from_yaml(f.read())
+
+        self._cache[prompt_id] = prompt
+        return prompt
 
     def clear_cache(self, prompt_id: Optional[str] = None) -> None:
         """Clear cached entry or entire cache."""

@@ -236,17 +236,15 @@ class Reranker:
 
         prompt_id = "v1/reranker/openai"
         prompt = Reranker.prompt_loader_.load(prompt_id)
-        model = prompt["llm"]["model"]
-        user_msg = prompt["user_prompt_template"].format(
+        user_msg = prompt.user_prompt_template.format(
             context=context, original=original, replacements=replacements, full_sentence_score=full_sentence_score
         )
-        system_msg = prompt["system_instructions"]
 
         client = OpenAI()
         response = client.responses.create(
-            model=model,
+            model=prompt.llm.model,
             input=user_msg,
-            instructions=system_msg
+            instructions=prompt.system_instructions
         )
 
         json_start = response.output_text.find("{")
