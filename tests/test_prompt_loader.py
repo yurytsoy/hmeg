@@ -1,5 +1,6 @@
 import tempfile
 import unittest
+from unittest.mock import patch
 from pathlib import Path
 
 from hmeg.prompt_loader import PromptLoader
@@ -36,7 +37,8 @@ class TestPromptLoader(unittest.TestCase):
         loader = PromptLoader(self.temp_dir)
         self.assertEqual(loader.base_dir, self.base_dir)
 
-    def test_load_prompt_success(self):
+    @patch("hmeg.prompt_loader.PromptLoader.validate_prompt_schema")
+    def test_load_prompt_success(self, mock):
         """Test loading a valid prompt file."""
         yaml_content = """
 id: test/prompt
@@ -60,7 +62,8 @@ llm:
         self.assertEqual(prompt.llm.model, "gpt-4")
         self.assertEqual(prompt.llm.temperature, 0.7)
 
-    def test_load_prompt_with_caching(self):
+    @patch("hmeg.prompt_loader.PromptLoader.validate_prompt_schema")
+    def test_load_prompt_with_caching(self, mock):
         """Test that loading the same prompt twice uses cache."""
         yaml_content = """
 id: cached/prompt
@@ -90,7 +93,8 @@ llm:
         self.assertIn("Prompt file not found", str(ctx.exception))
         self.assertIn("nonexistent/prompt", str(ctx.exception))
 
-    def test_clear_cache_specific_prompt(self):
+    @patch("hmeg.prompt_loader.PromptLoader.validate_prompt_schema")
+    def test_clear_cache_specific_prompt(self, mock):
         """Test clearing cache for a specific prompt."""
         yaml_content = """
 id: test/prompt
@@ -114,7 +118,8 @@ llm:
         self.assertNotIn("test/prompt", loader._cache)
         self.assertIn("test/prompt2", loader._cache)
 
-    def test_clear_cache_all(self):
+    @patch("hmeg.prompt_loader.PromptLoader.validate_prompt_schema")
+    def test_clear_cache_all(self, mock):
         """Test clearing entire cache."""
         yaml_content = """
 id: test/prompt
