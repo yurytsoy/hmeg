@@ -74,7 +74,9 @@ number_exercises=15
 grammar_correction="kenlm/en"
 ```
 Notes:
-* When using `"openai"` reranker make `.env` file in the repository directory and set "OPENAI_API_KEY" variable.
+* When using the `"openai"` reranker, create a `.env` file in the project root directory (the same directory
+as `hmeg_cli.py`) and set the `OPENAI_API_KEY` variable. You can use the provided `.env.template` file as a
+starting point.
 
 
 ## Python code

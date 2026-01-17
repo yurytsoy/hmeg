@@ -322,6 +322,12 @@ class Reranker:
         if Reranker.prompt_loader_ is None:
             Reranker.prompt_loader_ = PromptLoader()
 
+        if "OPENAI_API_KEY" not in os.environ:
+            raise RuntimeError(
+                "OpenAI API key not found. Please set the OPENAI_API_KEY environment variable "
+                "before calling Reranker.rank_openai."
+            )
+
         prompt_id = "v1/reranker/openai"
         prompt = Reranker.prompt_loader_.load(prompt_id)
         user_msg = prompt.render_user_prompt(

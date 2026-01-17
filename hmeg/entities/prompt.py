@@ -9,7 +9,7 @@ class LLMConfig:
     Configuration for a language model used by a prompt.
 
     Attributes:
-        provider: Optional provider identifier (e.g. "openai").
+        provider: Provider identifier (e.g. "openai").
         model: Model name or identifier.
         temperature: Sampling temperature (or None to use provider default).
         max_tokens: Optional maximum tokens for generation.
