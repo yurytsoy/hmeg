@@ -14,7 +14,7 @@ jobs:
       - name: Install packages
         run: |
             pip install -r requirements.txt
-            pip install pytest
+            pip install pytest pytest-cov
 
-      - name: Run tests
-        run: pytest tests
+      - name: Run tests with coverage
+        run: pytest --durations=10 --maxfail 10 --cov=./hmeg --cov-report term-missing --tb native ./tests

@@ -4,7 +4,7 @@ from nltk.parse.generate import generate
 from nltk import CFG
 import os
 
-from .registry import GrammarRegistry
+from .grammar_registry import GrammarRegistry
 from .usecases import apply_vocabulary
 from .vocabulary import Vocabulary
 
@@ -19,10 +19,21 @@ class ExerciseGenerator:
         """
         Generates list of random translation exercises for the given topic.
         The generation proceeds in 2 steps:
-        1. Generate list of templates wrt selected grammar topic. The result contains placeholders for nouns, verbs, ....
+        1. Generate list of templates wrt selected grammar topic. The result contains
+           placeholders for nouns, verbs, ....
         2. Fill-in placeholders according to the given vocabulary.
 
         See also: `apply_vocabulary`
+
+        Parameters
+        ----------
+        topic_name: str
+            The name of the topic to generate exercises for.
+        num: int
+            The number of exercises to generate.
+        vocab: Vocabulary, default=None
+            Vocabulary for words, that can be used for generating exercises.
+            If `None` then vocabulary from the `DEFAULT_VOCABULARY_FILE` is used.
         """
         vocab = vocab or Vocabulary.load(DEFAULT_VOCABULARY_FILE)
 

@@ -6,7 +6,7 @@ import socket
 import toml
 
 from .entities import GrammarDescription, VocabularyPlaceholders, VocabularyInfo
-from .registry import GrammarRegistry
+from .grammar_registry import GrammarRegistry
 from .vocabulary import Vocabulary
 
 
@@ -71,7 +71,7 @@ def get_vocabularies_info() -> list[VocabularyInfo]:
 
 def apply_vocabulary(s: str, vocab: Vocabulary) -> str:
     """
-    Takes input string and replaces placeholders with respective minilex entities.
+    Takes input string and replaces placeholders with respective `vocab` entities.
     """
 
     vocab_function = {

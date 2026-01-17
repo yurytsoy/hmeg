@@ -1,0 +1,90 @@
+# yaml
+$schema: "https://json-schema.org/draft/2020-12/schema"
+title: Prompt file schema
+type: object
+additionalProperties: true
+required:
+  - id
+  - version
+  - locale
+  - title
+  - llm
+  - system_instructions
+  - user_prompt_template
+properties:
+  id:
+    type: string
+    description: "Prompt identifier; typically a path-like id (e.g. v1/reranker/openai)."
+    pattern: "^[A-Za-z0-9._/-]+$"
+  version:
+    type: string
+    description: "Semantic or file version string."
+  locale:
+    type: string
+    description: "Locale code (e.g. en)."
+  title:
+    type: string
+  description:
+    type: string
+  tags:
+    type: array
+    items:
+      type: string
+  owner:
+    type: string
+    format: email
+  created_at:
+    type: string
+    format: date-time
+  llm:
+    type: object
+    additionalProperties: true
+    required:
+      - provider
+      - model
+    properties:
+      provider:
+        type: string
+        description: "Provider identifier."
+        enum: ["local", "openai", "huggingface", "other"]
+      model:
+        type: string
+      temperature:
+        type: number
+      max_tokens:
+        type: integer
+        minimum: 0
+      top_p:
+        type: number
+        minimum: 0
+        maximum: 1
+  input_schema:
+    description: "Freeform input contract (JSON Schema)."
+    type: object
+  placeholder_format:
+    type: string
+    description: "How placeholders are formatted (loader-specific)."
+  system_instructions:
+    type: string
+  user_prompt_template:
+    type: string
+  safety:
+    type: object
+    additionalProperties: true
+    properties:
+      max_response_length_chars:
+        type: integer
+        minimum: 0
+examples:
+  - id: "v1/reranker/openai"
+    version: "v0.1.0"
+    locale: "en"
+    title: "Reranker assistant"
+    llm:
+      provider: "openai"
+      model: "gpt-5-mini"
+      temperature: 1.0
+      max_tokens: 1000
+      top_p: 1.0
+    system_instructions: "You are a reranker..."
+    user_prompt_template: "```json {{...}} ```"

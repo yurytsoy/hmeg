@@ -55,13 +55,13 @@ python hmeg_cli.py list --help
 
 The configuration uses TOML format. Available fields:
 
-| Parameter | Description                                                                                                                                                                                                                                                                                                   | Example                                                |
-|-----------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|--------------------------------------------------------|
-| `topics_folder` | Location of the folder containing descriptions of exercise topics.                                                                                                                                                                                                                                            | `"hmeg/topics"`                                        |
-| `vocab_file` | Location of the vocabulary file, which will be used for generation of exercises.                                                                                                                                                                                                                              | `"hmeg/vocabs/minilex.toml"`                           |
-| `topic` | Name of the topic for generation of exercises. Can be partial (see CLI instructions above).                                                                                                                                                                                                                   | `"Have, Don’t have, There is, There isn’t / 있어요, 없어요"` |
-| `number_exercises` | Number of generated exercises (5-100).                                                                                                                                                                                                                                                                        | `15` |
-| `grammar_correction` | Optional. Defines the model used for grammar correction in generated exercises. Experimental. Supported models:<br>* `"kenlm/en"` -- KenLM-based model. Requires files `en.arpa.bin`, `en.sp.model`, `en.sp.vocab` in the `lm` folder.<br>* `distilbert/distilgpt2` -- Distilled-GPT2 model from HuggingFace. | `"kenlm/en"`                                           |
+| Parameter | Description                                                                                                                                                                                                                                                                                                                                                                                                | Example                                                |
+|-----------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|--------------------------------------------------------|
+| `topics_folder` | Location of the folder containing descriptions of exercise topics.                                                                                                                                                                                                                                                                                                                                         | `"hmeg/topics"`                                        |
+| `vocab_file` | Location of the vocabulary file, which will be used for generation of exercises.                                                                                                                                                                                                                                                                                                                           | `"hmeg/vocabs/minilex.toml"`                           |
+| `topic` | Name of the topic for generation of exercises. Can be partial (see CLI instructions above).                                                                                                                                                                                                                                                                                                                | `"Have, Don’t have, There is, There isn’t / 있어요, 없어요"` |
+| `number_exercises` | Number of generated exercises (5-100).                                                                                                                                                                                                                                                                                                                                                                     | `15` |
+| `grammar_correction` | Optional. Defines the model used for grammar correction in generated exercises. Experimental. Supported models:<br>* `"kenlm/en"` -- KenLM-based model. Requires files `en.arpa.bin`, `en.sp.model`, `en.sp.vocab` in the `lm` folder.<br>* `distilbert/distilgpt2` -- Distilled-GPT2 model from HuggingFace.<br>* `openai` -- one of OpenAI's models. Defined in the `hmeg/prompts/v1/reranker/openai.yaml` | `"kenlm/en"`                                           |
 
 Example (`hmeg.conf`):
 ```toml
@@ -73,6 +73,10 @@ number_exercises=15
 
 grammar_correction="kenlm/en"
 ```
+Notes:
+* When using the `"openai"` reranker, create a `.env` file in the project root directory (the same directory
+as `hmeg_cli.py`) and set the `OPENAI_API_KEY` variable. You can use the provided `.env.template` file as a
+starting point.
 
 
 ## Python code

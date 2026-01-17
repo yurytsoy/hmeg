@@ -2,12 +2,15 @@ from __future__ import annotations
 
 import random
 
+import dotenv
 import fire
 import numpy as np
 import sys
 import toml
 
 from hmeg import usecases as uc, ExerciseGenerator, GrammarChecker, GrammarRegistry, Reranker, Vocabulary
+
+dotenv.load_dotenv()
 
 
 class Runner:
