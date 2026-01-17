@@ -14,12 +14,7 @@ jobs:
       - name: Install packages
         run: |
             pip install -r requirements.txt
-            pip install pytest coverage
+            pip install pytest pytest-cov
 
       - name: Run tests with coverage
-        run: coverage run -m pytest tests
-
-      - name: Generate coverage reports
-        run: |
-            coverage xml -i
-            coverage report -m
+        run: pytest --durations=10 --maxfail 10 --cov=./hmeg --cov-report term-missing --tb native ./tests
