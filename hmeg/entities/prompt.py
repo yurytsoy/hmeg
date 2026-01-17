@@ -5,6 +5,21 @@ import yaml
 
 @dataclass
 class LLMConfig:
+    """
+    Configuration for a language model used by a prompt.
+
+    Attributes:
+        provider: Optional provider identifier (e.g. "openai").
+        model: Model name or identifier.
+        temperature: Sampling temperature (or None to use provider default).
+        max_tokens: Optional maximum tokens for generation.
+        verbatim: Additional provider-specific fields preserved when serializing.
+
+    Methods:
+        from_dict: Construct an LLMConfig from a mapping, preserving unknown keys in `verbatim`.
+        to_dict: Serialize the configuration to a mapping suitable for YAML/JSON.
+    """
+
     provider: str
     model: str
     temperature: float | None = None
@@ -14,7 +29,7 @@ class LLMConfig:
     @classmethod
     def from_dict(cls, d: dict[str, Any]) -> "LLMConfig":
         return cls(
-            provider=d.get("provider"),
+            provider=d["provider"],
             model=d["model"],
             temperature=d.get("temperature"),
             max_tokens=d.get("max_tokens"),
@@ -36,6 +51,23 @@ class LLMConfig:
 
 @dataclass
 class Prompt:
+    """
+    Representation of a prompt bundle loaded from YAML.
+
+    Attributes:
+        id: Unique prompt identifier (matches file path under `hmeg/prompts`).
+        system_instructions: Instructions injected into the system role.
+        user_prompt_template: Template string used to render the user prompt.
+        llm: LLMConfig instance describing the target model.
+        output_schema: Optional JSON schema describing expected model output.
+        metadata: Arbitrary metadata loaded from the prompt file.
+
+    Methods:
+        render_user_prompt: Format the `user_prompt_template` with provided keyword arguments.
+        from_dict / to_dict: Convert between mapping and Prompt instance for (de)serialization.
+        from_yaml / to_yaml: Convenience helpers to load/dump YAML text.
+    """
+
     id: str
     system_instructions: str
     user_prompt_template: str
