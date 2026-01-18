@@ -1,8 +1,11 @@
 from functools import partial
 import os
-import pandas as pd
 import re
 import socket
+from typing import Any
+
+import orjson
+import pandas as pd
 import toml
 
 from .entities import GrammarDescription, VocabularyPlaceholders, VocabularyInfo
@@ -187,3 +190,37 @@ def is_port_in_use(port: int, host: str = "127.0.0.1") -> bool:
             return False  # Port is free
         except OSError:
             return True  # Port is in use
+
+
+def parse_completion(output_text: str) -> dict[str, Any]:
+    """
+    Extract json from LLM response.
+
+    Parameters
+    ----------
+    output_text: str
+        Response content.
+
+    Returns
+    -------
+    dict[str, Any]
+        Extracted json-content.
+    """
+
+    json_start = output_text.find("{")
+    json_end = output_text.rfind("}")
+
+    if json_start == -1 or json_end == -1 or json_end < json_start:
+        raise ValueError(f"Could not find valid JSON object in OpenAI response: {output_text!r}")
+
+    json_str = output_text[json_start: json_end + 1]
+
+    try:
+        res = orjson.loads(json_str)
+    except orjson.JSONDecodeError as e:
+        raise ValueError(f"Failed to decode JSON from LLM response: {e}") from e
+
+    if not isinstance(res, dict) or "results" not in res:
+        raise ValueError(f"OpenAI response JSON does not contain expected 'results' field: {res!r}")
+
+    return res

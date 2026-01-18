@@ -28,6 +28,7 @@ torchvision = "^0.23.0"
 transformers = "^4.56.1"
 python-dotenv = "^1.2.0"
 orjson = "^3.11.5"
+ollama = "^0.6.1"
 
 
 [build-system]
