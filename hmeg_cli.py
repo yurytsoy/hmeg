@@ -8,6 +8,7 @@ import numpy as np
 import sys
 import toml
 
+from hmeg.entities import ExerciseGenerationEngine
 from hmeg import usecases as uc, ExerciseGenerator, GrammarChecker, GrammarRegistry, Reranker, Vocabulary
 
 dotenv.load_dotenv()
@@ -56,6 +57,8 @@ class Runner:
             configured_num = 10
         self.num_exercises = max(5, min(configured_num, 100))
 
+        self.engine = run_config.get("engine", ExerciseGenerationEngine.LEGACY)
+        self.model = run_config.get("model")
         self.grammar_correction_model = run_config.get("grammar_correction")
         if self.grammar_correction_model is not None:
             Reranker.set_current_model(self.grammar_correction_model)
@@ -90,7 +93,11 @@ class Runner:
             cur_topic = np.random.choice(topics)
             cur_topic_num_exercises = min(num_exercises_per_topic, self.num_exercises - len(exercises))
             cur_topic_exercises = ExerciseGenerator.generate_exercises(
-                topic_name=cur_topic, num=cur_topic_num_exercises, vocab=self.vocab
+                topic_name=cur_topic,
+                num=cur_topic_num_exercises,
+                vocab=self.vocab,
+                engine=self.engine,
+                model=self.model
             )
             for cur_exercise in cur_topic_exercises:
                 if cur_exercise not in exercises:
@@ -99,7 +106,7 @@ class Runner:
             if attempts > self.num_exercises ** 2:
                 break
 
-        if self.grammar_correction_model is not None:
+        if self.engine == ExerciseGenerationEngine.LEGACY and self.grammar_correction_model is not None:
             print(f"Using grammar correction model: {self.grammar_correction_model}")
             exercises = GrammarChecker.correct_phrases(exercises, vocab=self.vocab)
 
