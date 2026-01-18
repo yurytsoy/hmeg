@@ -2,11 +2,14 @@ import random
 
 from nltk.parse.generate import generate
 from nltk import CFG
+from ollama import chat
 import os
 
-from .grammar_registry import GrammarRegistry
-from .usecases import apply_vocabulary
-from .vocabulary import Vocabulary
+from hmeg.entities import ExerciseGenerationEngine, TranslationExercise
+from hmeg.grammar_registry import GrammarRegistry
+from hmeg.prompt_loader import PromptLoader
+from hmeg.usecases import apply_vocabulary, parse_completion
+from hmeg.vocabulary import Vocabulary
 
 
 cur_dir = os.path.split(os.path.realpath(__file__))[0]
@@ -15,9 +18,20 @@ DEFAULT_VOCABULARY_FILE = os.path.join(cur_dir, "vocabs/minilex.toml")
 
 class ExerciseGenerator:
     @staticmethod
-    def generate_exercises(topic_name: str, num: int, vocab: Vocabulary | None = None) -> list[str]:
+    def generate_exercises(
+        topic_name: str, num: int, vocab: Vocabulary | None = None, engine: str | None = None, model: str | None = None
+    ) -> list[str]:
+        engine = engine or ExerciseGenerationEngine.LEGACY
+        if engine == ExerciseGenerationEngine.LEGACY:
+            return ExerciseGenerator.generate_exercises_legacy(topic_name, num, vocab)
+        elif engine == ExerciseGenerationEngine.OLLAMA:
+            return ExerciseGenerator.generate_exercises_ollama(topic_name, num, vocab, model=model)
+        raise RuntimeError(f"Unknown exercise generation engine: {engine}")
+
+    @staticmethod
+    def generate_exercises_legacy(topic_name: str, num: int, vocab: Vocabulary | None = None):
         """
-        Generates list of random translation exercises for the given topic.
+        Generates list of random translation exercises for the given topic using legacy approach (pre-LLM).
         The generation proceeds in 2 steps:
         1. Generate list of templates wrt selected grammar topic. The result contains
            placeholders for nouns, verbs, ....
@@ -57,3 +71,58 @@ class ExerciseGenerator:
             if num_trials > num ** 2:
                 break
         return res
+
+    @staticmethod
+    def generate_exercises_ollama(
+        topic_name: str, num: int, vocab: Vocabulary | None = None, model: str | None = None
+    ) -> list[TranslationExercise]:
+        def recommend_local_model() -> str:
+            """
+            Recommends an Ollama model based on the available GPU memory.
+            The models are from the Gemma3 family.
+            - gemma3:270m for CPU
+            - gemma3:4b for  <12GB GPU
+            - gemma3:12b for 12-24GB GPU
+            - gemma3:27b for >24GB GPU
+            """
+
+            import torch
+
+            if not torch.cuda.is_available():
+                return "gemma3:270m"
+            else:
+                props = torch.cuda.get_device_properties(0)
+                total_gbs = props.total_memory // 2**30  # memory in GB
+                if total_gbs < 12:
+                    return "gemma3:4b"
+                elif total_gbs < 24:
+                    return "gemma3:12b"
+                return "gemma3:27b"
+
+        prompt_loader_ = PromptLoader()
+        exercise_prompt = prompt_loader_.load("v1/generator/text")
+        model = model or recommend_local_model()
+        user_message = exercise_prompt.render_user_prompt(**{
+            "topic_name": topic_name, "number_of_exercises": num
+        })
+        if vocab:
+            user_message["vocabulary"] = {
+                "nouns": vocab.nouns,
+                "verbs": vocab.verbs,
+                "adverbs": vocab.adverbs,
+                "adjectives": vocab.adjectives,
+            }
+        response = chat(
+            model=model,
+            messages=[
+                {"role": "system", "content": exercise_prompt.system_instructions},
+                {"role": "user", "content": user_message}
+            ]
+        )
+
+        # parse the result.
+        result = parse_completion(response.message.content).get("results")
+        if not isinstance(result, list):
+            raise RuntimeError(f"Failed to parse the response from the model: {response.message.content}")
+
+        return [TranslationExercise(**res_dict) for res_dict in result]
