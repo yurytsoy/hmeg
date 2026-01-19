@@ -74,7 +74,7 @@ class ExerciseGenerator:
 
     @staticmethod
     def generate_exercises_ollama(
-        topic_name: str, num: int, vocab: Vocabulary | None = None, model: str | None = None
+        topic_name: str, num: int, vocab: Vocabulary | None = None, model: str | None = None, vocab_levels: list[str] | None = None
     ) -> list[TranslationExercise]:
         def recommend_local_model() -> str:
             """
@@ -101,23 +101,27 @@ class ExerciseGenerator:
 
         prompt_loader_ = PromptLoader()
         exercise_prompt = prompt_loader_.load("v1/generator/text")
-        model = model or recommend_local_model()
-        user_message = exercise_prompt.render_user_prompt(**{
-            "topic_name": topic_name, "number_of_exercises": num
-        })
+        model = model or exercise_prompt.llm.model or recommend_local_model()
+        prompt_params: dict[str, str | dict | list] = {"topic_name": topic_name.split(" / ")[-1], "number_of_exercises": num}
+        # prompt_params: dict[str, str | dict | list] = {"topic_name": topic_name, "number_of_exercises": num}
         if vocab:
-            user_message["vocabulary"] = {
+            prompt_params["vocabulary"] = {
                 "nouns": vocab.nouns,
                 "verbs": vocab.verbs,
                 "adverbs": vocab.adverbs,
                 "adjectives": vocab.adjectives,
             }
+        else:
+            prompt_params["vocabulary_levels"] = vocab_levels or ["A1", "A2", "B1"]
+
         response = chat(
             model=model,
+            format=exercise_prompt.output_schema,
             messages=[
                 {"role": "system", "content": exercise_prompt.system_instructions},
-                {"role": "user", "content": user_message}
-            ]
+                {"role": "user", "content": exercise_prompt.render_user_prompt(**{"exercise_request": prompt_params})}
+            ],
+            options={'temperature': exercise_prompt.llm.temperature},
         )
 
         # parse the result.
