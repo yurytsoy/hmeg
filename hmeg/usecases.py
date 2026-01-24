@@ -192,13 +192,13 @@ def is_port_in_use(port: int, host: str = "127.0.0.1") -> bool:
             return True  # Port is in use
 
 
-def parse_completion(output_text: str) -> dict[str, Any]:
+def parse_completion(llm_response: str) -> dict[str, Any]:
     """
     Extract json from LLM response.
 
     Parameters
     ----------
-    output_text: str
+    llm_response: str
         Response content.
 
     Returns
@@ -207,13 +207,13 @@ def parse_completion(output_text: str) -> dict[str, Any]:
         Extracted json-content.
     """
 
-    json_start = output_text.find("{")
-    json_end = output_text.rfind("}")
+    json_start = llm_response.find("{")
+    json_end = llm_response.rfind("}")
 
     if json_start == -1 or json_end == -1 or json_end < json_start:
-        raise ValueError(f"Could not find valid JSON object in OpenAI response: {output_text!r}")
+        raise ValueError(f"Could not find valid JSON object in LLM response: {llm_response!r}")
 
-    json_str = output_text[json_start: json_end + 1]
+    json_str = llm_response[json_start: json_end + 1]
 
     try:
         res = orjson.loads(json_str)

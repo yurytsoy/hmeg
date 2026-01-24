@@ -1,5 +1,6 @@
 import random
 
+import json
 from nltk.parse.generate import generate
 from nltk import CFG
 from ollama import chat
@@ -74,7 +75,7 @@ class ExerciseGenerator:
 
     @staticmethod
     def generate_exercises_ollama(
-        topic_name: str, num: int, vocab: Vocabulary | None = None, model: str | None = None, vocab_levels: list[str] | None = None
+        topic_name: str, num: int, model: str | None = None, vocab_levels: list[str] | None = None
     ) -> list[TranslationExercise]:
         def recommend_local_model() -> str:
             """
@@ -99,27 +100,27 @@ class ExerciseGenerator:
                     return "gemma3:12b"
                 return "gemma3:27b"
 
-        prompt_loader_ = PromptLoader()
-        exercise_prompt = prompt_loader_.load("v1/generator/text")
-        model = model or exercise_prompt.llm.model or recommend_local_model()
-        prompt_params: dict[str, str | dict | list] = {"topic_name": topic_name.split(" / ")[-1], "number_of_exercises": num}
-        # prompt_params: dict[str, str | dict | list] = {"topic_name": topic_name, "number_of_exercises": num}
-        if vocab:
-            prompt_params["vocabulary"] = {
-                "nouns": vocab.nouns,
-                "verbs": vocab.verbs,
-                "adverbs": vocab.adverbs,
-                "adjectives": vocab.adjectives,
-            }
-        else:
-            prompt_params["vocabulary_levels"] = vocab_levels or ["A1", "A2", "B1"]
+        def extract_topic_name(topic_name: str) -> str:
+            # if topic name is like "Topic Group / Topic Name", extract "Topic Name"
+            sep = " / "
+            return topic_name.split(sep)[-1] if sep in topic_name else topic_name
 
+        def prepare_generation_params():
+            res: dict[str, str | dict | list] = {
+                "grammar_topic": extract_topic_name(topic_name), "number_of_exercises": num
+            }
+            res["vocabulary_levels"] = json.dumps(vocab_levels or ["A1", "A2", "B1"], ensure_ascii=False)
+
+        prompt_loader_ = PromptLoader()
+        exercise_prompt = prompt_loader_.load("v1/generator/text_kr")
+        model = model or exercise_prompt.llm.model or recommend_local_model()
+        prompt_params: dict[str, str | dict | list] = prepare_generation_params()
         response = chat(
             model=model,
             format=exercise_prompt.output_schema,
             messages=[
                 {"role": "system", "content": exercise_prompt.system_instructions},
-                {"role": "user", "content": exercise_prompt.render_user_prompt(**{"exercise_request": prompt_params})}
+                {"role": "user", "content": exercise_prompt.render_user_prompt(**prompt_params)}
             ],
             options={'temperature': exercise_prompt.llm.temperature},
         )
@@ -129,4 +130,22 @@ class ExerciseGenerator:
         if not isinstance(result, list):
             raise RuntimeError(f"Failed to parse the response from the model: {response.message.content}")
 
-        return [TranslationExercise(**res_dict) for res_dict in result]
+        res_exercises = [TranslationExercise(**{"sentence_kr": res_dict["phrase_kr"]}) for res_dict in result]
+        if res_exercises[0].sentence_en is None:  # need to translate from Korean to English
+            trans_prompt = prompt_loader_.load("v1/translator/translate_kr_en")
+            prompt_params = {"sentences_kr": [ex.sentence_kr for ex in res_exercises]}
+            response = chat(
+                model=trans_prompt.llm.model,
+                format=trans_prompt.output_schema,
+                messages=[
+                    {"role": "system", "content": trans_prompt.system_instructions},
+                    {"role": "user", "content": trans_prompt.render_user_prompt(**prompt_params)}
+                ],
+                options={'temperature': trans_prompt.llm.temperature},
+            )
+            result_en = parse_completion(response.message.content).get("results")
+            assert len(res_exercises) == len(result_en)
+            for idx, res_dict in enumerate(result_en):
+                res_exercises[idx].sentence_en = res_dict.get("sentence_en")
+
+        return res_exercises
