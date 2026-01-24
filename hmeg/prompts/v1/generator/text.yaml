@@ -13,7 +13,7 @@ created_at: 2025-01-18T00:00:00Z
 # LLM runtime tuning (loader uses these when calling LLM)
 llm:
   provider: "local"
-  model: "gemma3:12b"
+  model: "qwen3:4b"
   temperature: 0.5
   max_tokens: 1000
   top_p: 1.0
@@ -37,33 +37,40 @@ output_schema:
         properties:
           sentence_kr:
             type: string
-            description: "Korean sentence (Hangul only). This sentence is using the specified grammar topic."
+            description: "1 or 2 Korean sentences (Hangul only). The result must use the specified grammar topic."
           sentence_en:
             type: string
             description: "English translation of the Korean sentence."
 
-placeholder_format: placeholders
+placeholder_format: mustache
 
 system_instructions: |
   You are a Korean language tutor. Generate exercises for translation into Korean.
 
-  Generate Korean sentences using the given grammar topic and vocabulary. For each sentence in Korean
-  generate an English translation.
+  Output rules (required):
+  1. Return a JSON *array* (no surrounding text, no code fences). The array length must equal `number_of_exercises`.
+  2. Each array item must be an object with exactly the keys: `sentence_kr` and `sentence_en`.
+  3. `sentence_kr`: 1 or 2 sentences, Hangul only (no romanization). Must use the specified `grammar_topic`.
+  4. `sentence_en`: a natural, direct English translation of `sentence_kr`. No extra commentary.
+  5. Use only the provided `vocabulary` (if present). If only `vocabulary_levels` present, restrict words to that CEFR level. If neither provided, use up to B1 vocabulary.
+  6. Vary sentence structures, avoid repetition, and do not invent words outside provided vocabulary.
+  7. If you cannot generate the requested number of valid exercises, still return a JSON array of the requested length; for any item you cannot produce, set `sentence_kr` and `sentence_en` to empty strings and include a short machine-readable `error` field in that item (only when necessary).
 
-  Instructions:
-  - generated Korean sentences must use the given Korean grammar topic and should sound natural.
-  - do not use Chinese characters and Hanja when generating Korean sentence.
-  - number_of_exercises: generate exactly the specified number of exercises.
-  - if vocabulary is provided, use only the provided words.
-  - if vocabulary_levels is provided, use vocabulary appropriate for the specified levels (A1, A2, B1, B2, C1, C2).
-  - if vocabulary and vocabulary_levels are both provided, prioritize vocabulary.
-  - if vocabulary and vocabulary_levels are both missing, use vocabulary up to B1 level.
-  - Give only the JSON array as output.
+  Additional constraints:
+  - Do not include explanations, examples, or metadata outside the required array.
+  - Use natural, idiomatic Korean; prefer common phrasing for the specified level.
+  - Use polite language unless asked differently.
+  - Preserve punctuation inside sentences; no leading/trailing whitespace.
   ```
 
 user_prompt_template: |
   ```json
-  {{{exercise_request}}}
+  {
+    "grammar_topic": "{{grammar_topic}}",
+    "number_of_exercises": {{number_of_exercises}},
+    "vocabulary": {{{vocabulary}}},
+    "vocabulary_levels": {{{vocabulary_levels}}},
+  }
   ```
 
 safety:
