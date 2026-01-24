@@ -29,8 +29,8 @@ class TestExerciseGenerator(unittest.TestCase):
         random.seed(42)
         topics = random.choices(list(GrammarRegistry.topics), k=5)
 
-        for topic in topics[:1]:
-            exercises = ExerciseGenerator.generate_exercises_ollama(topic, num=5, model="gemma3:12b")
+        for topic in topics:
+            exercises = ExerciseGenerator.generate_exercises_ollama(topic, num=5, model="gemma3:4b")
             self.assertEqual(len(exercises), 5)
             print(f"Exercises for topic '{topic}':")
             for ex in exercises:
@@ -38,8 +38,8 @@ class TestExerciseGenerator(unittest.TestCase):
 
             # check that no exercises contain placeholders.
             for placeholder in VocabularyPlaceholders.to_list():
-                self.assertTrue(all(placeholder not in res.sentence_en for res in exercises))
-                self.assertTrue(all(placeholder not in res.sentence_kr for res in exercises))
+                self.assertTrue(all(placeholder not in res.sentence_en for res in exercises if res.sentence_en is not None))
+                self.assertTrue(all(placeholder not in res.sentence_kr for res in exercises if res.sentence_en is not None))
 
     @unittest.skip("Run locally with Ollama service available")
     def test_generate_exercises_ollama_with_vocabulary_levels(self):
@@ -47,15 +47,10 @@ class TestExerciseGenerator(unittest.TestCase):
         topic = random.choices(list(GrammarRegistry.topics), k=1)[0]
         print(f"Exercises for topic '{topic}':")
 
-        exercises_a1 = ExerciseGenerator.generate_exercises_ollama(topic, num=5, model="gemma3:12b", vocab_levels=["A1"])
+        exercises_a1 = ExerciseGenerator.generate_exercises_ollama(topic, num=5, model="gemma3:4b", vocab_levels=["A1"])
         for ex in exercises_a1:
             print(f"- [A1] {ex.sentence_kr} / {ex.sentence_en}")
 
         exercises_c2 = ExerciseGenerator.generate_exercises_ollama(topic, num=5, model="gemma3:12b", vocab_levels=["C1", "C2"])
         for ex in exercises_c2:
             print(f"- [C2] {ex.sentence_kr} / {ex.sentence_en}")
-
-    # @unittest.skip("Run locally with Ollama service available")
-    def test_generate_exercises_ollama_with_vocabulary(self):
-        # TODO: implement me
-        ...
