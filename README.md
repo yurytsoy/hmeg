@@ -51,16 +51,30 @@ python hmeg_cli.py run --help
 python hmeg_cli.py list --help
 ```
 
+## Generating exercises using Ollama
+
+You can use [Ollama](https://ollama.com/) to generate exercises. Follow the official install instructions for your platform.
+
+Recommended models:
+* `gemma3` -- `4b` and `12b` work pretty well comparing to other families that I tried.
+* `qwen3` -- `4b-instruct` is also not bad and much (much) faster than the thinking variant.
+
+Note on `exaone3.5` (2026.01.24): I had high hopes, since the models were new and were prepared by LG. Tried 2.4b and 7.8b both thinking and instruct. They generate way worse results than `gemma3` and `qwen3` models and often produce wrong number of exercises.
+
+After Ollama is setup you can enable it in the configuration file (see below).
+
 ### Configuration file
 
 The configuration uses TOML format. Available fields:
 
-| Parameter | Description                                                                                                                                                                                                                                                                                                                                                                                                | Example                                                |
-|-----------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|--------------------------------------------------------|
-| `topics_folder` | Location of the folder containing descriptions of exercise topics.                                                                                                                                                                                                                                                                                                                                         | `"hmeg/topics"`                                        |
-| `vocab_file` | Location of the vocabulary file, which will be used for generation of exercises.                                                                                                                                                                                                                                                                                                                           | `"hmeg/vocabs/minilex.toml"`                           |
-| `topic` | Name of the topic for generation of exercises. Can be partial (see CLI instructions above).                                                                                                                                                                                                                                                                                                                | `"Have, Don’t have, There is, There isn’t / 있어요, 없어요"` |
-| `number_exercises` | Number of generated exercises (5-100).                                                                                                                                                                                                                                                                                                                                                                     | `15` |
+| Parameter            | Description                                                                                                                                                                                                                                                                                                                                                                                                  | Example                                                |
+|----------------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|--------------------------------------------------------|
+| `topics_folder`      | Location of the folder containing descriptions of exercise topics.                                                                                                                                                                                                                                                                                                                                           | `"hmeg/topics"`                                        |
+| `vocab_file`         | Location of the vocabulary file, which will be used for generation of exercises.                                                                                                                                                                                                                                                                                                                             | `"hmeg/vocabs/minilex.toml"`                           |
+| `topic`              | Name of the topic for generation of exercises. Can be partial (see CLI instructions above).                                                                                                                                                                                                                                                                                                                  | `"Have, Don’t have, There is, There isn’t / 있어요, 없어요"` |
+| `number_exercises`   | Number of generated exercises (5-100).                                                                                                                                                                                                                                                                                                                                                                       | `15`                                                   |
+| `engine`             | Exercise generation engine. Can be "templates" or "ollama".                                                                                                                                                                                                                                                                                                                                                  | `"ollama"`                                             |
+| `model`              | Name of the LLM model for Ollama. Must be defined if `engine` is set to "ollama".                                                                                                                                                                                                                                                                                                                            | `"gemma3:4b"`                                          |
 | `grammar_correction` | Optional. Defines the model used for grammar correction in generated exercises. Experimental. Supported models:<br>* `"kenlm/en"` -- KenLM-based model. Requires files `en.arpa.bin`, `en.sp.model`, `en.sp.vocab` in the `lm` folder.<br>* `distilbert/distilgpt2` -- Distilled-GPT2 model from HuggingFace.<br>* `openai` -- one of OpenAI's models. Defined in the `hmeg/prompts/v1/reranker/openai.yaml` | `"kenlm/en"`                                           |
 
 Example (`hmeg.conf`):
@@ -77,7 +91,6 @@ Notes:
 * When using the `"openai"` reranker, create a `.env` file in the project root directory (the same directory
 as `hmeg_cli.py`) and set the `OPENAI_API_KEY` variable. You can use the provided `.env.template` file as a
 starting point.
-
 
 ## Python code
 
@@ -118,3 +131,8 @@ and the dictionary can be swapped to suit different goals (e.g.,
 [Basic English](https://en.wikipedia.org/wiki/Basic_English) or domain-specific vocabularies).
 
 Lastly, the project name is a light Star Wars reference :)
+
+UPD (2026.01.24): In the last 2 years, there have been a good progress in LLM abilities to process
+Korean language. Therefore, a support for LLM-based generation of exercises has been added via Ollama.
+It has less control over vocabulary and structures of exercises, but can generate more natural sentences.
+Vocabulary can be controlled to some extent by using CEFR levels (A1-C2).

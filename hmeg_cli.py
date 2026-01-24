@@ -57,7 +57,7 @@ class Runner:
             configured_num = 10
         self.num_exercises = max(5, min(configured_num, 100))
 
-        self.engine = run_config.get("engine", ExerciseGenerationEngine.LEGACY)
+        self.engine = run_config.get("engine", ExerciseGenerationEngine.TEMPLATES)
         self.model = run_config.get("model")
         self.grammar_correction_model = run_config.get("grammar_correction")
         if self.grammar_correction_model is not None:
@@ -106,7 +106,7 @@ class Runner:
             if attempts > self.num_exercises ** 2:
                 break
 
-        if self.engine == ExerciseGenerationEngine.LEGACY and self.grammar_correction_model is not None:
+        if self.engine == ExerciseGenerationEngine.TEMPLATES and self.grammar_correction_model is not None:
             print(f"Using grammar correction model: {self.grammar_correction_model}")
             exercises = GrammarChecker.correct_phrases(exercises, vocab=self.vocab)
 
