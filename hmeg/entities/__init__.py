@@ -10,5 +10,5 @@ class ExerciseGenerationEngine:
     """
     An enumeration of exercise generation engines.
     """
-    LEGACY = "legacy"  # template-based generation
+    TEMPLATES = "templates"  # template-based generation
     OLLAMA = "ollama"

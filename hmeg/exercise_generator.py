@@ -22,15 +22,15 @@ class ExerciseGenerator:
     def generate_exercises(
         topic_name: str, num: int, vocab: Vocabulary | None = None, engine: str | None = None, model: str | None = None
     ) -> list[str]:
-        engine = engine or ExerciseGenerationEngine.LEGACY
-        if engine == ExerciseGenerationEngine.LEGACY:
-            return ExerciseGenerator.generate_exercises_legacy(topic_name, num, vocab)
+        engine = engine or ExerciseGenerationEngine.TEMPLATES
+        if engine == ExerciseGenerationEngine.TEMPLATES:
+            return ExerciseGenerator.generate_exercises_templates(topic_name, num, vocab)
         elif engine == ExerciseGenerationEngine.OLLAMA:
-            return ExerciseGenerator.generate_exercises_ollama(topic_name, num, vocab, model=model)
+            return ExerciseGenerator.generate_exercises_ollama(topic_name, num, model=model)
         raise RuntimeError(f"Unknown exercise generation engine: {engine}")
 
     @staticmethod
-    def generate_exercises_legacy(topic_name: str, num: int, vocab: Vocabulary | None = None):
+    def generate_exercises_templates(topic_name: str, num: int, vocab: Vocabulary | None = None):
         """
         Generates list of random translation exercises for the given topic using legacy approach (pre-LLM).
         The generation proceeds in 2 steps:
