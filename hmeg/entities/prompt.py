@@ -59,6 +59,9 @@ class Prompt:
         id: Unique prompt identifier (matches file path under `hmeg/prompts`).
         system_instructions: Instructions injected into the system role.
         user_prompt_template: Template string used to render the user prompt.
+        placeholder_format (str): Template engine identifier. Supported values:
+            - "mustache": render with the chevron mustache engine.
+            - any other value: treat `user_prompt_template` as a Python `.format` template.
         llm: LLMConfig instance describing the target model.
         output_schema: Optional JSON schema describing expected model output.
         metadata: Arbitrary metadata loaded from the prompt file.

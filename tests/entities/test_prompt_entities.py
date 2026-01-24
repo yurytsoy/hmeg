@@ -130,6 +130,7 @@ class TestPrompt(unittest.TestCase):
         prompt = Prompt(
             id="test/prompt",
             system_instructions="Instructions",
+            placeholder_format="placeholders",
             user_prompt_template="Hello {name}, you have {count} messages",
             llm=LLMConfig(provider="openai", model="gpt-4")
         )
@@ -142,6 +143,7 @@ class TestPrompt(unittest.TestCase):
         prompt = Prompt(
             id="test/prompt",
             system_instructions="Instructions",
+            placeholder_format="placeholders",
             user_prompt_template="Context: {context}\nOriginal: {original}\nReplacements: {replacements}",
             llm=LLMConfig(provider="openai", model="gpt-4")
         )
@@ -160,6 +162,7 @@ class TestPrompt(unittest.TestCase):
             id="test/prompt",
             system_instructions="Instructions",
             user_prompt_template="Template {arg}",
+            placeholder_format="placeholders",
             llm=LLMConfig(provider="openai", model="gpt-4", temperature=0.7),
             output_schema={"type": "string"},
             metadata={"version": "1.0"}
@@ -207,6 +210,7 @@ metadata:
             id="test/prompt",
             system_instructions="Instructions",
             user_prompt_template="Template",
+            placeholder_format="placeholders",
             llm=LLMConfig(provider="openai", model="gpt-4", temperature=0.7),
             output_schema={"type": "string"},
             metadata={"version": "1.0"}
@@ -226,6 +230,7 @@ metadata:
             id="test/prompt",
             system_instructions="Test instructions",
             user_prompt_template="Template {arg}",
+            placeholder_format="placeholders",
             llm=LLMConfig(provider="openai", model="gpt-4", temperature=0.7, max_tokens=1000),
             output_schema={"type": "object"},
             metadata={"version": "1.0", "author": "test"}
@@ -249,6 +254,7 @@ metadata:
             id="test/prompt",
             system_instructions="Instructions",
             user_prompt_template="Hello {name}",
+            placeholder_format="placeholders",
             llm=LLMConfig(provider="openai", model="gpt-4")
         )
         
