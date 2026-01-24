@@ -26,7 +26,8 @@ class ExerciseGenerator:
         if engine == ExerciseGenerationEngine.TEMPLATES:
             return ExerciseGenerator.generate_exercises_templates(topic_name, num, vocab)
         elif engine == ExerciseGenerationEngine.OLLAMA:
-            return ExerciseGenerator.generate_exercises_ollama(topic_name, num, model=model)
+            ress = ExerciseGenerator.generate_exercises_ollama(topic_name, num, model=model)
+            return [res.sentence_en for res in ress]
         raise RuntimeError(f"Unknown exercise generation engine: {engine}")
 
     @staticmethod
@@ -105,16 +106,17 @@ class ExerciseGenerator:
             sep = " / "
             return topic_name.split(sep)[-1] if sep in topic_name else topic_name
 
-        def prepare_generation_params():
+        def prepare_generation_params() -> dict[str, str | dict | list]:
             res: dict[str, str | dict | list] = {
                 "grammar_topic": extract_topic_name(topic_name), "number_of_exercises": num
             }
             res["vocabulary_levels"] = json.dumps(vocab_levels or ["A1", "A2", "B1"], ensure_ascii=False)
+            return res
 
         prompt_loader_ = PromptLoader()
         exercise_prompt = prompt_loader_.load("v1/generator/text_kr")
         model = model or exercise_prompt.llm.model or recommend_local_model()
-        prompt_params: dict[str, str | dict | list] = prepare_generation_params()
+        prompt_params = prepare_generation_params()
         response = chat(
             model=model,
             format=exercise_prompt.output_schema,
