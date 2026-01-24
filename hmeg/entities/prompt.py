@@ -1,3 +1,4 @@
+import chevron
 from dataclasses import dataclass, field
 from typing import Any
 import yaml
@@ -71,6 +72,7 @@ class Prompt:
     id: str
     system_instructions: str
     user_prompt_template: str
+    placeholder_format: str
     llm: LLMConfig
     output_schema: dict[str, Any] | None = None
     metadata: dict[str, Any] = field(default_factory=dict)
@@ -79,6 +81,8 @@ class Prompt:
         """
         Render the `user_prompt_template` with provided keyword args (e.g. context, original, replacements).
         """
+        if self.placeholder_format == "mustache":
+            return chevron.render(self.user_prompt_template, kwargs)
         return self.user_prompt_template.format(**kwargs)
 
     @classmethod
@@ -88,6 +92,7 @@ class Prompt:
             id=d["id"],
             system_instructions=d.get("system_instructions", ""),
             user_prompt_template=d.get("user_prompt_template", ""),
+            placeholder_format=d.get("placeholder_format", "mustache"),
             llm=llm_cfg,
             output_schema=d.get("output_schema"),
             metadata=d.get("metadata", {}),
@@ -98,6 +103,7 @@ class Prompt:
             "id": self.id,
             "system_instructions": self.system_instructions,
             "user_prompt_template": self.user_prompt_template,
+            "placeholder_format": self.placeholder_format,
             "llm": self.llm.to_dict(),
             "output_schema": self.output_schema,
             "metadata": self.metadata,
