@@ -203,7 +203,7 @@ class ExerciseGenerator:
 
         if res_exercises[0].sentence_en is None:  # need to translate from Korean to English
             trans_prompt = prompt_loader_.load("v1/translator/translate_kr_en")
-            prompt_params = {"sentences_kr": [ex.sentence_kr for ex in res_exercises]}
+            prompt_params = {"sentences_kr": json.dumps([ex.sentence_kr for ex in res_exercises], ensure_ascii=False)}
             response = chat(
                 model=trans_prompt.llm.model,
                 format=trans_prompt.output_schema,

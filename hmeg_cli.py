@@ -34,7 +34,7 @@ class Runner:
 
         return True
 
-    def _configure_from_file(self, config_path: str | None):
+    def _configure_from_file(self, config_path: str | None, topic: str | None = None, num: int = 0):
         """
         Load configuration from `config_path` (or default) and initialize attributes.
         Can be called from __init__ or from run(...) when a custom config file is supplied.
@@ -59,13 +59,13 @@ class Runner:
             raise KeyError(f"`vocab_file` parameter is required for the \"{ExerciseGenerationEngine.TEMPLATES}\" engine.")
         self.vocab = Vocabulary.load(vocab_file) if vocab_file is not None else None
 
-        self.topic = run_config.get("topic")
+        self.topic = topic or run_config.get("topic")
         if not self.topic:
             # keep existing topic if already set by constructor args; otherwise error
             if getattr(self, "topic", None) is None:
                 raise KeyError("`topic` missing in config and not provided as argument.")
 
-        configured_num = run_config.get("number_exercises", 10)
+        configured_num = num or run_config.get("number_exercises", 10)
         try:
             configured_num = int(configured_num)
         except (ValueError, TypeError):
@@ -81,7 +81,7 @@ class Runner:
         if not self._verify_engine_configuration():
             raise RuntimeError("Please check configuration of the exercise generation engine.")
 
-    def __init__(self, config_path: str | None = None, topic: str | None = None, n: int = 0):
+    def __init__(self, config: str | None = None, topic: str | None = None, num: int = 0):
         """
         Supported commands:
         * run
@@ -93,10 +93,11 @@ class Runner:
             Path to the configuration file. If not provided then "hmeg.conf" is used.
         topic: str, default=None
             Name of the topic to generate exercises for. Can override topic from `config`
-        n: int, default=0
+        num: int, default=0
             Number of exercises. Can override number of exercises defined in `config`.
         """
-        self._configure_from_file(config_path)
+        print(config, topic, num)
+        self._configure_from_file(config_path=config, topic=topic, num=num)
 
     def list(self):
         """

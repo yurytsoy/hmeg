@@ -1,4 +1,4 @@
-id: v1/generator/text
+id: v1/translator/translate_kr_en
 version: v0.1.0
 locale: en
 title: Text exercise generation assistant

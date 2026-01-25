@@ -1,4 +1,4 @@
-id: v1/generator/text
+id: v1/generator/text_kr
 version: v0.1.0
 locale: en
 title: Text exercise generation assistant
@@ -63,7 +63,7 @@ system_instructions: |
 user_prompt_template: |
   ```json
   {
-    "grammar_topic": "{{grammar_topic}}",
+    "grammar_topic": {{{grammar_topic}}},
     "number_of_exercises": {{number_of_exercises}},
     "vocabulary_level": {{{vocabulary_level}}}
   }
