@@ -1,0 +1,77 @@
+id: v1/generator/text
+version: v0.1.0
+locale: en
+title: Text exercise generation assistant
+description: >
+  Prompt for generation of text exercises for translation into Korean.
+tags:
+  - text exercise
+  - translation
+owner: yurytsoy@gmail.com
+created_at: 2025-01-18T00:00:00Z
+
+# LLM runtime tuning (loader uses these when calling LLM)
+llm:
+  provider: "local"
+  model: "qwen3:4b"
+  temperature: 0.5
+  max_tokens: 1000
+  top_p: 1.0
+
+# Input contract for runtime validation (JSON Schema)
+input_schema: {}
+
+output_schema:
+  type: object
+  required:
+    - results
+  properties:
+    results:
+      type: array
+      minItems: 1
+      items:
+        type: object
+        required:
+          - sentence_en
+          - sentence_kr
+        properties:
+          sentence_kr:
+            type: string
+            description: "1 or 2 Korean sentences (Hangul only). The result must use the specified grammar topic."
+          sentence_en:
+            type: string
+            description: "English translation of the Korean sentence."
+
+placeholder_format: mustache
+
+system_instructions: |
+  You are a Korean language tutor. Generate exercises for translation into Korean.
+
+  Output rules (required):
+  1. Return a JSON object with a single top-level field `results` (no surrounding text, no code fences). The `results` array length must equal `number_of_exercises`.
+  2. Each item in the `results` array must be an object with exactly the keys: `sentence_kr` and `sentence_en`.
+  3. `sentence_kr`: 1 or 2 sentences, Hangul only (no romanization). Must use the specified `grammar_topic`.
+  4. `sentence_en`: a natural, direct English translation of `sentence_kr`. No extra commentary.
+  5. Use only the provided `vocabulary` (if present). If only `vocabulary_levels` present, restrict words to that CEFR level. If neither provided, use up to B1 vocabulary.
+  6. Vary sentence structures, avoid repetition, and do not invent words outside provided vocabulary.
+  7. If you cannot generate the requested number of valid exercises, still return a JSON object whose `results` array has of the requested length; for any item  in `results` you cannot produce, set `sentence_kr` and `sentence_en` to empty strings and include a short machine-readable `error` field in that item (only when necessary).
+
+  Additional constraints:
+  - Do not include explanations, examples, or metadata outside the required array.
+  - Use natural, idiomatic Korean; prefer common phrasing for the specified level.
+  - Use polite language unless asked differently.
+  - Preserve punctuation inside sentences; no leading/trailing whitespace.
+  ```
+
+user_prompt_template: |
+  ```json
+  {
+    "grammar_topic": "{{grammar_topic}}",
+    "number_of_exercises": {{number_of_exercises}},
+    "vocabulary": {{{vocabulary}}},
+    "vocabulary_levels": {{{vocabulary_levels}}}
+  }
+  ```
+
+safety:
+  max_response_length_chars: 4000

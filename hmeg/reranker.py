@@ -2,7 +2,6 @@ from __future__ import annotations
 
 import kenlm
 from openai import OpenAI
-import orjson
 import os
 import sentencepiece as spm
 import torch
@@ -10,6 +9,7 @@ from transformers import AutoTokenizer, AutoModelForCausalLM
 import warnings
 
 from hmeg.prompt_loader import PromptLoader
+from hmeg.usecases import parse_completion
 
 
 class Reranker:
@@ -281,44 +281,6 @@ class Reranker:
         - The function ensures that a `PromptLoader` is available (creates one if needed).
         """
 
-        def parse_completion(output_text: str) -> list[str]:
-            """
-            Extract ordered replacements from OpenAI response.
-
-            Parameters
-            ----------
-            output_text: str
-                OpenAI response.
-
-            Returns
-            -------
-            list[str]
-                Decoded replacements.
-            """
-
-            json_start = output_text.find("{")
-            json_end = output_text.rfind("}")
-
-            if json_start == -1 or json_end == -1 or json_end < json_start:
-                raise ValueError(f"Could not find valid JSON object in OpenAI response: {output_text!r}")
-
-            json_str = output_text[json_start: json_end + 1]
-
-            try:
-                res = orjson.loads(json_str)
-            except orjson.JSONDecodeError as e:
-                raise ValueError(f"Failed to decode JSON from OpenAI response: {e}") from e
-
-            if not isinstance(res, dict) or "results" not in res:
-                raise ValueError(f"OpenAI response JSON does not contain expected 'results' field: {res!r}")
-
-            results = res["results"]
-
-            if not isinstance(results, list):
-                raise ValueError(f"'results' field in OpenAI response JSON is not a list: {results!r}")
-
-            return results
-
         if Reranker.prompt_loader_ is None:
             Reranker.prompt_loader_ = PromptLoader()
 
@@ -344,4 +306,9 @@ class Reranker:
             reasoning_effort="low"
         )
         results = parse_completion(response.choices[0].message.content or "")
+        results = results.get("results")
+
+        if not isinstance(results, list):
+            raise ValueError(f"'results' field in OpenAI response JSON is not a list: {results!r}")
+
         return [(item, -(idx + 1)) for idx, item in enumerate(results)]

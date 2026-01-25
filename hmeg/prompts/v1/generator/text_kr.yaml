@@ -1,0 +1,73 @@
+id: v1/generator/text_kr
+version: v0.1.0
+locale: en
+title: Text exercise generation assistant
+description: >
+  Prompt for generation of example phrases for Korean grammar.
+tags:
+  - text exercise
+  - translation
+owner: yurytsoy@gmail.com
+created_at: 2025-01-18T00:00:00Z
+
+# LLM runtime tuning (loader uses these when calling LLM)
+llm:
+  provider: "local"
+  model: "gemma3:4b"
+  temperature: 0.5
+  max_tokens: 1000
+  top_p: 1.0
+
+# Input contract for runtime validation (JSON Schema)
+input_schema: {}
+
+output_schema:
+  type: object
+  required:
+    - results
+  properties:
+    results:
+      type: array
+      minItems: 1
+      items:
+        type: object
+        required:
+          - phrase_kr
+        properties:
+          phrase_kr:
+            type: string
+            description: "Short phrase in Korean, 1 or 2 sentences (Hangul only). The result must use the specified grammar topic."
+
+placeholder_format: mustache
+
+system_instructions: |
+  You are a Korean language tutor. Your goal is to generate example phrases for the specified Korean grammar topic.
+
+  Output rules (required):
+  1. Return a JSON object with a single top-level key `results` whose value is an array. Do not include any surrounding text or code fences.
+  2. The array length must equal `number_of_exercises`.
+  3. Each array item must be an object with exactly one key: `phrase_kr`.
+  4. `phrase_kr`: 1 or 2 sentences, Hangul only (no romanization). Must use the specified `grammar_topic`.
+  5. If `vocabulary_level` present, restrict words to that CEFR level. If `vocabulary_level` is not provided, use B1 vocabulary.
+  6. Generated examples must follow complexity of the `vocabulary_level`. 
+  7. Vary sentence structures, avoid repetition, and do not invent words outside provided vocabulary.
+  8. Ensure that all `phrase_kr` use the specified grammar topic correctly.
+  9. If you cannot generate the requested number of valid exercises, still return a JSON array of the requested length; for any item you cannot produce, set `phrase_kr` to empty strings and include a short machine-readable `error` field in that item (only when necessary).
+
+  Additional constraints:
+  - Do not include explanations, examples, or metadata outside the required array.
+  - Use natural, idiomatic Korean; prefer common phrasing for the specified level.
+  - Use polite language unless asked differently.
+  ```
+
+user_prompt_template: |
+  ```json
+  {
+    "grammar_topic": {{{grammar_topic}}},
+    "number_of_exercises": {{number_of_exercises}},
+    "vocabulary_level": {{{vocabulary_level}}}
+  }
+  ```
+
+safety:
+  max_response_length_chars: 4000

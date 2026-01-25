@@ -1,0 +1,62 @@
+id: v1/translator/translate_kr_en
+version: v0.1.0
+locale: en
+title: Text exercise generation assistant
+description: >
+  Prompt for translation of Korean phrases into English.
+tags:
+  - text exercise
+  - translation
+owner: yurytsoy@gmail.com
+created_at: 2025-01-18T00:00:00Z
+
+# LLM runtime tuning (loader uses these when calling LLM)
+llm:
+  provider: "local"
+  model: "translategemma:4b"
+  temperature: 0.5
+  max_tokens: 1000
+  top_p: 1.0
+
+# Input contract for runtime validation (JSON Schema)
+input_schema: {}
+
+output_schema:
+  type: object
+  required:
+    - results
+  properties:
+    results:
+      type: array
+      minItems: 1
+      items:
+        type: object
+        required:
+          - sentence_en
+        properties:
+          sentence_en:
+            type: string
+            description: "Translation of the Korean sentence."
+
+placeholder_format: mustache
+
+system_instructions: |
+  You are a professional Korean (kr) to English (en) translator.
+  Your goal is to accurately convey the meaning and nuances of the original Korean text while adhering to English grammar, vocabulary, and cultural sensitivities.
+  Produce only the English translation, without any additional explanations or commentary.
+
+  Output rules (required):
+  1. Return a JSON object with a top-level `results` field containing an array (no surrounding text, no code fences). The `results` array length must equal the length of the input array.
+  2. Each array item must be an object with exactly one key: `sentence_en`.
+  3. If you cannot translate some of the input sentences, still return a JSON array of the requested length; for any item you cannot produce, set `sentence_en` to empty strings and include a short machine-readable `error` field in that item (only when necessary).
+  ```
+
+user_prompt_template: |
+  ```json
+  {
+    "sentences_kr": {{{sentences_kr}}}
+  }
+  ```
+
+safety:
+  max_response_length_chars: 4000

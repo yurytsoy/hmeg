@@ -40,6 +40,16 @@ class PromptLoader:
         return resolved
 
     def validate_prompt_schema(self, prompt_dict: dict[str, Any]):
+        """
+        Validate the given prompt dictionary against the prompt schema.
+        Raises ValueError if validation fails.
+
+        Parameters
+        ----------
+        prompt_dict: dict[str, Any]
+            The prompt data as a dictionary to validate.
+        """
+
         # load schema YAML from prompts directory
         if not self._prompt_schema:
             schema_path = self.base_dir / "schema.yaml"
@@ -71,6 +81,16 @@ class PromptLoader:
         Load and parse YAML for the given prompt_id.
         Returns a Prompt instance loaded from the YAML file.
         Raises FileNotFoundError if the file does not exist.
+
+        Parameters
+        ----------
+        prompt_id: str
+            The identifier of the prompt to load (e.g. "v1/generator/text_kr").
+
+        Returns
+        -------
+        Prompt
+            The loaded Prompt instance.
         """
         if prompt_id in self._cache:
             return self._cache[prompt_id]
@@ -90,8 +110,15 @@ class PromptLoader:
         self._cache[prompt_id] = prompt
         return prompt
 
-    def clear_cache(self, prompt_id: str | None = None) -> None:
-        """Clear cached entry or entire cache."""
+    def clear_cache(self, prompt_id: str | None = None):
+        """
+        Clear cached entry or entire cache.
+
+        Parameters
+        ----------
+        prompt_id: str | None, default=None
+            If provided, clears only the cache entry for this prompt_id.
+        """
         if prompt_id is None:
             self._cache.clear()
         else:

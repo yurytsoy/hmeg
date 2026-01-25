@@ -1,8 +1,11 @@
 from functools import partial
 import os
-import pandas as pd
 import re
 import socket
+from typing import Any
+
+import orjson
+import pandas as pd
 import toml
 
 from .entities import GrammarDescription, VocabularyPlaceholders, VocabularyInfo
@@ -187,3 +190,69 @@ def is_port_in_use(port: int, host: str = "127.0.0.1") -> bool:
             return False  # Port is free
         except OSError:
             return True  # Port is in use
+
+
+def parse_completion(llm_response: str) -> dict[str, Any]:
+    """
+    Extract json from LLM response.
+
+    Parameters
+    ----------
+    llm_response: str
+        Response content.
+
+    Returns
+    -------
+    dict[str, Any]
+        Extracted json-content.
+    """
+
+    json_start = llm_response.find("{")
+    json_end = llm_response.rfind("}")
+
+    if json_start == -1 or json_end == -1 or json_end < json_start:
+        raise ValueError(f"Could not find valid JSON object in LLM response: {llm_response!r}")
+
+    json_str = llm_response[json_start: json_end + 1]
+
+    try:
+        res = orjson.loads(json_str)
+    except orjson.JSONDecodeError as e:
+        raise ValueError(f"Failed to decode JSON from LLM response: {e}") from e
+
+    if not isinstance(res, dict) or "results" not in res:
+        raise ValueError(f"LLM response JSON does not contain expected 'results' field: {res!r}")
+
+    return res
+
+
+def is_ollama_available(model_name: str | None) -> bool:
+    """
+    Helper to check if Ollama service is running and the requested model is available.
+
+    Parameters
+    ----------
+    model_name: str | None
+        Name of the Ollama model to check. If `None` only checks if the service is running.
+
+    Returns
+    -------
+    bool
+        True if Ollama service is running and the model is available, False otherwise.
+    """
+    import ollama
+
+    try:
+        models = ollama.list()
+    except Exception:
+        print("Ollama service is not available.")
+        return False
+
+    if model_name is None:
+        return True
+
+    if model_name in [model.model for model in models.models]:
+        return True
+
+    print(f"The Ollama model is not found, please download the {model_name} model first.")
+    return False
