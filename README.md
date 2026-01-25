@@ -61,7 +61,7 @@ Recommended models:
 
 Note on `exaone3.5` (2026.01.24): I had high hopes, since the models were new and were prepared by LG. Tried 2.4b and 7.8b both thinking and instruct. They generate way worse results than `gemma3` and `qwen3` models and often produce wrong number of exercises.
 
-After Ollama is setup you can enable it in the configuration file (see below).
+After Ollama is set up you can enable it in the configuration file (see below).
 
 ## Configuration file
 
