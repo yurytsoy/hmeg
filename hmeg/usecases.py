@@ -224,3 +224,32 @@ def parse_completion(llm_response: str) -> dict[str, Any]:
         raise ValueError(f"OpenAI response JSON does not contain expected 'results' field: {res!r}")
 
     return res
+
+
+def is_ollama_available(model_name: str) -> bool:
+    """
+    Helper to check if Ollama service is running and the requested model is available.
+
+    Parameters
+    ----------
+    model_name: str
+        Name of the Ollama model to check.
+
+    Returns
+    -------
+    bool
+        True if Ollama service is running and the model is available, False otherwise.
+    """
+    import ollama
+
+    try:
+        models = ollama.list()
+    except Exception:
+        print("Ollama service is not available.")
+        return False
+
+    if model_name in [model.model for model in models.models]:
+        return True
+
+    print(f"The Ollama model is not found, please download the {model_name} model first.")
+    return False

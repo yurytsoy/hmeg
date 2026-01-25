@@ -3,21 +3,9 @@ import unittest
 
 from hmeg import GrammarRegistry, usecases, ExerciseGenerator
 from hmeg.entities import VocabularyPlaceholders
+from hmeg.usecases import is_ollama_available
 
 TEST_OLLAMA_MODEL = "gemma3:4b"
-
-
-def is_ollama_running() -> bool:
-    """
-    Helper to check if Ollama service is running and the test model is available.
-    """
-    import ollama
-
-    try:
-        models = ollama.list()
-        return TEST_OLLAMA_MODEL in [model.model for model in models.models]
-    except Exception:
-        return False
 
 
 class TestExerciseGenerator(unittest.TestCase):
@@ -39,7 +27,10 @@ class TestExerciseGenerator(unittest.TestCase):
         with self.assertRaises(RuntimeError):
             ExerciseGenerator.generate_exercises("bad topic", num=10)
 
-    @unittest.skipIf(not is_ollama_running(), "Run locally with Ollama service available")
+    @unittest.skipIf(
+        not is_ollama_available(TEST_OLLAMA_MODEL),
+        "Run locally with Ollama service available"
+    )
     def test_generate_exercises_ollama(self):
         random.seed(42)
         topics = random.choices(list(GrammarRegistry.topics), k=5)
@@ -56,7 +47,10 @@ class TestExerciseGenerator(unittest.TestCase):
                 self.assertTrue(all(placeholder not in res.sentence_en for res in exercises if res.sentence_en is not None))
                 self.assertTrue(all(placeholder not in res.sentence_kr for res in exercises if res.sentence_en is not None))
 
-    @unittest.skipIf(not is_ollama_running(), "Run locally with Ollama service available")
+    @unittest.skipIf(
+        not is_ollama_available(TEST_OLLAMA_MODEL),
+        "Run locally with Ollama service available"
+    )
     def test_generate_exercises_ollama_with_vocabulary_level(self):
         random.seed(37)
         topic = random.choices(list(GrammarRegistry.topics), k=1)[0]
