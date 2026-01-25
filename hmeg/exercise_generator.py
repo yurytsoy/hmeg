@@ -198,6 +198,9 @@ class ExerciseGenerator:
             raise RuntimeError(f"Failed to parse the response from the model: {response.message.content}")
 
         res_exercises = [TranslationExercise(**{"sentence_kr": res_dict["phrase_kr"]}) for res_dict in result]
+        if not res_exercises:
+            return res_exercises
+
         if res_exercises[0].sentence_en is None:  # need to translate from Korean to English
             trans_prompt = prompt_loader_.load("v1/translator/translate_kr_en")
             prompt_params = {"sentences_kr": [ex.sentence_kr for ex in res_exercises]}
@@ -211,7 +214,9 @@ class ExerciseGenerator:
                 options={'temperature': trans_prompt.llm.temperature},
             )
             result_en = parse_completion(response.message.content).get("results")
-            assert len(res_exercises) == len(result_en)
+            if len(res_exercises) != len(result_en):
+                raise RuntimeError(f"Translation count mismatch: expected {len(res_exercises)}, got {len(result_en)}")
+
             for idx, res_dict in enumerate(result_en):
                 res_exercises[idx].sentence_en = res_dict.get("sentence_en")
 

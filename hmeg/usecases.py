@@ -221,7 +221,7 @@ def parse_completion(llm_response: str) -> dict[str, Any]:
         raise ValueError(f"Failed to decode JSON from LLM response: {e}") from e
 
     if not isinstance(res, dict) or "results" not in res:
-        raise ValueError(f"OpenAI response JSON does not contain expected 'results' field: {res!r}")
+        raise ValueError(f"LLM response JSON does not contain expected 'results' field: {res!r}")
 
     return res
 

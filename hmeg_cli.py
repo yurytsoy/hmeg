@@ -57,7 +57,7 @@ class Runner:
         vocab_file = run_config.get("vocab_file")
         if self.engine == ExerciseGenerationEngine.TEMPLATES and not vocab_file:
             raise KeyError(f"`vocab_file` parameter is required for the \"{ExerciseGenerationEngine.TEMPLATES}\" engine.")
-        self.vocab = Vocabulary.load(vocab_file)
+        self.vocab = Vocabulary.load(vocab_file) if vocab_file is not None else None
 
         self.topic = run_config.get("topic")
         if not self.topic:

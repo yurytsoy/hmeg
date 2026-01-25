@@ -150,7 +150,7 @@ and the dictionary can be swapped to suit different goals (e.g.,
 
 Lastly, the project name is a light Star Wars reference :)
 
-UPD (2026.01.24): In the last 2 years, there have been a good progress in LLM abilities to process
+UPD (2026.01.24): In the last 2 years, there has been good progress in LLM abilities to process
 Korean language. Therefore, a support for LLM-based generation of exercises has been added via Ollama.
 It has less control over vocabulary and structures of exercises, but can generate more natural sentences.
 Vocabulary can be controlled to some extent by using CEFR levels (A1-C2).
