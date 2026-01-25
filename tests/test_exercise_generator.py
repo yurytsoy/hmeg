@@ -5,6 +5,16 @@ from hmeg import GrammarRegistry, usecases, ExerciseGenerator
 from hmeg.entities import VocabularyPlaceholders
 
 
+def is_ollama_running() -> bool:
+    import ollama
+
+    try:
+        ollama.list()
+        return True
+    except Exception:
+        return False
+
+
 class TestExerciseGenerator(unittest.TestCase):
     @classmethod
     def setUp(cls):
@@ -24,7 +34,7 @@ class TestExerciseGenerator(unittest.TestCase):
         with self.assertRaises(RuntimeError):
             ExerciseGenerator.generate_exercises("bad topic", num=10)
 
-    @unittest.skip("Run locally with Ollama service available")
+    @unittest.skipIf(not is_ollama_running(), "Run locally with Ollama service available")
     def test_generate_exercises_ollama(self):
         random.seed(42)
         topics = random.choices(list(GrammarRegistry.topics), k=5)
@@ -41,16 +51,24 @@ class TestExerciseGenerator(unittest.TestCase):
                 self.assertTrue(all(placeholder not in res.sentence_en for res in exercises if res.sentence_en is not None))
                 self.assertTrue(all(placeholder not in res.sentence_kr for res in exercises if res.sentence_en is not None))
 
-    @unittest.skip("Run locally with Ollama service available")
+    @unittest.skipIf(not is_ollama_running(), "Run locally with Ollama service available")
     def test_generate_exercises_ollama_with_vocabulary_level(self):
         random.seed(37)
         topic = random.choices(list(GrammarRegistry.topics), k=1)[0]
         print(f"Exercises for topic '{topic}':")
 
-        exercises_a1 = ExerciseGenerator.generate_exercises_ollama(topic, num=5, model="gemma3:4b", vocab_level=["A1"])
+        exercises_a1 = ExerciseGenerator.generate_exercises_ollama(topic, num=5, model="gemma3:4b", vocab_level="A1")
+        max_len_kr_a1 = max(len(ex.sentence_kr) for ex in exercises_a1)
+        max_len_en_a1 = max(len(ex.sentence_en) for ex in exercises_a1)
         for ex in exercises_a1:
             print(f"- [A1] {ex.sentence_kr} / {ex.sentence_en}")
 
-        exercises_c2 = ExerciseGenerator.generate_exercises_ollama(topic, num=5, model="gemma3:12b", vocab_level=["C1", "C2"])
+        exercises_c2 = ExerciseGenerator.generate_exercises_ollama(topic, num=5, model="gemma3:12b", vocab_level="C2")
+        max_len_kr_c2 = max(len(ex.sentence_kr) for ex in exercises_c2)
+        max_len_en_c2 = max(len(ex.sentence_en) for ex in exercises_c2)
         for ex in exercises_c2:
             print(f"- [C2] {ex.sentence_kr} / {ex.sentence_en}")
+
+        # more advanced vocabulary level leads to longer and more complex sentences.
+        self.assertTrue(max_len_kr_c2 > max_len_kr_a1)
+        self.assertTrue(max_len_en_c2 > max_len_en_a1)
