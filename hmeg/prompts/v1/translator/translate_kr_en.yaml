@@ -46,7 +46,7 @@ system_instructions: |
   Produce only the English translation, without any additional explanations or commentary.
 
   Output rules (required):
-  1. Return a JSON *array* (no surrounding text, no code fences). The array length must equal length of the input array.
+  1. Return a JSON object with a top-level `results` field containing an array (no surrounding text, no code fences). The `results` array length must equal the length of the input array.
   2. Each array item must be an object with exactly one key: `sentence_en`.
   3. If you cannot translate some of the input sentences, still return a JSON array of the requested length; for any item you cannot produce, set `sentence_en` to empty strings and include a short machine-readable `error` field in that item (only when necessary).
   ```
@@ -54,7 +54,7 @@ system_instructions: |
 user_prompt_template: |
   ```json
   {
-    "sentences_kr": {{sentences_kr}}
+    "sentences_kr": {{{sentences_kr}}}
   }
   ```
 

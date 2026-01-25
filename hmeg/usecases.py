@@ -226,14 +226,14 @@ def parse_completion(llm_response: str) -> dict[str, Any]:
     return res
 
 
-def is_ollama_available(model_name: str) -> bool:
+def is_ollama_available(model_name: str | None) -> bool:
     """
     Helper to check if Ollama service is running and the requested model is available.
 
     Parameters
     ----------
-    model_name: str
-        Name of the Ollama model to check.
+    model_name: str | None
+        Name of the Ollama model to check. If `None` only checks if the service is running.
 
     Returns
     -------
@@ -247,6 +247,9 @@ def is_ollama_available(model_name: str) -> bool:
     except Exception:
         print("Ollama service is not available.")
         return False
+
+    if model_name is None:
+        return True
 
     if model_name in [model.model for model in models.models]:
         return True
