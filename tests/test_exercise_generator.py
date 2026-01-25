@@ -4,13 +4,18 @@ import unittest
 from hmeg import GrammarRegistry, usecases, ExerciseGenerator
 from hmeg.entities import VocabularyPlaceholders
 
+TEST_OLLAMA_MODEL = "gemma3:4b"
+
 
 def is_ollama_running() -> bool:
+    """
+    Helper to check if Ollama service is running and the test model is available.
+    """
     import ollama
 
     try:
-        ollama.list()
-        return True
+        models = ollama.list()
+        return TEST_OLLAMA_MODEL in [model.model for model in models.models]
     except Exception:
         return False
 
@@ -40,7 +45,7 @@ class TestExerciseGenerator(unittest.TestCase):
         topics = random.choices(list(GrammarRegistry.topics), k=5)
 
         for topic in topics:
-            exercises = ExerciseGenerator.generate_exercises_ollama(topic, num=5, model="gemma3:4b")
+            exercises = ExerciseGenerator.generate_exercises_ollama(topic, num=5, model=TEST_OLLAMA_MODEL)
             self.assertEqual(len(exercises), 5)
             print(f"Exercises for topic '{topic}':")
             for ex in exercises:
@@ -57,18 +62,18 @@ class TestExerciseGenerator(unittest.TestCase):
         topic = random.choices(list(GrammarRegistry.topics), k=1)[0]
         print(f"Exercises for topic '{topic}':")
 
-        exercises_a1 = ExerciseGenerator.generate_exercises_ollama(topic, num=5, model="gemma3:4b", vocab_level="A1")
+        exercises_a1 = ExerciseGenerator.generate_exercises_ollama(topic, num=5, model=TEST_OLLAMA_MODEL, vocab_level="A1")
         max_len_kr_a1 = max(len(ex.sentence_kr) for ex in exercises_a1)
         max_len_en_a1 = max(len(ex.sentence_en) for ex in exercises_a1)
         for ex in exercises_a1:
             print(f"- [A1] {ex.sentence_kr} / {ex.sentence_en}")
 
-        exercises_c2 = ExerciseGenerator.generate_exercises_ollama(topic, num=5, model="gemma3:12b", vocab_level="C2")
+        exercises_c2 = ExerciseGenerator.generate_exercises_ollama(topic, num=5, model=TEST_OLLAMA_MODEL, vocab_level="C2")
         max_len_kr_c2 = max(len(ex.sentence_kr) for ex in exercises_c2)
         max_len_en_c2 = max(len(ex.sentence_en) for ex in exercises_c2)
         for ex in exercises_c2:
             print(f"- [C2] {ex.sentence_kr} / {ex.sentence_en}")
 
-        # more advanced vocabulary level leads to longer and more complex sentences.
-        self.assertTrue(max_len_kr_c2 > max_len_kr_a1)
-        self.assertTrue(max_len_en_c2 > max_len_en_a1)
+        # more advanced vocabulary level normally leads to longer and more complex sentences.
+        self.assertGreater(max_len_kr_c2, max_len_kr_a1)
+        self.assertGreater(max_len_en_c2, max_len_en_a1)
