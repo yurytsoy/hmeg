@@ -42,15 +42,15 @@ class TestExerciseGenerator(unittest.TestCase):
                 self.assertTrue(all(placeholder not in res.sentence_kr for res in exercises if res.sentence_en is not None))
 
     @unittest.skip("Run locally with Ollama service available")
-    def test_generate_exercises_ollama_with_vocabulary_levels(self):
+    def test_generate_exercises_ollama_with_vocabulary_level(self):
         random.seed(37)
         topic = random.choices(list(GrammarRegistry.topics), k=1)[0]
         print(f"Exercises for topic '{topic}':")
 
-        exercises_a1 = ExerciseGenerator.generate_exercises_ollama(topic, num=5, model="gemma3:4b", vocab_levels=["A1"])
+        exercises_a1 = ExerciseGenerator.generate_exercises_ollama(topic, num=5, model="gemma3:4b", vocab_level=["A1"])
         for ex in exercises_a1:
             print(f"- [A1] {ex.sentence_kr} / {ex.sentence_en}")
 
-        exercises_c2 = ExerciseGenerator.generate_exercises_ollama(topic, num=5, model="gemma3:12b", vocab_levels=["C1", "C2"])
+        exercises_c2 = ExerciseGenerator.generate_exercises_ollama(topic, num=5, model="gemma3:12b", vocab_level=["C1", "C2"])
         for ex in exercises_c2:
             print(f"- [C2] {ex.sentence_kr} / {ex.sentence_en}")

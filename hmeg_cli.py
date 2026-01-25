@@ -15,20 +15,22 @@ dotenv.load_dotenv()
 
 
 class Runner:
-    def __init__(self, config: str | None = None, topic: str | None = None, n: int = 0):
+    def __init__(self, config_path: str | None = None, topic: str | None = None, n: int = 0):
         """
         Supported commands:
         * run
         * list
 
-        :param config:
+        Parameters
+        ----------
+        config_path: str, default=None
             Path to the configuration file. If not provided then "hmeg.conf" is used.
-        :param topic:
+        topic: str, default=None
             Name of the topic to generate exercises for. Can override topic from `config`
-        :param n:
+        n: int, default=0
             Number of exercises. Can override number of exercises defined in `config`.
         """
-        self.config_file = config or "hmeg.conf"
+        self.config_file = config_path or "hmeg.conf"
 
         try:
             with open(self.config_file, mode="r") as f:
@@ -36,14 +38,16 @@ class Runner:
         except FileNotFoundError as e:
             raise FileNotFoundError(f"Config file `{self.config_file}` not found.") from e
 
+        self.engine = run_config.get("engine", ExerciseGenerationEngine.TEMPLATES)
+
         topics_folder = run_config.get("topics_folder")
         if not topics_folder:
             raise KeyError("`topics_folder` missing in config.")
         uc.register_grammar_topics(topics_folder)
 
         vocab_file = run_config.get("vocab_file")
-        if not vocab_file:
-            raise KeyError("`vocab_file` missing in config.")
+        if self.engine == ExerciseGenerationEngine.TEMPLATES and not vocab_file:
+            raise KeyError(f"`vocab_file` parameter is required for the \"{ExerciseGenerationEngine.TEMPLATES}\" engine.")
         self.vocab = Vocabulary.load(vocab_file)
 
         self.topic = topic or run_config.get("topic")
@@ -57,8 +61,8 @@ class Runner:
             configured_num = 10
         self.num_exercises = max(5, min(configured_num, 100))
 
-        self.engine = run_config.get("engine", ExerciseGenerationEngine.TEMPLATES)
         self.model = run_config.get("model")
+        self.vocab_level = run_config.get("vocab_level")
         self.grammar_correction_model = run_config.get("grammar_correction")
         if self.grammar_correction_model is not None:
             Reranker.set_current_model(self.grammar_correction_model)
@@ -96,6 +100,7 @@ class Runner:
                 topic_name=cur_topic,
                 num=cur_topic_num_exercises,
                 vocab=self.vocab,
+                vocab_level=self.vocab_level,
                 engine=self.engine,
                 model=self.model
             )

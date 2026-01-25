@@ -47,8 +47,8 @@ system_instructions: |
   1. Return a JSON *array* (no surrounding text, no code fences). The array length must equal `number_of_exercises`.
   2. Each array item must be an object with exactly one key: `phrase_kr`.
   3. `phrase_kr`: 1 or 2 sentences, Hangul only (no romanization). Must use the specified `grammar_topic`.
-  4. If `vocabulary_levels` present, restrict words to that CEFR level. If `vocabulary_levels` is not provided, use B1 vocabulary.
-  5. Generated examples must follow complexity of the `vocabulary_levels`. 
+  4. If `vocabulary_level` present, restrict words to that CEFR level. If `vocabulary_level` is not provided, use B1 vocabulary.
+  5. Generated examples must follow complexity of the `vocabulary_level`. 
   5. Vary sentence structures, avoid repetition, and do not invent words outside provided vocabulary.
   6. Ensure that all `phrase_kr` use the specified grammar topic correctly.
   7. If you cannot generate the requested number of valid exercises, still return a JSON array of the requested length; for any item you cannot produce, set `phrase_kr` to empty strings and include a short machine-readable `error` field in that item (only when necessary).
@@ -64,7 +64,7 @@ user_prompt_template: |
   {
     "grammar_topic": "{{grammar_topic}}",
     "number_of_exercises": {{number_of_exercises}},
-    "vocabulary_levels": {{{vocabulary_levels}}},
+    "vocabulary_level": {{{vocabulary_level}}},
   }
   ```
 

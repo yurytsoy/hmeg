@@ -20,13 +20,13 @@ DEFAULT_VOCABULARY_FILE = os.path.join(cur_dir, "vocabs/minilex.toml")
 class ExerciseGenerator:
     @staticmethod
     def generate_exercises(
-        topic_name: str, num: int, vocab: Vocabulary | None = None, engine: str | None = None, model: str | None = None
+        topic_name: str, num: int, vocab: Vocabulary | None = None, engine: str | None = None, model: str | None = None, vocab_level: str | None = None
     ) -> list[str]:
         engine = engine or ExerciseGenerationEngine.TEMPLATES
         if engine == ExerciseGenerationEngine.TEMPLATES:
             return ExerciseGenerator.generate_exercises_templates(topic_name, num, vocab)
         elif engine == ExerciseGenerationEngine.OLLAMA:
-            ress = ExerciseGenerator.generate_exercises_ollama(topic_name, num, model=model)
+            ress = ExerciseGenerator.generate_exercises_ollama(topic_name, num, model=model, vocab_level=vocab_level)
             return [res.sentence_en for res in ress]
         raise RuntimeError(f"Unknown exercise generation engine: {engine}")
 
@@ -76,31 +76,8 @@ class ExerciseGenerator:
 
     @staticmethod
     def generate_exercises_ollama(
-        topic_name: str, num: int, model: str | None = None, vocab_levels: list[str] | None = None
+        topic_name: str, num: int, model: str | None = None, vocab_level: str | None = None
     ) -> list[TranslationExercise]:
-        def recommend_local_model() -> str:
-            """
-            Recommends an Ollama model based on the available GPU memory.
-            The models are from the Gemma3 family.
-            - gemma3:270m for CPU
-            - gemma3:4b for  <12GB GPU
-            - gemma3:12b for 12-24GB GPU
-            - gemma3:27b for >24GB GPU
-            """
-
-            import torch
-
-            if not torch.cuda.is_available():
-                return "gemma3:270m"
-            else:
-                props = torch.cuda.get_device_properties(0)
-                total_gbs = props.total_memory // 2**30  # memory in GB
-                if total_gbs < 12:
-                    return "gemma3:4b"
-                elif total_gbs < 24:
-                    return "gemma3:12b"
-                return "gemma3:27b"
-
         def extract_topic_name(topic_name: str) -> str:
             # if topic name is like "Topic Group / Topic Name", extract "Topic Name"
             sep = " / "
@@ -110,12 +87,12 @@ class ExerciseGenerator:
             res: dict[str, str | dict | list] = {
                 "grammar_topic": extract_topic_name(topic_name), "number_of_exercises": num
             }
-            res["vocabulary_levels"] = json.dumps(vocab_levels or ["A1", "A2", "B1"], ensure_ascii=False)
+            res["vocabulary_level"] = json.dumps(vocab_level or "B1", ensure_ascii=False)
             return res
 
         prompt_loader_ = PromptLoader()
         exercise_prompt = prompt_loader_.load("v1/generator/text_kr")
-        model = model or exercise_prompt.llm.model or recommend_local_model()
+        model = model or exercise_prompt.llm.model
         prompt_params = prepare_generation_params()
         response = chat(
             model=model,
