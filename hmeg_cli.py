@@ -108,6 +108,12 @@ class Runner:
     def run(self, config: str | None = None):
         """
         Runs generation of exercises and prints them on the screen.
+
+        Parameters
+        ----------
+        config: str, default=None
+            Path to the configuration file. If not provided then configuration file used during
+            initialization of the Runner instance is used.
         """
 
         if config is not None:
