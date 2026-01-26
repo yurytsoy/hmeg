@@ -12,7 +12,47 @@ The goal is to facilitate quickfire translation into Korean, where the element o
 
 # Usage
 
-## Command line
+## Python
+
+### Default engine ("templates")
+
+```python
+from hmeg import usecases, ExerciseGenerator, load_minilex
+
+num_exercises = 10  # number of randomly generated exercises for the selected topic
+
+usecases.register_grammar_topics()
+vocab = load_minilex()  # load words from the Minilex.
+
+exercises = ExerciseGenerator.generate_exercises(
+    topic_name="While / -(으)면서", num=num_exercises, vocab=vocab
+)
+print("\n".join(exercises))
+```
+
+### "Ollama" engine
+
+```python
+from hmeg import entities, usecases, ExerciseGenerator, load_minilex
+
+num_exercises = 10  # number of randomly generated exercises for the selected topic
+ollama_model = "gemma3:4b"  # Ollama model to use. Model must be pulled in advance.
+
+if not usecases.is_ollama_available(ollama_model):  # as a precaution, not mandatory.
+    exit(0)
+
+usecases.register_grammar_topics()
+exercises = ExerciseGenerator.generate_exercises(
+    topic_name="While / -(으)면서",
+    num=num_exercises,
+    vocab_level="C1",
+    engine=entities.ExerciseGenerationEngine.OLLAMA,
+    model=ollama_model,
+)
+print("\n".join(exercises))
+```
+
+## Command line (only via source code for now)
 
 Update file [hmeg.conf](hmeg.conf) to select the grammatical topic and number of exercises,
 then run:
@@ -59,9 +99,9 @@ Recommended models:
 * `gemma3` -- `4b` and `12b` work pretty well comparing to other families that I tried.
 * `qwen3` -- `4b-instruct` is also not bad and much (much) faster than the thinking variant.
 
-Note on `exaone3.5` (2026.01.24): I had high hopes, since the models were new and were prepared by LG. Tried 2.4b and 7.8b both thinking and instruct. They generate way worse results than `gemma3` and `qwen3` models and often produce wrong number of exercises.
+Note on `exaone3.5` (2026.01.24): I had high hopes, since the models were prepared by LG. Tried 2.4b and 7.8b both thinking and instruct. They generate way worse results than `gemma3` and `qwen3` models and often produce wrong number of exercises.
 
-After Ollama is set up you can enable it in the configuration file (see below).
+After Ollama is set up you can use it programmatically or via the CLI + configuration file (see below).
 
 ## Configuration file
 
@@ -108,23 +148,6 @@ number_exercises=15
 
 engine="ollama"
 model="gemma3:4b"
-```
-
-## Python code
-
-```python
-from hmeg import utils, ExerciseGenerator, load_minilex
-
-
-num_exercises = 10  # number of randomly generated exercises for the selected topic
-
-utils.register_grammar_topics()
-vocab = load_minilex()  # load words from the Minilex.
-
-exercises = ExerciseGenerator.generate_exercises(
-    topic_name="While / -(으)면서", num=num_exercises, vocab=vocab
-)
-print("\n".join(exercises))
 ```
 
 # Format of exercises and vocabulary
