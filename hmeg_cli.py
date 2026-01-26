@@ -4,7 +4,6 @@ import random
 
 import dotenv
 import fire
-import numpy as np
 import sys
 import toml
 
@@ -135,7 +134,7 @@ class Runner:
         attempts = 0
         num_exercises_per_topic = max(1, self.num_exercises // len(topics))
         while len(exercises) < self.num_exercises:
-            cur_topic = np.random.choice(topics)
+            cur_topic = random.choice(topics)
             cur_topic_num_exercises = min(num_exercises_per_topic, self.num_exercises - len(exercises))
             cur_topic_exercises = ExerciseGenerator.generate_exercises(
                 topic_name=cur_topic,

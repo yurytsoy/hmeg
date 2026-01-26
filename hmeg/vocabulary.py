@@ -5,7 +5,6 @@ Class for managing interchangeable vocabulary.
 from __future__ import annotations
 
 import inflect
-import numpy as np
 import os
 import random
 import toml
@@ -162,7 +161,7 @@ class Vocabulary:
         # 3 -- 20M -- 5B -- housing range (loan, purchase)
         # 4 -- 50M -- 10B -- small business related
         # 5 -- 1B -- 100B -- medium business related
-        category = np.random.choice([1, 2, 3, 4, 5], p=[0.5, 0.2, 0.15, 0.1, 0.05])
+        [category] = random.choices([1, 2, 3, 4, 5], weights=[0.5, 0.2, 0.15, 0.1, 0.05])
         mins = {
             1: 5000,
             2: 3 * 10**6,
