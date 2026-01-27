@@ -38,6 +38,37 @@ class Runner:
         Load configuration from `config_path` (or default) and initialize attributes.
         Can be called from __init__ or from run(...) when a custom config file is supplied.
         """
+        def get_topics_folder_from_config():
+            raw_topics_folder = run_config.get("topics_folder")
+            if raw_topics_folder is None:
+                raise KeyError("`topics_folder` missing in config.")
+
+            result = uc.to_abs_path(raw_topics_folder)
+            if not result:
+                raise KeyError("`topics_folder` is empty or invalid in config.")
+            return result
+
+        def get_vocabulary_from_config():
+            raw_vocab_file = run_config.get("vocab_file")
+            vocab_file = uc.to_abs_path(raw_vocab_file) if raw_vocab_file else raw_vocab_file
+
+            if self.engine == ExerciseGenerationEngine.TEMPLATES:
+                if "vocab_file" not in run_config:
+                    raise KeyError(
+                        f"`vocab_file` parameter is required for the \"{ExerciseGenerationEngine.TEMPLATES}\" engine.")
+                if not vocab_file:
+                    raise ValueError(
+                        f"`vocab_file` in config must not be empty for the \"{ExerciseGenerationEngine.TEMPLATES}\" engine.")
+            return Vocabulary.load(vocab_file) if vocab_file else None
+
+        def get_num_exercises():
+            num_exercises = num or run_config.get("number_exercises", 10)
+            try:
+                num_exercises = int(num_exercises)
+            except (ValueError, TypeError):
+                num_exercises = 10
+            return max(5, min(num_exercises, 100))
+
         self.config_file = config_path or "hmeg.conf"
 
         try:
@@ -48,15 +79,9 @@ class Runner:
 
         self.engine = run_config.get("engine", ExerciseGenerationEngine.TEMPLATES)
 
-        topics_folder = uc.to_abs_path(run_config.get("topics_folder"))
-        if not topics_folder:
-            raise KeyError("`topics_folder` missing in config.")
+        # register descriptions of grammar topics
+        topics_folder = get_topics_folder_from_config()
         uc.register_grammar_topics(topics_folder)
-
-        vocab_file = uc.to_abs_path(run_config.get("vocab_file"))
-        if self.engine == ExerciseGenerationEngine.TEMPLATES and not vocab_file:
-            raise KeyError(f"`vocab_file` parameter is required for the \"{ExerciseGenerationEngine.TEMPLATES}\" engine.")
-        self.vocab = Vocabulary.load(vocab_file) if vocab_file else None
 
         self.topic = topic or run_config.get("topic")
         if not self.topic:
@@ -64,19 +89,16 @@ class Runner:
             if getattr(self, "topic", None) is None:
                 raise KeyError("`topic` missing in config and not provided as argument.")
 
-        configured_num = num or run_config.get("number_exercises", 10)
-        try:
-            configured_num = int(configured_num)
-        except (ValueError, TypeError):
-            configured_num = 10
-        self.num_exercises = max(5, min(configured_num, 100))
-
-        self.model = run_config.get("model")
+        self.vocab = get_vocabulary_from_config()
         self.vocab_level = run_config.get("vocab_level")
+
+        self.num_exercises = get_num_exercises()
+
         self.grammar_correction_model = run_config.get("grammar_correction")
         if self.grammar_correction_model is not None:
             Reranker.set_current_model(self.grammar_correction_model)
 
+        self.model = run_config.get("model")  # for "ollama" engine
         if not self._verify_engine_configuration():
             raise RuntimeError("Please check configuration of the exercise generation engine.")
 
