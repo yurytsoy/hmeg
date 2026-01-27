@@ -1,34 +1,38 @@
-[tool.poetry]
+[project]
 name = "hmeg"
 version = "0.1.6"
+requires-python = ">=3.9,<3.14"
 description = "Generator of exercises for practicing speaking for language learning."
-authors = ["Yury Choi <yurytsoy@gmail.com>"]
-license = "MIT"
+authors = [{name = "Yury Choi", email = "yurytsoy@gmail.com>"}]
+license = {text= "MIT"}
 readme = "README.md"
-repository = "https://github.com/yurytsoy/hmeg"
+urls = {repository = "https://github.com/yurytsoy/hmeg"}
 
-[tool.poetry.dependencies]
-python = ">=3.9,<3.14"
-chevron = "^0.14.0"
-fire = "^0.6.0"
-inflect = "^7.5.0"
-jsonschema = "^4.25.0"
-kenlm = "^0.3.0"
-language-tool-python = "^2.9.4"
-nltk = "^3.9.2"
-ollama = "^0.6.1"
-openai = "^2.15.0"
-orjson = "^3.11.5"
-pandas = "^2.3.0"
-python-dotenv = "^1.2.0"
-python-levenshtein = "^0.27.1"
-pyyaml = "^6.0.3"
-sentencepiece = "^0.2.1"
-spacy = "^3.8.11"
-toml = "^0.10.2"
-torch = "^2.8.0"
-torchvision = "^0.23.0"
-transformers = "^4.57.6"
+dependencies = [
+    "chevron>=0.14.0",
+    "fire>=0.6.0",
+    "inflect>=7.5.0",
+    "jsonschema>=4.25.0",
+    "kenlm>=0.3.0",
+    "language-tool-python>=2.9.4",
+    "nltk>=3.9.2",
+    "ollama>=0.6.1",
+    "openai>=2.15.0",
+    "orjson>=3.11.5",
+    "pandas>=2.3.0",
+    "python-dotenv>=1.2.0",
+    "python-levenshtein>=0.27.1",
+    "pyyaml>=6.0.3",
+    "sentencepiece>=0.2.1",
+    "spacy>=3.8.11",
+    "toml>=0.10.2",
+    "torch>=2.8.0",
+    "torchvision>=0.23.0",
+    "transformers>=4.57.6"
+]
+
+[project.scripts]
+hmeg = "hmeg.cli:main"
 
 [build-system]
 requires = ["poetry-core"]
