@@ -1,4 +1,5 @@
 from dataclasses import asdict
+import pathlib
 import random
 import unittest
 
@@ -46,3 +47,29 @@ class TestUtils(unittest.TestCase):
             {'name': 'Nanolex', 'num_adjectives': 28, 'num_adverbs': 3, 'num_nouns': 50, 'num_verbs': 28, 'num_words': 109}
         ]
         self.assertListEqual([asdict(vocab) for vocab in vocabs], expected)
+
+    def test_to_abs_path_returns_same_for_absolute_path(self):
+        with self.subTest("Absolute path on input"):
+            # __file__ is an absolute path on the filesystem
+            abs_path = __file__
+            self.assertEqual(uc.to_abs_path(abs_path), abs_path)
+
+        with self.subTest("Relative path on input"):
+            # use a relative path and ensure it is resolved correctly
+            rel_path = "hmeg/topics"  # default folder for topics
+            res = uc.to_abs_path(rel_path)
+            files = list(pathlib.Path(res).iterdir())
+            self.assertGreaterEqual(len(files), 60)
+
+    def test_to_abs_path_resolves_relative_to_project_parent(self):
+        # reproduce the same base_dir calculation used in the function
+        base_dir = pathlib.Path(uc.__file__).parent.parent
+        rel = "some/relative/path.txt"
+        expected = str(base_dir / rel)
+        self.assertEqual(uc.to_abs_path(rel), expected)
+
+    def test_to_abs_path_handles_parent_segments(self):
+        base_dir = pathlib.Path(uc.__file__).parent.parent
+        rel = "../outside_dir/config.toml"
+        expected = str(base_dir / rel)
+        self.assertEqual(uc.to_abs_path(rel), expected)

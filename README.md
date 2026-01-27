@@ -52,43 +52,45 @@ exercises = ExerciseGenerator.generate_exercises(
 print("\n".join(exercises))
 ```
 
-## Command line (only via source code for now)
+## Command line
+
+The CLI tool `hmeg` is available after installation of the wheel.
 
 Update file [hmeg.conf](hmeg.conf) to select the grammatical topic and number of exercises,
 then run:
 ```bash
-python hmeg_cli.py
+hmeg
 ```
 
 You can also specify command-line arguments to define configuration file, topic, and/or number of generated exercises.
 
 * Run with a custom configuration file (use the `run` subcommand):
 ```bash
-python hmeg_cli.py run --config="custom/configuration/file.toml"
+hmeg run --config="custom/configuration/file.toml"
 ```
 
 * Run with a custom topic and number of exercises:
 ```bash
-python hmeg_cli.py run -n 15 -t "Have, Don’t have, There is, There isn’t / 있어요, 없어요"
+hmeg run -n 15 -t "Have, Don’t have, There is, There isn’t / 있어요, 없어요"
 ```
 
 * You can provide a partial topic name. All topics that contain the specified string will be used:
 ```bash
-python hmeg_cli.py run -n 15 -t "있어요, 없어요"
-python hmeg_cli.py run -n 15 -t "there is"
+hmeg run -n 15 -t "있어요, 없어요"
+hmeg run -n 15 -t "there is"
 ```
 
 * List available grammar topics:
 ```bash
-python hmeg_cli.py list
+hmeg list
 ```
 
 * Print help:
 
 ```bash
-python hmeg_cli.py --help
-python hmeg_cli.py run --help
-python hmeg_cli.py list --help
+hmeg --help
+hmeg run --help
+hmeg list --help
 ```
 
 ## Generating exercises using Ollama
