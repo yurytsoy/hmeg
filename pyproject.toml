@@ -3,8 +3,8 @@ name = "hmeg"
 version = "0.1.6"
 requires-python = ">=3.9,<3.14"
 description = "Generator of exercises for practicing speaking for language learning."
-authors = [{name = "Yury Choi", email = "yurytsoy@gmail.com>"}]
-license = {text= "MIT"}
+authors = [{name = "Yury Choi", email = "yurytsoy@gmail.com"}]
+license = {text = "MIT"}
 readme = "README.md"
 urls = {repository = "https://github.com/yurytsoy/hmeg"}
 

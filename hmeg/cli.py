@@ -88,7 +88,7 @@ class Runner:
 
         Parameters
         ----------
-        config_path: str, default=None
+        config: str, default=None
             Path to the configuration file. If not provided then "hmeg.conf" is used.
         topic: str, default=None
             Name of the topic to generate exercises for. Can override topic from `config`
@@ -109,18 +109,12 @@ class Runner:
 
     def run(self):
         """
-        Run generation of exercises and print them on the screen.
-
-        Parameters
-        ----------
-        config: str, default=None
-            Path to the configuration file. If not provided then configuration file used during
-            initialization of the Runner instance is used.
+        Run generation of exercises using the current configuration and print them on the screen.
         """
 
         topics = GrammarRegistry.find_topics(self.topic)
         if len(topics) == 0:
-            print(f"Requested an unregistered topic: {self.topic}. Please run `python hmeg_cli.py list` to see the existing topics.")
+            print(f"Requested an unregistered topic: {self.topic}. Please run `hmeg list` to see the existing topics.")
             return
         elif len(topics) == 1:
             print(f"Exercises for topic: {topics[0]}")

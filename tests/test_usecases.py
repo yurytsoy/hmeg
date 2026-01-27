@@ -50,12 +50,12 @@ class TestUtils(unittest.TestCase):
 
     def test_to_abs_path_returns_same_for_absolute_path(self):
         with self.subTest("Absolute path on input"):
-            # tmp_path gives an absolute path on the filesystem
+            # __file__ is an absolute path on the filesystem
             abs_path = __file__
             self.assertEqual(uc.to_abs_path(abs_path), abs_path)
 
         with self.subTest("Relative path on input"):
-            # tmp_path gives an absolute path on the filesystem
+            # use a relative path and ensure it is resolved correctly
             rel_path = "hmeg/topics"  # default folder for topics
             res = uc.to_abs_path(rel_path)
             files = list(pathlib.Path(res).iterdir())
@@ -66,10 +66,10 @@ class TestUtils(unittest.TestCase):
         base_dir = pathlib.Path(uc.__file__).parent.parent
         rel = "some/relative/path.txt"
         expected = str(base_dir / rel)
-        assert uc.to_abs_path(rel) == expected
+        self.assertEqual(uc.to_abs_path(rel), expected)
 
     def test_to_abs_path_handles_parent_segments(self):
         base_dir = pathlib.Path(uc.__file__).parent.parent
         rel = "../outside_dir/config.toml"
         expected = str(base_dir / rel)
-        assert uc.to_abs_path(rel) == expected
+        self.assertEqual(uc.to_abs_path(rel), expected)
