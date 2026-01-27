@@ -4,11 +4,44 @@
 
 Help me, Erik Gunnemark -- a library for generating exercises to practice basic speaking constructs.
 
+## Table of Contents
+
+- [Installation](#installation)
+  - [Via pip](#via-pip)
+  - [Via git](#via-git)
+- [Usage](#usage)
+  - [Python](#python)
+  - [Command line](#command-line)
+  - [Generating exercises using Ollama](#generating-exercises-using-ollama)
+  - [Configuration file](#configuration-file)
+- [Format of exercises and vocabulary](#format-of-exercises-and-vocabulary)
+- [Why I made this library](#why-i-made-this-library)
+
 The idea is that mastering these building blocks helps with faster speaking and constructing more complex sentences.
 
 Exercises are generated randomly, so they can sometimes be grammatically or semantically odd.
 As long as a sentence is not abusive and is grammatically correct, it is considered a valid exercise.
 The goal is to facilitate quickfire translation into Korean, where the element of surprise can aid memorization.
+
+# Installation
+
+## Via pip
+
+Install the latest stable version from PyPI:
+
+```bash
+pip install hmeg
+```
+
+## Via git
+
+Clone the repository and install in development mode:
+
+```bash
+git clone https://github.com/yurytsoy/hmeg.git
+cd hmeg
+pip install -e .
+```
 
 # Usage
 
