@@ -1,5 +1,6 @@
 from functools import partial
 import os
+import pathlib
 import re
 import socket
 from typing import Any
@@ -11,6 +12,34 @@ import toml
 from .entities import GrammarDescription, VocabularyPlaceholders, VocabularyInfo
 from .grammar_registry import GrammarRegistry
 from .vocabulary import Vocabulary
+
+
+def to_abs_path(path: str | None) -> str:
+    """
+    Converts `path` to the absolute path.
+    If `path` is already absolute, then it is returned unchanged.
+    If `path` is relative, then it is considered relative to the parent of the `hmeg` folder.
+
+    Parameters
+    ----------
+    path : str
+        Input path.
+
+    Returns
+    -------
+    str
+        Absolute path.
+    """
+
+    if not path:
+        return ""
+
+    cur_path = pathlib.Path(path)
+    if cur_path.is_absolute():
+        return path
+
+    base_dir = pathlib.Path(__file__).parent.parent
+    return str(base_dir / cur_path)
 
 
 def register_miniphrase():
