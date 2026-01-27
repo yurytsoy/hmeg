@@ -78,9 +78,9 @@ python hmeg_cli.py run -n 15 -t "있어요, 없어요"
 python hmeg_cli.py run -n 15 -t "there is"
 ```
 
-* List available topics described in the specified configuration file:
+* List available grammar topics:
 ```bash
-python hmeg_cli.py list -c hmeg.conf
+python hmeg_cli.py list
 ```
 
 * Print help:

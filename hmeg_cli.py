@@ -95,19 +95,21 @@ class Runner:
         num: int, default=0
             Number of exercises. Can override number of exercises defined in `config`.
         """
-        print(config, topic, num)
+        if isinstance(topic, (list, tuple)):
+            # fire splits values, containing commas. Join with comma+space to restore the original value
+            topic = ", ".join(str(p) for p in topic)
         self._configure_from_file(config_path=config, topic=topic, num=num)
 
     def list(self):
         """
-        Prints list of registered topics.
+        Prints list of registered grammar topics.
         """
         topics = GrammarRegistry.get_registered_topics()
         print("\n".join(topics))
 
-    def run(self, config: str | None = None):
+    def run(self):
         """
-        Runs generation of exercises and prints them on the screen.
+        Run generation of exercises and print them on the screen.
 
         Parameters
         ----------
@@ -115,9 +117,6 @@ class Runner:
             Path to the configuration file. If not provided then configuration file used during
             initialization of the Runner instance is used.
         """
-
-        if config is not None:
-            self._configure_from_file(config)
 
         topics = GrammarRegistry.find_topics(self.topic)
         if len(topics) == 0:
