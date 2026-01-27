@@ -36,7 +36,7 @@ exercises=[
     """,
     """
     S -> 'What`s the Korean for' W '?'
-    W -> '{noun}' | '{verb}' | '{adverb}' | '{adjective}'
+    W -> '{noun}' | '{verb}' | '{adverb}' | '{adj}'
     """,
     """
     S -> 'What weather!' | 'What a waste of time!' | 'What a wonderful day!'
