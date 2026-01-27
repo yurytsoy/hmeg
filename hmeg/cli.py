@@ -48,15 +48,15 @@ class Runner:
 
         self.engine = run_config.get("engine", ExerciseGenerationEngine.TEMPLATES)
 
-        topics_folder = run_config.get("topics_folder")
+        topics_folder = uc.to_abs_path(run_config.get("topics_folder"))
         if not topics_folder:
             raise KeyError("`topics_folder` missing in config.")
         uc.register_grammar_topics(topics_folder)
 
-        vocab_file = run_config.get("vocab_file")
+        vocab_file = uc.to_abs_path(run_config.get("vocab_file"))
         if self.engine == ExerciseGenerationEngine.TEMPLATES and not vocab_file:
             raise KeyError(f"`vocab_file` parameter is required for the \"{ExerciseGenerationEngine.TEMPLATES}\" engine.")
-        self.vocab = Vocabulary.load(vocab_file) if vocab_file is not None else None
+        self.vocab = Vocabulary.load(vocab_file) if vocab_file else None
 
         self.topic = topic or run_config.get("topic")
         if not self.topic:
