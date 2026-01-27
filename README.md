@@ -87,7 +87,7 @@ print("\n".join(exercises))
 
 ## Command line
 
-The CLI tool `hmeg` is available after installation of the wheel.
+The CLI tool `hmeg` is available after installation.
 
 Update file [hmeg.conf](hmeg.conf) to select the grammatical topic and number of exercises,
 then run:
