@@ -30,7 +30,8 @@ dependencies = [
     "toml>=0.10.2",
     "torch>=2.8.0",
     "torchvision>=0.23.0",
-    "transformers>=4.57.6"
+    "transformers>=4.57.6",
+    "rich (>=14.3.1,<15.0.0)"
 ]
 
 [project.scripts]
