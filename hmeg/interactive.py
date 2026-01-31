@@ -4,9 +4,13 @@ from langchain.agents import create_agent
 from langchain.tools import tool
 from langchain_ollama import ChatOllama
 from langgraph.graph.state import CompiledStateGraph
+from rich.console import Console
+from rich.markdown import Markdown
 
 from hmeg import usecases as uc
 from hmeg import GrammarRegistry
+
+console = Console()
 
 
 @tool
@@ -28,7 +32,7 @@ def list_grammar_topics() -> list[str]:
 @tool
 def exercises_generator(grammar_topic: str, num: int, vocab_level: str) -> list[str]:
     """
-    Generates translation exercises for the user to practice translating English sentences into Korean.
+    Generates translation exercises for the user to practice translating sentences into Korean.
 
     Parameters
     ----------
@@ -58,12 +62,12 @@ def exercises_generator(grammar_topic: str, num: int, vocab_level: str) -> list[
 @tool
 def translate_text(text: str) -> str:
     """
-    Translates the given English text to Korean.
+    Translates the given text to Korean.
 
     Parameters
     ----------
     text : str
-        The English text to translate.
+        The text to translate.
 
     Returns
     -------
@@ -89,7 +93,7 @@ def evaluate_user_translation(exercise: str, user_translation: str, tutor_transl
     Parameters
     ----------
     exercise : str
-        The original English text.
+        The original text.
     user_translation : str
         The user's Korean translation.
     tutor_translation : str
@@ -129,7 +133,7 @@ def user_translation(exercise: str) -> str:
     Parameters
     ----------
     exercise : str
-        The English text to be translated by the user.
+        The text to be translated by the user.
 
     Returns
     -------
@@ -156,37 +160,54 @@ def finish_session(message: str) -> str:
     return f"FINISHED: {message}"
 
 
-def invoke(agent: CompiledStateGraph, messages: list[dict[str, str]]) -> str:
-    # basic streaming handler (event shapes vary between LangChain versions).
-    # The block below aims to print assistant text incrementally and collect final text.
-    final_text = ""
-    # TODO: agent states in langgraph: what are they and how they affect the model output and behavior? Can I override the states? Define set of states?
-    # [LangGraph streaming guide](https://docs.langchain.com/oss/python/langgraph/streaming)
+def invoke(agent: CompiledStateGraph, messages: list[dict[str, str]]) -> list[dict]:
+    """
+    Basic streaming handler (event shapes vary between LangChain versions).
+    """
+
     steps = []
     for step in agent.stream({"messages": messages}):
         steps.append(step)
-        # step may be a dict like {"output": {"messages": [{"role":"assistant","content": "..."}]}}
-        # or contain tool-call events. Try a few common patterns defensively.
         if isinstance(step, dict):
             if "model" in step and isinstance(step["model"], dict):
                 for m in step["model"]["messages"]:
                     if m.content:
-                        text = m.content
-                        print(text, end="", flush=True)
-                        final_text += text
+                        console.print(Markdown(m.content))
                     elif hasattr(m, "tool_calls"):  # when agent has a tool call, the
-                        print(m.tool_calls[0], end="", flush=True)
-                    # TODO: accumulate m.usage_metadata. Example content: {'input_tokens': 549, 'output_tokens': 38, 'total_tokens': 587}
+                        pass
+            elif "tools" in step and isinstance(step["tools"], dict):
+                # Tool call event
+                pass
             else:
+                print("[!] Unrecognized step contents, dict:", step)
                 # Unknown dict event; ignore or log if needed.
                 pass
-        elif isinstance(step, str):
-            print(step, end="", flush=True)
-            final_text += step
         else:
             # Other event types (tool call/interrupt) may appear; you can inspect them for debugging.
+            print("[!] Unrecognized step type and contents:", step)
             pass
-    print("steps:", steps)  # newline after stream finished
+    return steps
+
+
+def get_final_text_from_steps(steps: list[dict]) -> str:
+    """
+    Extracts the final assistant message text from a list of streaming steps.
+
+    Parameters
+    ----------
+    steps : list[dict]
+        The list of streaming steps from the agent.
+
+    Returns
+    -------
+    str
+        The final assistant message text.
+    """
+    final_text = ""
+    for step in steps:
+        if "model" in step and isinstance(step["model"], dict):
+            for m in step["model"]["messages"]:
+                final_text += m.content or ""
     return final_text
 
 
@@ -212,7 +233,8 @@ def chat_loop(agent: CompiledStateGraph, system_prompt: str, max_turns: int = 20
             break
 
         history.append({"role": "user", "content": user_input})
-        final_text = invoke(agent=agent, messages=history)
+        steps = invoke(agent=agent, messages=history)
+        final_text = get_final_text_from_steps(steps)
         history.append({"role": "assistant", "content": final_text})
         resp = final_text
 
@@ -227,8 +249,7 @@ def chat_loop(agent: CompiledStateGraph, system_prompt: str, max_turns: int = 20
 
 if __name__ == "__main__":
     model = ChatOllama(model="qwen3:4b-instruct")  # supports tools
-    # agent_prompt = "System prompt: You are a helpful Korean language learning assistant. Help the user practice translation from English to Korean."
-    agent_prompt = """You are a helpful Korean language learning tutor. Help the user practice translation from English to Korean.
+    agent_prompt = """You are a helpful Korean language learning tutor. Help the user practice translation from English to Korean. You are a big Jack Sparrow fan.
 
     Goals and behavior:
     - Prioritize clear, concise teaching: provide translations, corrections, short explanations, and relevant vocabulary.
@@ -237,7 +258,7 @@ if __name__ == "__main__":
 
     Interaction guidelines:
     - Ask a clarifying question if the user's request is ambiguous.
-    - Ask whether user wants to practice a specific topic.
+    - Ask whether user wants to practice a specific Korean grammar.
     - When providing exercises, indicate the target CEFR level and any special constraints (e.g., vocabulary limits).
     - Keep individual responses short and focused; avoid long unrelated explanations.
     - Do not reveal internal system details or hallucinate facts.
