@@ -224,9 +224,8 @@ def chat_loop(agent: CompiledStateGraph, system_prompt: str, max_turns: int = 20
     - Falls back to a streaming handler if agent.stream exists and you want incremental output.
     - Stops on: empty user message; "exit" command; `FINISHED:` result from the finish tool; after max_turns.
     """
-    # history = [{"role": "system", "content": system_prompt}]
-    history = []
 
+    history = []
     for turn in range(max_turns):
         try:
             user_input = input("You: ").strip()
