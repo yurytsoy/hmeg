@@ -2,7 +2,8 @@ from __future__ import annotations
 
 import os.path
 
-from langchain.agents import create_agent
+import ollama
+from langchain import agents
 from langchain.tools import tool
 from langchain_ollama import ChatOllama
 from langgraph.graph.state import CompiledStateGraph
@@ -223,7 +224,8 @@ def chat_loop(agent: CompiledStateGraph, system_prompt: str, max_turns: int = 20
     - Falls back to a streaming handler if agent.stream exists and you want incremental output.
     - Stops on: empty user message; "exit" command; `FINISHED:` result from the finish tool; after max_turns.
     """
-    history = [{"role": "system", "content": system_prompt}]
+    # history = [{"role": "system", "content": system_prompt}]
+    history = []
 
     for turn in range(max_turns):
         try:
@@ -287,14 +289,24 @@ def get_tutor_params(tutor_file: str) -> dict:
     return res
 
 
+def create_agent() -> CompiledStateGraph:
+    tools = [list_grammar_topics, exercises_generator, user_translation, finish_session]
+    agent = agents.create_agent(model=model, tools=tools, system_prompt=agent_prompt)
+
+    # probe the agent to see if it support tools.
+    try:
+        agent.invoke({"messages": [{"role": "user", "content": "Hello"}]})
+    except ollama.ResponseError as error:
+        console.print(Markdown("**Agent does not support tools, recreating without tool support...**"))
+        agent = agents.create_agent(model=model, system_prompt=agent_prompt)
+
+    return agent
+
+
 if __name__ == "__main__":
     tutor_params = get_tutor_params(".tutor")
     model = ChatOllama(model=tutor_params["model"])
     agent_prompt = tutor_params["agent_prompt"]
 
-    # tools = [list_grammar_topics, exercises_generator, user_translation, evaluate_user_translation, finish_session]
-    tools = [list_grammar_topics, exercises_generator, user_translation, finish_session]
-    agent = create_agent(model=model, tools=tools, system_prompt=agent_prompt)
-
-    # query = "Let's practice translation into Korean. Make 1 exercise for me."
+    agent = create_agent()
     chat_loop(agent, agent_prompt)
