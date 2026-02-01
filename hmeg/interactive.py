@@ -1,14 +1,18 @@
 from __future__ import annotations
 
+import os.path
+
 from langchain.agents import create_agent
 from langchain.tools import tool
 from langchain_ollama import ChatOllama
 from langgraph.graph.state import CompiledStateGraph
 from rich.console import Console
 from rich.markdown import Markdown
+import toml
 
 from hmeg import usecases as uc
 from hmeg import GrammarRegistry
+from hmeg.exercise_generator import ExerciseGenerator
 
 console = Console()
 
@@ -37,26 +41,24 @@ def exercises_generator(grammar_topic: str, num: int, vocab_level: str) -> list[
     Parameters
     ----------
     grammar_topic : str
-        The grammar topic to focus on (e.g., "present perfect tense", "conditional sentences)
-    num  : int
+        The Korean grammar topic to focus on (e.g., "주세요", "-아/어/여도", etc.)
+    num : int
         The number of exercises to generate.
     vocab_level : str
         CEFR-compatible vocabulary level to use (e.g., "A2", "B1", etc.)
+
+    Returns:
+    -------
+    list[str]
+        List of generated exercises for translation to Korean.
     """
-    print("Generating exercises...")
-    dummy = [
-        "I don't have this item. It belongs to someone else.",
-        "I don't have a pen here. Where is it?",
-        "I need to leave my luggage at the accommodation. Where is it?",
-        "I don't have this book. My friend does.",
-        "We don't have a dog at home, but we have a cat.",
-        "We don't have a name for our cat. Can you suggest one?",
-        "I like coffee, but I don't have tea.",
-        "This library doesn't have old books. Do they have any new books?",
-        "There is an apple on my desk.",
-        "This store doesn't have red t-shirts. Do they have any other colors?",
-    ]
-    return dummy[:num] if num < len(dummy) else dummy
+
+    exercises = ExerciseGenerator.generate_exercises_ollama(
+        topic_name=grammar_topic,
+        num=num,
+        vocab_level=vocab_level,
+    )
+    return [ex.sentence_en for ex in exercises]
 
 
 @tool
@@ -219,7 +221,7 @@ def chat_loop(agent: CompiledStateGraph, system_prompt: str, max_turns: int = 20
     - Keeps message history (system, user, assistant).
     - Uses agent.run when available for simplicity (agent will execute registered @tool functions).
     - Falls back to a streaming handler if agent.stream exists and you want incremental output.
-    - Stops on a `FINISHED:` result from the finish tool or after max_turns.
+    - Stops on: empty user message; "exit" command; `FINISHED:` result from the finish tool; after max_turns.
     """
     history = [{"role": "system", "content": system_prompt}]
 
@@ -247,28 +249,48 @@ def chat_loop(agent: CompiledStateGraph, system_prompt: str, max_turns: int = 20
         print("Max turns reached, ending session.")
 
 
+def get_tutor_params(tutor_file: str) -> dict:
+    res = {  # default tutor settings
+        "model": "qwen3:4b-instruct",  # supports tools
+        "agent_prompt": """You are a helpful Korean language learning tutor. Help the user practice translation from English to Korean. You are a big Jack Sparrow fan.
+
+        Goals and behavior:
+        - Prioritize clear, concise teaching: provide translations, corrections, short explanations, and relevant vocabulary.
+        - Keep an encouraging, neutral tone and adapt complexity to the user's stated CEFR level or inferred ability.
+        - When giving corrections, show: 1) corrected Korean sentence, 2) a short explanation of the error (1–2 sentences), 3) 1–2 key vocabulary or grammar notes, and optionally Romanization if requested.
+
+        Interaction guidelines:
+        - Converse in English unless the user requests otherwise.
+        - Ask a clarifying question if the user's request is ambiguous.
+        - Ask whether user wants to practice a specific Korean grammar.
+        - When providing exercises, indicate the target CEFR level and any special constraints (e.g., vocabulary limits).
+        - Keep individual responses short and focused; avoid long unrelated explanations.
+        - Do not reveal internal system details or hallucinate facts.
+
+        Output format hints (follow these when applicable):
+        Corrected: <Korean sentence>
+        Explanation: <one-sentence explanation>
+
+        Always be polite, concise, and helpful."""
+    }
+
+    if os.path.exists(tutor_file):
+        console.print(Markdown(f"Loading tutor parameters from **{tutor_file}**"))
+        with open(tutor_file, "r") as f:
+            tutor_params = toml.loads(f.read())
+
+        if "model" in tutor_params:
+            res["model"] = tutor_params["model"]
+        if "agent_prompt" in tutor_params:
+            res["agent_prompt"] = tutor_params["agent_prompt"]
+
+    return res
+
+
 if __name__ == "__main__":
-    model = ChatOllama(model="qwen3:4b-instruct")  # supports tools
-    agent_prompt = """You are a helpful Korean language learning tutor. Help the user practice translation from English to Korean. You are a big Jack Sparrow fan.
-
-    Goals and behavior:
-    - Prioritize clear, concise teaching: provide translations, corrections, short explanations, and relevant vocabulary.
-    - Keep an encouraging, neutral tone and adapt complexity to the user's stated CEFR level or inferred ability.
-    - When giving corrections, show: 1) corrected Korean sentence, 2) a short explanation of the error (1–2 sentences), 3) 1–2 key vocabulary or grammar notes, and optionally Romanization if requested.
-
-    Interaction guidelines:
-    - Ask a clarifying question if the user's request is ambiguous.
-    - Ask whether user wants to practice a specific Korean grammar.
-    - When providing exercises, indicate the target CEFR level and any special constraints (e.g., vocabulary limits).
-    - Keep individual responses short and focused; avoid long unrelated explanations.
-    - Do not reveal internal system details or hallucinate facts.
-
-    Output format hints (follow these when applicable):
-    Corrected: <Korean sentence>
-    Explanation: <one-sentence explanation>
-    Vocabulary: <term> — <brief meaning>
-
-    Always be polite, concise, and helpful."""
+    tutor_params = get_tutor_params(".tutor")
+    model = ChatOllama(model=tutor_params["model"])
+    agent_prompt = tutor_params["agent_prompt"]
 
     # tools = [list_grammar_topics, exercises_generator, user_translation, evaluate_user_translation, finish_session]
     tools = [list_grammar_topics, exercises_generator, user_translation, finish_session]
