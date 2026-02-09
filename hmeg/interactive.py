@@ -5,5 +5,6 @@ from hmeg.tutor.usecases import create_agent
 
 
 if __name__ == "__main__":
-    agent, session_id = create_agent()
-    chat_loop(agent, session_id)
+    agent = create_agent("tutor.conf")
+    student_id = "student_001"
+    chat_loop(agent, student_id=student_id)
