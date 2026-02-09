@@ -7,7 +7,7 @@ from langgraph.graph.state import CompiledStateGraph
 from .usecases import invoke, get_final_text_from_steps, log_tools_usage_from_steps, log_tokens_usage_from_steps
 
 
-def chat_loop(agent: CompiledStateGraph, max_turns: int = 20):
+def chat_loop(agent: CompiledStateGraph, session_id: str, max_turns: int = 20):
     """
     Interactive chat loop for an agent that can call tools.
 
@@ -18,9 +18,9 @@ def chat_loop(agent: CompiledStateGraph, max_turns: int = 20):
     """
 
     history = []
-    session_id = str(uuid.uuid4())
+    session_id = session_id or str(uuid.uuid4())
     for turn in range(max_turns):
-        steps = invoke(agent=agent, messages=history)
+        steps = invoke(agent=agent, messages=history, session_id=session_id)
         final_text = get_final_text_from_steps(steps)
         history.append({"role": "assistant", "content": final_text})
         resp = final_text

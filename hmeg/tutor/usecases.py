@@ -9,7 +9,9 @@ import ollama
 import toml
 
 from langchain import agents
+from langchain_core.runnables import RunnableConfig
 from langchain_ollama import ChatOllama
+from langgraph.checkpoint.memory import InMemorySaver
 from langgraph.graph.state import CompiledStateGraph
 from langchain.messages import AIMessage
 from rich.console import Console
@@ -24,6 +26,7 @@ console = Console()
 def get_tutor_params(tutor_file: str) -> dict:
     res = {  # default tutor settings
         "model": "qwen3:4b-instruct",  # supports tools
+        "session_id": "default-session",  # ID for tracking chat history and logs
         "agent_prompt": """You are a helpful Korean language learning tutor. Help the user practice translation from English to Korean. You are a big Jack Sparrow fan.
 
         Goals and behavior:
@@ -55,17 +58,20 @@ def get_tutor_params(tutor_file: str) -> dict:
             res["model"] = tutor_params["model"]
         if "agent_prompt" in tutor_params:
             res["agent_prompt"] = tutor_params["agent_prompt"]
+        if "session_id" in tutor_params:
+            res["session_id"] = tutor_params["session_id"]
 
     return res
 
 
-def invoke(agent: CompiledStateGraph, messages: list[dict[str, str]]) -> list[dict]:
+def invoke(agent: CompiledStateGraph, messages: list[dict[str, str]], session_id: str) -> list[dict]:
     """
     Basic streaming handler (event shapes vary between LangChain versions).
     """
 
     steps = []
-    for step in agent.stream({"messages": messages}):
+    config = RunnableConfig(configurable={"thread_id": session_id})
+    for step in agent.stream(input={"messages": messages}, config=config):
         steps.append(step)
         if isinstance(step, dict):
             if "model" in step and isinstance(step["model"], dict):
@@ -78,7 +84,7 @@ def invoke(agent: CompiledStateGraph, messages: list[dict[str, str]]) -> list[di
             #     # ? Tool call event
             #     pass
             else:
-                print("[!] Unrecognized step contents, dict:", step)
+                # print("[!] Unrecognized step contents, dict:", step)
                 # Unknown dict event; ignore or log if needed.
                 pass
         else:
@@ -216,19 +222,22 @@ def log_tools_usage(steps: list[dict]):
             tool_res = get_tool_call_result_from_aimessage(step["tools"])
 
 
-def create_agent() -> CompiledStateGraph:
+def create_agent() -> tuple[CompiledStateGraph, str]:
     tutor_params = get_tutor_params(".tutor")
     model = ChatOllama(model=tutor_params["model"])
     agent_prompt = tutor_params["agent_prompt"]
 
     tools = [list_grammar_topics, exercises_generator, user_translation, finish_session]
-    agent = agents.create_agent(model=model, tools=tools, system_prompt=agent_prompt)
+    agent = agents.create_agent(
+        model=model, tools=tools, system_prompt=agent_prompt, checkpointer=InMemorySaver()
+    )
 
     # probe the agent to see if it support tools.
     try:
-        agent.invoke({"messages": [{"role": "user", "content": "Hello"}]})
+        config = RunnableConfig(configurable={"thread_id": "probe-session"})
+        agent.invoke({"messages": [{"role": "user", "content": "Hello"}]}, config=config)
     except ollama.ResponseError as error:
         console.print(Markdown("**Agent does not support tools, recreating without tool support...**"))
-        agent = agents.create_agent(model=model, system_prompt=agent_prompt)
+        agent = agents.create_agent(model=model, system_prompt=agent_prompt, checkpointer=InMemorySaver())
 
-    return agent
+    return agent, tutor_params["session_id"]

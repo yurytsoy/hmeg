@@ -5,4 +5,5 @@ from hmeg.tutor.usecases import create_agent
 
 
 if __name__ == "__main__":
-    chat_loop(create_agent())
+    agent, session_id = create_agent()
+    chat_loop(agent, session_id)
