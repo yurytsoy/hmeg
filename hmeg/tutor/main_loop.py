@@ -73,7 +73,7 @@ def extract_messages_from_checkpointer(agent: CompiledStateGraph, config: Runnab
     if not agent.checkpointer:
         return []
 
-    last = agent.checkpointer.list(config)[0].checkpoint
+    last = agent.checkpointer.get(config)
     result = []
     messages = last.get("channel_values", {}).get("messages", [])
     for msg in messages:
@@ -81,5 +81,5 @@ def extract_messages_from_checkpointer(agent: CompiledStateGraph, config: Runnab
             continue
         if msg.type == "ai" and (not msg.usage_metadata or not msg.content):
             continue
-        result.append(msg.content)
+        result.append({"role": msg.type, "content": msg.content, "timestamp": msg.response_metadata["created_at"], "id": msg.id, "thread_id": config["configurable"]["thread_id"]})
     return messages
