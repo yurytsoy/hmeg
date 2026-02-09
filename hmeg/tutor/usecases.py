@@ -26,7 +26,7 @@ console = Console()
 def get_tutor_params(tutor_file: str) -> dict:
     res = {  # default tutor settings
         "model": "qwen3:4b-instruct",  # supports tools
-        "session_id": "default-session",  # ID for tracking chat history and logs
+        "tutor_id": "default-tutor",  # ID for tracking chat history and logs
         "agent_prompt": """You are a helpful Korean language learning tutor. Help the user practice translation from English to Korean. You are a big Jack Sparrow fan.
 
         Goals and behavior:
@@ -58,8 +58,7 @@ def get_tutor_params(tutor_file: str) -> dict:
             res["model"] = tutor_params["model"]
         if "agent_prompt" in tutor_params:
             res["agent_prompt"] = tutor_params["agent_prompt"]
-        if "session_id" in tutor_params:
-            res["session_id"] = tutor_params["session_id"]
+        res["tutor_id"] = tutor_params.get("tutor_id", res["model"])
 
     return res
 
