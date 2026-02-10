@@ -64,7 +64,6 @@ def invoke(agent: CompiledStateGraph, messages: list[dict[str, str]], config: di
 
     steps = []
     for step in agent.stream(input={"messages": messages}, config=config):
-    # for step in agent.stream(input={"messages": messages}, config=config):
         steps.append(step)
         if isinstance(step, dict):
             if "model" in step and isinstance(step["model"], dict):

@@ -5,7 +5,15 @@ import uuid
 from langchain_core.runnables import RunnableConfig
 from langgraph.graph.state import CompiledStateGraph
 
-from .usecases import invoke, get_final_text_from_steps, log_tools_usage_from_steps, log_tokens_usage_from_steps
+from .entities import LogFiles
+from .usecases import (
+    extract_messages_from_checkpointer,
+    get_final_text_from_steps,
+    invoke,
+    log_tools_usage_from_steps,
+    log_tokens_usage_from_steps,
+    write_messages_log,
+)
 
 
 def chat_loop(agent: CompiledStateGraph, student_id: str, max_turns: int = 20):
@@ -51,35 +59,5 @@ def chat_loop(agent: CompiledStateGraph, student_id: str, max_turns: int = 20):
     else:
         print("Max turns reached, ending session.")
 
-    # TODO: extract messages from a checkpointer. (agent.checkpointer.list(config))
-
-
-def extract_messages_from_checkpointer(agent: CompiledStateGraph, config: RunnableConfig) -> list[dict]:
-    """
-    Extracts messages from the agent's checkpointer.
-
-    Parameters
-    ----------
-    agent : CompiledStateGraph
-        The agent from which to extract messages.
-    config : RunnableConfig
-        The runnable configuration used for the session.
-
-    Returns
-    -------
-    list[dict]
-        The list of messages extracted from the checkpointer.
-    """
-    if not agent.checkpointer:
-        return []
-
-    last = agent.checkpointer.get(config)
-    result = []
-    messages = last.get("channel_values", {}).get("messages", [])
-    for msg in messages:
-        if msg.type == "tool":
-            continue
-        if msg.type == "ai" and (not msg.usage_metadata or not msg.content):
-            continue
-        result.append({"role": msg.type, "content": msg.content, "timestamp": msg.response_metadata["created_at"], "id": msg.id, "thread_id": config["configurable"]["thread_id"]})
-    return messages
+    msgs = extract_messages_from_checkpointer(agent=agent, config=config)
+    write_messages_log(LogFiles.MESSAGE_LOG, msgs)

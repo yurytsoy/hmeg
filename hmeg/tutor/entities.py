@@ -13,3 +13,4 @@ class LogRecordType:
 class LogFiles:
     TOKEN_LOG: str = "tutor_tokens_usage.jsonl"
     TOOL_LOG: str = "tutor_tool_calls.jsonl"
+    MESSAGE_LOG: str = "messages.jsonl"
