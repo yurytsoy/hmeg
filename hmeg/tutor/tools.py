@@ -38,7 +38,7 @@ def exercises_generator(grammar_topic: str, num: int, vocab_level: str) -> list[
     vocab_level : str
         CEFR-compatible vocabulary level to use (e.g., "A2", "B1", etc.)
 
-    Returns:
+    Returns
     -------
     list[str]
         List of generated exercises for translation to Korean.

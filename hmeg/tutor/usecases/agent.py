@@ -57,13 +57,13 @@ def get_tutor_params(tutor_file: str) -> dict:
     return res
 
 
-def invoke(agent: CompiledStateGraph, messages: list[dict[str, str]], config: dict | RunnableConfig) -> list[dict]:
+def invoke(agent: CompiledStateGraph, user_message: str, config: dict | RunnableConfig) -> list[dict]:
     """
     Basic streaming handler (event shapes vary between LangChain versions).
     """
 
     steps = []
-    for step in agent.stream(input={"messages": messages}, config=config):
+    for step in agent.stream(input={"messages": [{"role": "user", "content": user_message}]}, config=config):
         steps.append(step)
         if isinstance(step, dict):
             if "model" in step and isinstance(step["model"], dict):

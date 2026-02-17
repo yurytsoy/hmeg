@@ -29,13 +29,12 @@ def chat_loop(agent: CompiledStateGraph, student_id: str, max_turns: int = 20):
     def make_session_id() -> str:
         return f"{agent.name or ''} : {student_id or str(uuid.uuid4())}"
 
-    history = []
     session_id = make_session_id()
     config = RunnableConfig(configurable={"thread_id": session_id})
+    user_input = None
     for turn in range(max_turns):
-        steps = invoke(agent=agent, messages=history, config=config)
+        steps = invoke(agent=agent, user_message=user_input, config=config)
         final_text = get_final_text_from_steps(steps)
-        history.append({"role": "assistant", "content": final_text})
         resp = final_text
 
         log_tools_usage_from_steps(steps, session_id=session_id)
@@ -51,7 +50,6 @@ def chat_loop(agent: CompiledStateGraph, student_id: str, max_turns: int = 20):
         except EOFError:
             break
 
-        history.append({"role": "user", "content": user_input})
         if not user_input or user_input.lower() == "exit":
             print("Exiting.")
             break

@@ -8,11 +8,10 @@ import os
 from langchain.messages import AIMessage
 
 from hmeg.tutor.entities import LogFiles, LogRecordType
-from .utils import get_tool_call_result_from_aimessage, get_tool_call_args_from_aimessage, get_total_token_stats
+from .utils import get_total_token_stats
 
 
 def write_observability_log(filename: str, record: dict):
-    # log_filename = "tutor_observability.jsonl"
     event_record = copy.deepcopy(record)
     event_record["timestamp"] = datetime.now().isoformat()
 

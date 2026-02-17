@@ -79,8 +79,6 @@ def extract_messages_from_checkpointer(agent: CompiledStateGraph, config: Runnab
     if not agent.checkpointer:
         return []
 
-    # TODO: handle duplicate human messages.
-
     last = agent.checkpointer.get(config)
     result = []
     messages = last.get("channel_values", {}).get("messages", [])
@@ -89,5 +87,5 @@ def extract_messages_from_checkpointer(agent: CompiledStateGraph, config: Runnab
             continue
         if msg.type == "ai" and (not msg.usage_metadata or not msg.content or not msg.response_metadata):
             continue
-        result.append({"role": msg.type, "content": msg.content, "timestamp": msg.response_metadata.get("created_at"), "id": msg.id, "thread_id": config["configurable"]["thread_id"]})
+        result.append({"role": msg.type, "content": msg.content, "timestamp": (msg.response_metadata or {}).get("created_at"), "id": msg.id, "thread_id": config["configurable"]["thread_id"]})
     return result
