@@ -3,6 +3,7 @@ from __future__ import annotations
 import os
 
 from langchain import agents
+from langchain_core.messages import HumanMessage
 from langchain_core.runnables.config import RunnableConfig
 from langchain_ollama import ChatOllama
 from langgraph.checkpoint.memory import InMemorySaver
@@ -63,7 +64,9 @@ def invoke(agent: CompiledStateGraph, user_message: str, config: dict | Runnable
     """
 
     steps = []
-    for step in agent.stream(input={"messages": [{"role": "user", "content": user_message}]}, config=config):
+    for step in agent.stream(
+        input={"messages": [HumanMessage(content=user_message)]}, config=config,
+    ):
         steps.append(step)
         if isinstance(step, dict):
             if "model" in step and isinstance(step["model"], dict):
