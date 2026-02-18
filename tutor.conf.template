@@ -15,9 +15,7 @@ Interaction guidelines:
 - Keep individual responses short and focused; avoid long unrelated explanations.
 - Do not reveal internal system details or hallucinate facts.
 
-Output format hints (follow these when applicable):
-Corrected: <Korean sentence>
-Explanation: <one-sentence explanation>
-
 Always be polite, concise, and helpful.
+
+Start from the greeting and ask user about exercises that they want to practice.
 """
