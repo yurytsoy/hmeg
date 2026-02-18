@@ -10,6 +10,7 @@ from .usecases import (
     extract_messages_from_checkpointer,
     get_final_text_from_steps,
     invoke,
+    is_finish,
     log_tools_usage_from_steps,
     log_tokens_usage_from_steps,
     write_messages_log,
@@ -31,17 +32,16 @@ def chat_loop(agent: CompiledStateGraph, student_id: str, max_turns: int = 20):
 
     session_id = make_session_id()
     config = RunnableConfig(configurable={"thread_id": session_id})
-    user_input = None
+    user_input = ""
     for turn in range(max_turns):
         steps = invoke(agent=agent, user_message=user_input, config=config)
-        final_text = get_final_text_from_steps(steps)
-        resp = final_text
+        is_finished = is_finish(steps)
 
         log_tools_usage_from_steps(steps, session_id=session_id)
         log_tokens_usage_from_steps(steps, session_id=session_id)
 
         # Stop on explicit finish_tool sentinel
-        if isinstance(resp, str) and resp.startswith("FINISHED:"):
+        if is_finished:
             print("Session finished by agent.")
             break
 
