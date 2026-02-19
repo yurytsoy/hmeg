@@ -5,16 +5,7 @@ import uuid
 from langchain_core.runnables import RunnableConfig
 from langgraph.graph.state import CompiledStateGraph
 
-from .entities import LogFiles
-from .usecases import (
-    extract_messages_from_checkpointer,
-    get_final_text_from_steps,
-    invoke,
-    is_finish,
-    log_tools_usage_from_steps,
-    log_tokens_usage_from_steps,
-    write_messages_log,
-)
+from hmeg.tutor import usecases as tutor_usecases
 
 
 def chat_loop(agent: CompiledStateGraph, student_id: str, max_turns: int = 20):
@@ -32,15 +23,13 @@ def chat_loop(agent: CompiledStateGraph, student_id: str, max_turns: int = 20):
 
     session_id = make_session_id()
     config = RunnableConfig(configurable={"thread_id": session_id})
-    user_input = ""
+    user_input = "[Begin the session]"
     for turn in range(max_turns):
-        steps = invoke(agent=agent, user_message=user_input, config=config)
-        is_finished = is_finish(steps)
-
-        log_tools_usage_from_steps(steps, session_id=session_id)
-        log_tokens_usage_from_steps(steps, session_id=session_id)
+        steps = tutor_usecases.invoke(agent=agent, user_message=user_input, config=config)
+        tutor_usecases.log_agent_steps(steps=steps, session_id=session_id)  # log the agent's response, tool calls, and token usage for this turn.
 
         # Stop on explicit finish_tool sentinel
+        is_finished = tutor_usecases.is_finish(steps)
         if is_finished:
             print("Session finished by agent.")
             break
@@ -49,6 +38,7 @@ def chat_loop(agent: CompiledStateGraph, student_id: str, max_turns: int = 20):
             user_input = input("You: ").strip()
         except EOFError:
             break
+        tutor_usecases.log_user_message(msg=user_input, session_id=session_id)
 
         if not user_input or user_input.lower() == "exit":
             print("Exiting.")
@@ -56,6 +46,3 @@ def chat_loop(agent: CompiledStateGraph, student_id: str, max_turns: int = 20):
 
     else:
         print("Max turns reached, ending session.")
-
-    msgs = extract_messages_from_checkpointer(agent=agent, config=config)
-    write_messages_log(LogFiles.MESSAGE_LOG, msgs)

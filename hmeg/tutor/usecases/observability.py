@@ -5,10 +5,10 @@ from datetime import datetime
 import json
 import os
 
-from langchain.messages import AIMessage
+from langchain_core.messages import AIMessage
 
 from hmeg.tutor.entities import LogFiles, LogRecordType
-from .utils import get_total_token_stats
+from .utils import get_total_token_stats, get_agent_text_from_steps
 
 
 def write_observability_log(filename: str, record: dict):
@@ -33,6 +33,35 @@ def write_messages_log(filename: str, records: list[dict]):
             f.write(json.dumps(record, ensure_ascii=False) + "\n")
 
 
+def log_agent_steps(
+    steps: list[dict], session_id: str, log_message: bool=True, log_tokens: bool=True, log_tools: bool=True
+):
+    if log_message: log_ai_message_from_steps(steps, session_id)
+    if log_tokens: log_tokens_usage_from_steps(steps, session_id)
+    if log_tools: log_tools_usage_from_steps(steps, session_id)
+
+
+def log_ai_message_from_steps(steps: list[dict], session_id: str):
+    msg = get_agent_text_from_steps(steps)
+    record = message_to_Log_record(msg=msg, role="ai", session_id=session_id, msg_id=None)
+    write_messages_log(LogFiles.MESSAGE_LOG, [record])
+
+
+def log_user_message(msg: str, session_id: str):
+    record = message_to_Log_record(msg=msg, role="user", session_id=session_id, msg_id=None)
+    write_messages_log(LogFiles.MESSAGE_LOG, [record])
+
+
+def message_to_Log_record(msg: str, role: str, session_id: str, msg_id: str | None=None) -> dict:
+    return {
+        "role": role,
+        "content": msg,
+        "timestamp": datetime.now().isoformat(),
+        "id": msg_id,
+        "thread_id": session_id,
+    }
+
+
 def log_tokens_usage_from_steps(steps: list[dict], session_id: str):
     token_stats = get_total_token_stats(steps)
 
@@ -45,23 +74,6 @@ def log_tokens_usage_from_steps(steps: list[dict], session_id: str):
         "session_id": session_id,
     }
     write_observability_log(LogFiles.TOKEN_LOG, log_record)
-
-
-# def log_tools_usage(steps: list[dict]):
-#     """
-#     Logs tool usage from the agent's streaming steps.
-#
-#     Parameters
-#     ----------
-#     steps : list[dict]
-#         The list of streaming steps from the agent.
-#     """
-#
-#     # open log
-#     for step in steps:
-#         if isinstance(step, dict) and "tools" in step and isinstance(step["tools"], AIMessage):
-#             tool_args = get_tool_call_args_from_aimessage(step["tools"])
-#             tool_res = get_tool_call_result_from_aimessage(step["tools"])
 
 
 def log_tools_usage_from_steps(steps: list[dict], session_id: str):
