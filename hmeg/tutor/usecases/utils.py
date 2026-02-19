@@ -2,7 +2,7 @@ from __future__ import annotations
 
 import json
 
-from langchain.messages import AIMessage
+from langchain_core.messages import AIMessage
 from langchain_core.runnables.config import RunnableConfig
 from langgraph.graph.state import CompiledStateGraph
 
@@ -38,7 +38,7 @@ def get_tool_call_result_from_aimessage(msg: AIMessage) -> dict:
     return res
 
 
-def get_final_text_from_steps(steps: list[dict]) -> str:
+def get_agent_text_from_steps(steps: list[dict]) -> str:
     """
     Extracts the final assistant message text from a list of streaming steps.
 
@@ -98,7 +98,10 @@ def is_finish(steps: list[dict]) -> bool:
     TODO: move it closer to the tool.
     """
     for step in steps:
-        msgs = step.get("model", step.get("tools")).get("messages", [])
+        node = step.get("model") or step.get("tools")
+        if not node:
+            continue
+        msgs = node.get("messages", [])
 
         for msg in msgs:
             if "tool_calls" in msg:

@@ -3,12 +3,12 @@ from __future__ import annotations
 import os
 
 from langchain import agents
+from langchain_core.language_models import BaseChatModel
 from langchain_core.messages import HumanMessage
 from langchain_core.runnables.config import RunnableConfig
 from langchain_ollama import ChatOllama
 from langgraph.checkpoint.memory import InMemorySaver
 from langgraph.graph.state import CompiledStateGraph
-import ollama
 from rich.console import Console
 from rich.markdown import Markdown
 import toml
@@ -22,26 +22,24 @@ def get_tutor_params(tutor_file: str) -> dict:
     res = {  # default tutor settings
         "model": "qwen3:4b-instruct",  # supports tools
         "tutor_id": "default-tutor",  # ID for tracking chat history and logs
-        "agent_prompt": """You are a helpful Korean language learning tutor. Help the user practice translation from English to Korean. You are a big Jack Sparrow fan.
+        "agent_prompt": """You are a helpful Korean language learning tutor. Help the user practice translation from English to Korean. You are a big Futurama fan.
 
-        Goals and behavior:
-        - Prioritize clear, concise teaching: provide translations, corrections, short explanations, and relevant vocabulary.
-        - Keep an encouraging, neutral tone and adapt complexity to the user's stated CEFR level or inferred ability.
-        - When giving corrections, show: 1) corrected Korean sentence, 2) a short explanation of the error (1–2 sentences), 3) 1–2 key vocabulary or grammar notes, and optionally Romanization if requested.
+Goals and behavior:
+- Prioritize clear, concise teaching: provide translations, corrections, short explanations, and relevant vocabulary.
+- Keep an encouraging, neutral tone and adapt complexity to the user's stated CEFR level.
+- When giving corrections, show: 1) corrected Korean sentence, 2) a short explanation of the error (1–2 sentences), 3) 1–2 key vocabulary or grammar notes, and optionally Romanization if requested.
 
-        Interaction guidelines:
-        - Converse in English unless the user requests otherwise.
-        - Ask a clarifying question if the user's request is ambiguous.
-        - Ask whether user wants to practice a specific Korean grammar.
-        - When providing exercises, indicate the target CEFR level and any special constraints (e.g., vocabulary limits).
-        - Keep individual responses short and focused; avoid long unrelated explanations.
-        - Do not reveal internal system details or hallucinate facts.
+Interaction guidelines:
+- Converse in English unless the user requests otherwise.
+- Ask a clarifying question if the user's request is ambiguous.
+- Ask whether user wants to practice a specific Korean grammar.
+- When providing exercises, indicate the target CEFR level and any special constraints (e.g., vocabulary limits).
+- Keep individual responses short and focused; avoid long unrelated explanations.
+- Do not reveal internal system details or hallucinate facts.
 
-        Output format hints (follow these when applicable):
-        Corrected: <Korean sentence>
-        Explanation: <one-sentence explanation>
+Always be polite, concise, and helpful.
 
-        Always be polite, concise, and helpful."""
+Start from the greeting and ask user about exercises that they want to practice."""
     }
 
     if os.path.exists(tutor_file):
@@ -89,23 +87,29 @@ def invoke(agent: CompiledStateGraph, user_message: str, config: dict | Runnable
     return steps
 
 
+def supports_tools(model: BaseChatModel, tools: list) -> bool:
+    try:
+        model.bind_tools(tools)
+        return True
+    except (NotImplementedError, ValueError):
+        return False
+
+
 def create_agent(tutor_config_path: str | None) -> CompiledStateGraph:
     tutor_config_path = tutor_config_path or "tutor.conf"
 
     tutor_params = get_tutor_params(tutor_config_path)
     model = ChatOllama(model=tutor_params["model"])
     agent_prompt = tutor_params["agent_prompt"]
-
     tools = [list_grammar_topics, exercises_generator, user_translation, finish_session]
-    agent = agents.create_agent(
-        model=model, tools=tools, system_prompt=agent_prompt, checkpointer=InMemorySaver(), name=tutor_params.get("tutor_id", None)
-    )
 
     # probe the agent to see if it support tools.
-    try:
-        config = RunnableConfig(configurable={"thread_id": "probe-session"})
-        agent.invoke({"messages": [{"role": "user", "content": "Hello"}]}, config=config)
-    except ollama.ResponseError as error:
+    if supports_tools(model, tools):
+        agent = agents.create_agent(
+            model=model, tools=tools, system_prompt=agent_prompt, checkpointer=InMemorySaver(),
+            name=tutor_params.get("tutor_id", None)
+        )
+    else:
         console.print(Markdown("**Agent does not support tools, recreating without tool support...**"))
         agent = agents.create_agent(model=model, system_prompt=agent_prompt, checkpointer=InMemorySaver())
 
