@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import os
+import uuid
 
 from langchain import agents
 from langchain_core.language_models import BaseChatModel
@@ -13,6 +14,7 @@ from rich.console import Console
 from rich.markdown import Markdown
 import toml
 
+from hmeg.tutor.entities import SESSION_ID_SEPARATOR
 from hmeg.tutor.tools import finish_session, list_grammar_topics, exercises_generator, user_translation
 
 console = Console()
@@ -85,6 +87,10 @@ def invoke(agent: CompiledStateGraph, user_message: str, config: dict | Runnable
             print("[!] Unrecognized step type and contents:", step)
             pass
     return steps
+
+
+def make_session_id(agent_name: str, student_id: str | None = None) -> str:
+    return f"{agent_name or ''}{SESSION_ID_SEPARATOR}{student_id or str(uuid.uuid4())}"
 
 
 def supports_tools(model: BaseChatModel, tools: list) -> bool:
