@@ -2,9 +2,14 @@ from __future__ import annotations
 
 from dataclasses import dataclass
 
-
 TUTOR_DIR = ".tutor"
 SESSION_ID_SEPARATOR = " : "
+
+
+class Roles:
+    SYSTEM: str = "system"
+    USER: str = "user"
+    AI: str = "ai"
 
 
 @dataclass

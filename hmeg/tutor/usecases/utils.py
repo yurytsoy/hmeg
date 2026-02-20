@@ -2,7 +2,7 @@ from __future__ import annotations
 
 import json
 
-from langchain_core.messages import AIMessage
+from langchain_core.messages import AIMessage, ToolMessage
 from langchain_core.runnables.config import RunnableConfig
 from langgraph.graph.state import CompiledStateGraph
 
@@ -83,9 +83,9 @@ def extract_messages_from_checkpointer(agent: CompiledStateGraph, config: Runnab
     result = []
     messages = last.get("channel_values", {}).get("messages", [])
     for msg in messages:
-        if msg.type == "tool":
+        if isinstance(msg, ToolMessage):
             continue
-        if msg.type == "ai" and (not msg.usage_metadata or not msg.content or not msg.response_metadata):
+        if isinstance(msg, AIMessage) and (not msg.usage_metadata or not msg.content or not msg.response_metadata):
             continue
         result.append({"role": msg.type, "content": msg.content, "timestamp": (msg.response_metadata or {}).get("created_at"), "id": msg.id, "thread_id": config["configurable"]["thread_id"]})
     return result

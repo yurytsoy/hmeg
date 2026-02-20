@@ -7,7 +7,7 @@ import os
 
 from langchain_core.messages import AIMessage
 
-from hmeg.tutor.entities import LogFiles, LogRecordType, SESSION_ID_SEPARATOR, TUTOR_DIR
+from hmeg.tutor.entities import LogFiles, LogRecordType, Roles, SESSION_ID_SEPARATOR, TUTOR_DIR
 from .utils import get_total_token_stats, get_agent_text_from_steps
 
 
@@ -51,13 +51,13 @@ def log_agent_steps(
 
 def log_ai_message_from_steps(steps: list[dict], session_id: str):
     msg = get_agent_text_from_steps(steps)
-    record = message_to_Log_record(msg=msg, role="ai", session_id=session_id, msg_id=None)
+    record = message_to_Log_record(msg=msg, role=Roles.AI, session_id=session_id, msg_id=None)
     log_file = os.path.join(get_log_dir(session_id), LogFiles.MESSAGE_LOG)
     write_messages_log(log_file, [record])
 
 
 def log_user_message(msg: str, session_id: str):
-    record = message_to_Log_record(msg=msg, role="user", session_id=session_id, msg_id=None)
+    record = message_to_Log_record(msg=msg, role=Roles.USER, session_id=session_id, msg_id=None)
     log_file = os.path.join(get_log_dir(session_id), LogFiles.MESSAGE_LOG)
     write_messages_log(log_file, [record])
 
