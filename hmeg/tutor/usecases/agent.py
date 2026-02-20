@@ -54,6 +54,7 @@ Start from the greeting and ask user about exercises that they want to practice.
         if "agent_prompt" in tutor_params:
             res["agent_prompt"] = tutor_params["agent_prompt"]
         res["tutor_id"] = tutor_params.get("tutor_id", res["model"])
+        res["context_size"] = tutor_params.get("context_size", 32768)
 
     return res
 
@@ -105,7 +106,7 @@ def create_agent(tutor_config_path: str | None) -> CompiledStateGraph:
     tutor_config_path = tutor_config_path or "tutor.conf"
 
     tutor_params = get_tutor_params(tutor_config_path)
-    model = ChatOllama(model=tutor_params["model"])
+    model = ChatOllama(model=tutor_params["model"], num_ctx=tutor_params["context_size"])
     agent_prompt = tutor_params["agent_prompt"]
     tools = [list_grammar_topics, exercises_generator, user_translation, finish_session]
 
