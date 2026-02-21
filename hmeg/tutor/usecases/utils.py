@@ -89,26 +89,3 @@ def extract_messages_from_checkpointer(agent: CompiledStateGraph, config: Runnab
             continue
         result.append({"role": msg.type, "content": msg.content, "timestamp": (msg.response_metadata or {}).get("created_at"), "id": msg.id, "thread_id": config["configurable"]["thread_id"]})
     return result
-
-
-def is_finish(steps: list[dict]) -> bool:
-    """
-    Detects whether agent execution steps have call to the finish_session tool.
-
-    TODO: move it closer to the tool.
-    """
-    for step in steps:
-        node = step.get("model") or step.get("tools")
-        if not node:
-            continue
-        msgs = node.get("messages", [])
-
-        for msg in msgs:
-            if "tool_calls" in msg:
-                finish_calls = [tool_call for tool_call in msg.tool_calls if tool_call["name"] == "finish_session"]
-                if finish_calls:
-                    return True
-            elif msg.text and msg.text.startswith("FINISHED:"):
-                return True
-
-    return False

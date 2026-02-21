@@ -4,6 +4,7 @@ from langchain_core.runnables import RunnableConfig
 from langgraph.graph.state import CompiledStateGraph
 
 from hmeg.tutor import usecases as tutor_usecases
+from hmeg.tutor.tools.finish_session import is_finish
 
 
 def chat_loop(agent: CompiledStateGraph, student_id: str, max_turns: int = 20):
@@ -23,7 +24,7 @@ def chat_loop(agent: CompiledStateGraph, student_id: str, max_turns: int = 20):
         steps = tutor_usecases.invoke(agent=agent, user_message=user_input, config=config)
         tutor_usecases.log_agent_steps(steps=steps, session_id=session_id)  # log the agent's response, tool calls, and token usage for this turn.
 
-        if tutor_usecases.is_finish(steps):
+        if is_finish(steps):
             print("Session finished by agent.")
             break
 

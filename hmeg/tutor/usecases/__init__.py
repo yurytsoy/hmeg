@@ -6,4 +6,4 @@ from .observability import (
     log_user_message,
     write_messages_log
 )
-from .utils import get_agent_text_from_steps, extract_messages_from_checkpointer, is_finish
+from .utils import get_agent_text_from_steps, extract_messages_from_checkpointer

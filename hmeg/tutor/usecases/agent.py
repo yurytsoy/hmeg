@@ -15,7 +15,7 @@ from rich.markdown import Markdown
 import toml
 
 from hmeg.tutor.entities import SESSION_ID_SEPARATOR
-from hmeg.tutor.tools import finish_session, list_grammar_topics, exercises_generator, user_translation
+from hmeg.tutor.tools import finish_session, list_grammar_topics, exercises_generator
 
 console = Console()
 
@@ -108,7 +108,7 @@ def create_agent(tutor_config_path: str | None) -> CompiledStateGraph:
     tutor_params = get_tutor_params(tutor_config_path)
     model = ChatOllama(model=tutor_params["model"], num_ctx=tutor_params["context_size"])
     agent_prompt = tutor_params["agent_prompt"]
-    tools = [list_grammar_topics, exercises_generator, user_translation, finish_session]
+    tools = [list_grammar_topics, exercises_generator, finish_session]
 
     # probe the agent to see if it support tools.
     if supports_tools(model, tools):
