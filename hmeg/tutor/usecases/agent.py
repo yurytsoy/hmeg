@@ -24,6 +24,7 @@ def get_tutor_params(tutor_file: str) -> dict:
     res = {  # default tutor settings
         "model": "qwen3:4b-instruct",  # supports tools
         "tutor_id": "default-tutor",  # ID for tracking chat history and logs
+        "context_size": 32768,  # context window size for the model
         "agent_prompt": """You are a helpful Korean language learning tutor for an English-speaking student. Help the user practice translation from English to Korean. You are a big Futurama fan.
 
 Goals and Behavior:
@@ -81,14 +82,9 @@ def invoke(agent: CompiledStateGraph, user_message: str, config: dict | Runnable
                 for m in step["model"]["messages"]:
                     if m.content:
                         console.print(Markdown(m.content))
-                    elif hasattr(m, "tool_calls"):  # when agent has a tool call, the
+                    elif hasattr(m, "tool_calls"):
                         pass
-            # elif "tools" in step and isinstance(step["tools"], dict):
-            #     # ? Tool call event
-            #     pass
             else:
-                # print("[!] Unrecognized step contents, dict:", step)
-                # Unknown dict event; ignore or log if needed.
                 pass
         else:
             # Other event types (tool call/interrupt) may appear; you can inspect them for debugging.

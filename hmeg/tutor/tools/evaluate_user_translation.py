@@ -40,4 +40,4 @@ def evaluate_user_translation(exercise: str, user_translation: str, tutor_transl
     """
     messages = [("system", prompt)]
     resp = model.invoke(messages)
-    return resp.text
+    return resp.content

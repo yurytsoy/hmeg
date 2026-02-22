@@ -1,7 +1,5 @@
 from __future__ import annotations
 
-from dataclasses import dataclass
-
 TUTOR_DIR = ".tutor"
 SESSION_ID_SEPARATOR = " : "
 
@@ -12,7 +10,6 @@ class Roles:
     AI: str = "ai"
 
 
-@dataclass
 class LogRecordType:
     TOKENS_USAGE: str = "tokens_usage"
     TOOL_CALL: str = "tool_call"

@@ -11,7 +11,10 @@ def get_total_token_stats(steps: list[dict]) -> dict:
     token_stats = {'input_tokens': 0, 'output_tokens': 0, 'total_tokens': 0}
     for step in steps:
         if "model" in step and isinstance(step["model"], dict):
-            usage = step["model"]["messages"][0].usage_metadata
+            msgs = step["model"].get("messages", [])
+            if not msgs:
+                continue
+            usage = msgs[0].usage_metadata
             token_stats["input_tokens"] += usage.get("input_tokens", 0)
             token_stats["output_tokens"] += usage.get("output_tokens", 0)
             token_stats["total_tokens"] += usage.get("total_tokens", 0)
@@ -80,6 +83,9 @@ def extract_messages_from_checkpointer(agent: CompiledStateGraph, config: Runnab
         return []
 
     last = agent.checkpointer.get(config)
+    if last is None:
+        return []
+
     result = []
     messages = last.get("channel_values", {}).get("messages", [])
     for msg in messages:

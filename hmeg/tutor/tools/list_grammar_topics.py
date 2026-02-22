@@ -17,6 +17,6 @@ def list_grammar_topics() -> list[str]:
         A list of available grammar topics.
     """
 
-    uc.register_grammar_topics()
+    uc.register_grammar_topics(force=False)
     topics = GrammarRegistry.get_registered_topics()
     return topics

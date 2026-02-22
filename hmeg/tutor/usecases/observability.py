@@ -12,11 +12,10 @@ from .utils import get_total_token_stats, get_agent_text_from_steps
 
 
 def get_log_dir(session_id: str):
-    tutor_id, student_id = session_id.split(SESSION_ID_SEPARATOR)
+    tutor_id, student_id = session_id.rsplit(SESSION_ID_SEPARATOR, 1)
     log_dir = os.path.join(TUTOR_DIR, LogFiles.LOG_DIR, tutor_id, student_id)
     os.makedirs(log_dir, exist_ok=True)
     return log_dir
-
 
 
 def write_observability_log(filename: str, record: dict):
@@ -42,7 +41,7 @@ def write_messages_log(filename: str, records: list[dict]):
 
 
 def log_agent_steps(
-    steps: list[dict], session_id: str, log_message: bool=True, log_tokens: bool=True, log_tools: bool=True
+    steps: list[dict], session_id: str, log_message: bool = True, log_tokens: bool = True, log_tools: bool = True
 ):
     if log_message: log_ai_message_from_steps(steps, session_id)
     if log_tokens: log_tokens_usage_from_steps(steps, session_id)
@@ -51,18 +50,18 @@ def log_agent_steps(
 
 def log_ai_message_from_steps(steps: list[dict], session_id: str):
     msg = get_agent_text_from_steps(steps)
-    record = message_to_Log_record(msg=msg, role=Roles.AI, session_id=session_id, msg_id=None)
+    record = message_to_log_record(msg=msg, role=Roles.AI, session_id=session_id, msg_id=None)
     log_file = os.path.join(get_log_dir(session_id), LogFiles.MESSAGE_LOG)
     write_messages_log(log_file, [record])
 
 
 def log_user_message(msg: str, session_id: str):
-    record = message_to_Log_record(msg=msg, role=Roles.USER, session_id=session_id, msg_id=None)
+    record = message_to_log_record(msg=msg, role=Roles.USER, session_id=session_id, msg_id=None)
     log_file = os.path.join(get_log_dir(session_id), LogFiles.MESSAGE_LOG)
     write_messages_log(log_file, [record])
 
 
-def message_to_Log_record(msg: str, role: str, session_id: str, msg_id: str | None=None) -> dict:
+def message_to_log_record(msg: str, role: str, session_id: str, msg_id: str | None = None) -> dict:
     return {
         "role": role,
         "content": msg,
@@ -109,11 +108,19 @@ def log_tools_usage_from_steps(steps: list[dict], session_id: str):
     log_file = os.path.join(get_log_dir(session_id), LogFiles.TOOL_LOG)
     for step in steps:
         if "model" in step and isinstance(step["model"], dict):
-            tool_calls = step["model"]["messages"][0].tool_calls
+            msgs = step["model"].get("messages", [])
+            if not msgs:
+                continue
+
+            tool_calls = msgs[0].tool_calls
             for call in tool_calls:
                 record = tool_call_to_log_record(call)
                 write_observability_log(log_file, record)
 
         if "tools" in step and isinstance(step["tools"], dict):
-            record = message_result_to_log_record(step["tools"]["messages"][0])
+            msgs = step["tools"].get("messages", [])
+            if not msgs:
+                continue
+
+            record = message_result_to_log_record(msgs[0])
             write_observability_log(log_file, record)
