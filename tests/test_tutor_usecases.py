@@ -4,6 +4,7 @@ import json
 import os
 import tempfile
 import unittest
+from datetime import datetime
 from unittest.mock import MagicMock, patch
 
 from langchain_core.messages import AIMessage, HumanMessage, ToolMessage
@@ -229,10 +230,6 @@ class TestGetLogDir(unittest.TestCase):
                 self.assertEqual(log_dir, expected)
                 self.assertTrue(os.path.isdir(log_dir))
 
-    def test_invalid_session_id_raises_value_error(self):
-        with self.assertRaises(ValueError):
-            get_log_dir("no-separator-here")
-
     def test_invalid_session_id_error_message(self):
         with self.assertRaisesRegex(ValueError, "not enough values to unpack"):
             get_log_dir("no-separator-here")
@@ -253,6 +250,7 @@ class TestWriteObservabilityLog(unittest.TestCase):
             self.assertEqual(parsed["type"], "test")
             self.assertEqual(parsed["value"], 42)
             self.assertIn("timestamp", parsed)
+            datetime.fromisoformat(parsed["timestamp"])  # raises ValueError if not valid ISO format
 
     def test_appends_multiple_records(self):
         with tempfile.TemporaryDirectory() as tmpdir:
@@ -305,6 +303,7 @@ class TestMessageToLogRecord(unittest.TestCase):
         self.assertEqual(record["content"], "hello")
         self.assertEqual(record["thread_id"], "t1 : s1")
         self.assertIn("timestamp", record)
+        datetime.fromisoformat(record["timestamp"])  # raises ValueError if not valid ISO format
         self.assertIsNone(record["id"])
 
     def test_msg_id_is_stored(self):
@@ -400,6 +399,8 @@ class TestLogToolsUsageFromSteps(unittest.TestCase):
                 self.assertEqual(parsed["type"], LogRecordType.TOOL_CALL)
                 self.assertEqual(parsed["tool_name"], "my_tool")
                 self.assertEqual(parsed["session_id"], session_id)
+                self.assertIn("timestamp", parsed)
+                datetime.fromisoformat(parsed["timestamp"])  # raises ValueError if not valid ISO format
 
     def test_logs_tool_result_from_tools_step(self):
         with tempfile.TemporaryDirectory() as tmpdir:
