@@ -61,12 +61,12 @@ def register_grammar_topics(grammar_dir: str | None = None, force: bool = False)
         If `True` then the grammar topics are re-registered even if they were registered before.
     """
 
-    if GrammarRegistry.topics and not force:
-        return
-
     cur_dir = os.path.split(__file__)[0]
     default_grammar_dir = os.path.join(cur_dir, "topics")
     grammar_dir = grammar_dir or default_grammar_dir
+
+    if grammar_dir in GrammarRegistry.loaded_dirs and not force:
+        return
 
     # iterate over files in `grammar_dir`, load descriptions of topics and exercises and register them.
     for file in sorted(os.listdir(grammar_dir)):
@@ -76,6 +76,7 @@ def register_grammar_topics(grammar_dir: str | None = None, force: bool = False)
             grammar_descr_dict = toml.loads(f.read())
             grammar_descr = GrammarDescription.from_dict(grammar_descr_dict)
             GrammarRegistry.register_grammar_topic(grammar_descr)
+    GrammarRegistry.loaded_dirs.add(grammar_dir)
 
 
 def get_vocabulary_names() -> list[str]:
