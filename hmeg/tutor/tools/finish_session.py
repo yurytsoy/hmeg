@@ -9,12 +9,12 @@ FINISH_TOKEN = "[FINISHED]"
 @tool
 def finish_session(message: str) -> str:
     """
-    Finishes the current practice session with a message.
+    Finishes the current practice session.
 
     Parameters
     ----------
     message : str
-        The message to display upon finishing the session.
+        The message sent upon finishing the session.
     """
     print("Finishing session...")
     return FINISH_TOKEN

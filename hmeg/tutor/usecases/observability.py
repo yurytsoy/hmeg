@@ -112,7 +112,7 @@ def log_tools_usage_from_steps(steps: list[dict], session_id: str):
             if not msgs:
                 continue
 
-            tool_calls = msgs[0].tool_calls
+            tool_calls = getattr(msgs[0], "tool_calls", []) or []
             for call in tool_calls:
                 record = tool_call_to_log_record(call)
                 write_observability_log(log_file, record)

@@ -14,7 +14,7 @@ def get_total_token_stats(steps: list[dict]) -> dict:
             msgs = step["model"].get("messages", [])
             if not msgs:
                 continue
-            usage = msgs[0].usage_metadata
+            usage = getattr(msgs[0], "usage_metadata", {})
             token_stats["input_tokens"] += usage.get("input_tokens", 0)
             token_stats["output_tokens"] += usage.get("output_tokens", 0)
             token_stats["total_tokens"] += usage.get("total_tokens", 0)

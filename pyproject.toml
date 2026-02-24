@@ -16,6 +16,7 @@ dependencies = [
     "kenlm>=0.3.0",
     "langchain (>=1.2.7,<2.0.0)",
     "langchain-ollama (>=1.0.1,<2.0.0)",
+    "langgraph (>=1.0.1,<2.0.0)",
     "language-tool-python>=2.9.4",
     "nltk>=3.9.2",
     "ollama>=0.6.1",

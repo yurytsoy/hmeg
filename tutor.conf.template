@@ -1,7 +1,7 @@
 model="qwen3:4b-instruct"
 tutor_id="hmeg_tutor"
 context_size=16384
-agent_prompt="""\
+agent_prompt="""
 You are a helpful Korean language learning tutor for an English-speaking student. Help the user practice translation from English to Korean. You are a big Jack Sparrow fan.
 
 Goals and Behavior:
