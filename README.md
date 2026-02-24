@@ -10,18 +10,20 @@ Help me, Erik Gunnemark -- a library for generating exercises to practice basic 
   - [Via pip](#via-pip)
   - [Via git](#via-git)
 - [Usage](#usage)
-  - [Python](#python)
   - [Command line](#command-line)
+  - [Python](#python)
   - [Generating exercises using Ollama](#generating-exercises-using-ollama)
-  - [Configuration file](#configuration-file)
 - [Format of exercises and vocabulary](#format-of-exercises-and-vocabulary)
 - [Why I made this library](#why-i-made-this-library)
 
 The idea is that mastering these building blocks helps with faster speaking and constructing more complex sentences.
 
-Exercises are generated randomly, so they can sometimes be grammatically or semantically odd.
-As long as a sentence is not abusive and is grammatically correct, it is considered a valid exercise.
-The goal is to facilitate quickfire translation into Korean, where the element of surprise can aid memorization.
+Exercises are generated either based on templates or using large language models (LLMs) via Ollama.
+The "templates" engine provides more control over the structure and vocabulary of exercises, while the "ollama" engine
+can generate more natural sentences with less control.
+
+Interactive tutor mode is available via the CLI, which uses an AI agent to guide you through exercises and provide
+feedback on your translations. The tutor relies on local LLMs, so the quality of feedback may vary.
 
 # Installation
 
@@ -44,6 +46,95 @@ pip install -e .
 ```
 
 # Usage
+
+## Command line
+
+The CLI tool `hmeg` is available after installation.
+
+### Interactive tutor (AI Agent)
+
+You can run tutor using
+```bash
+hmeg tutor
+```
+
+The tutor requires local installation of [Ollama](https://ollama.com/download). The tutor will guide you through exercises and provide feedback on your translations.
+
+Tutor configuration is taken from the file `tutor.conf`. Example can be found in the file [tutor.conf.template](tutor.conf.template)
+
+Models that support tools are recommended for the best experience. Some recommended models:
+* `gpt-oss:20b` -- pretty good and powerful model. Better works with 16GB of VRAM.
+* `qwen3:4b-instruct` -- fast small model with decent Korean. Regular `qwen3:4b` is waaaay slower.
+
+> **Important**: Local models make mistakes sometimes, so the tutor's feedback may not always be accurate.
+> Use it as a guide, but trust your own judgment as well!
+
+Example session with the tutor (gpt-oss-20b):
+
+```
+Hello! 👋 How would you like to practice today?                                                                                                                                                                                             
+
+ • A specific Korean grammar point (e.g., “-아/어/여도”, “‑고 싶다”, “‑는 걸요”)?                                                                                                                                                           
+ • Or a general CEFR level (A2, B1, etc.) for translation exercises?                                                                                                                                                                        
+
+Let me know what you’d like to work on!                                                                                                                                                                                                     
+You: please give me a random exercise for B1
+Here’s a B1‑level sentence for you to translate into Korean:                                                                                                                                                                                
+
+▌ I want to go to the movie theater.                                                                                                                                                                                                      
+
+Give it a try and let me know your translation!                                                                                                                                                                                             
+You: 저는 영화관에 가고 싶어요.
+Great job! 👏                                                                                                                                                                                                                               
+Your sentence 저는 영화관에 가고 싶어요 is correct.                                                                                                                                                                                         
+Just a tiny note: “가고 싶어요” is a polite form; if you want to match a more formal style, you could use 가고 싶습니다. Keep it up!                                                                                                        
+You: I am good for today
+Finishing session...
+It was a pleasure helping you! 🎉                                                                                                                                                                                                           
+Feel free to return anytime you want to practice more. Have a wonderful day!                                                                                                                                                                
+Session finished by agent.
+```
+
+### Classical CLI
+
+Update file [hmeg.conf](hmeg.conf) to select the grammatical topic and number of exercises.
+More details about configuration can be found in the [docs](docs/cli_configuration.md).
+
+Run:
+```bash
+hmeg
+```
+
+You can also specify command-line arguments to define configuration file, topic, and/or number of generated exercises.
+
+* Run with a custom configuration file (use the `run` subcommand):
+```bash
+hmeg run --config="custom/configuration/file.toml"
+```
+
+* Run with a custom topic and number of exercises:
+```bash
+hmeg run -n 15 -t "Have, Don’t have, There is, There isn’t / 있어요, 없어요"
+```
+
+* You can provide a partial topic name. All topics that contain the specified string will be used:
+```bash
+hmeg run -n 15 -t "있어요, 없어요"
+hmeg run -n 15 -t "there is"
+```
+
+* List available grammar topics:
+```bash
+hmeg list
+```
+
+* Print help:
+
+```bash
+hmeg --help
+hmeg run --help
+hmeg list --help
+```
 
 ## Python
 
@@ -85,47 +176,6 @@ exercises = ExerciseGenerator.generate_exercises(
 print("\n".join(exercises))
 ```
 
-## Command line
-
-The CLI tool `hmeg` is available after installation.
-
-Update file [hmeg.conf](hmeg.conf) to select the grammatical topic and number of exercises,
-then run:
-```bash
-hmeg
-```
-
-You can also specify command-line arguments to define configuration file, topic, and/or number of generated exercises.
-
-* Run with a custom configuration file (use the `run` subcommand):
-```bash
-hmeg run --config="custom/configuration/file.toml"
-```
-
-* Run with a custom topic and number of exercises:
-```bash
-hmeg run -n 15 -t "Have, Don’t have, There is, There isn’t / 있어요, 없어요"
-```
-
-* You can provide a partial topic name. All topics that contain the specified string will be used:
-```bash
-hmeg run -n 15 -t "있어요, 없어요"
-hmeg run -n 15 -t "there is"
-```
-
-* List available grammar topics:
-```bash
-hmeg list
-```
-
-* Print help:
-
-```bash
-hmeg --help
-hmeg run --help
-hmeg list --help
-```
-
 ## Generating exercises using Ollama
 
 You can use [Ollama](https://ollama.com/) to generate exercises. Follow the official install instructions for your platform.
@@ -137,53 +187,6 @@ Recommended models:
 Note on `exaone3.5` (2026.01.24): I had high hopes, since the models were prepared by LG. Tried 2.4b and 7.8b both thinking and instruct. They generate way worse results than `gemma3` and `qwen3` models and often produce wrong number of exercises.
 
 After Ollama is set up you can use it programmatically or via the CLI + configuration file (see below).
-
-## Configuration file
-
-The configuration uses TOML format. Available fields:
-
-| Parameter            | Description                                                                                                                                                                                                                                                                                                                                                                                                                             | Example                                                |
-|----------------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|--------------------------------------------------------|
-| `topics_folder`      | Location of the folder containing descriptions of exercise topics.                                                                                                                                                                                                                                                                                                                                                                      | `"hmeg/topics"`                                        |
-| `vocab_file`         | Location of the vocabulary file, which will be used for generation of exercises. Required for the "templates" engine.                                                                                                                                                                                                                                                                                                                   | `"hmeg/vocabs/minilex.toml"`                           |
-| `vocab_level`        | Optional. CEFR level for vocabulary selection: A1, A2, B1, B2, C1, C2. Used by the "ollama" engine.                                                                                                                                                                                                                                                                                                                                     | `"B2"`                                                 |
-| `topic`              | Name of the topic for generation of exercises. Can be partial (see CLI instructions above).                                                                                                                                                                                                                                                                                                                                             | `"Have, Don’t have, There is, There isn’t / 있어요, 없어요"` |
-| `number_exercises`   | Number of generated exercises (5-100).                                                                                                                                                                                                                                                                                                                                                                                                  | `15`                                                   |
-| `engine`             | Exercise generation engine. Can be "templates" or "ollama".                                                                                                                                                                                                                                                                                                                                                                             | `"ollama"`                                             |
-| `model`              | Name of the LLM model for Ollama. Must be defined if `engine` is set to "ollama".                                                                                                                                                                                                                                                                                                                                                       | `"gemma3:4b"`                                          |
-| `grammar_correction` | Optional. Defines the model used for grammar correction in exercises generated via the "templates" engine. Experimental. Supported models:<br>* `"kenlm/en"` -- KenLM-based model. Requires files `en.arpa.bin`, `en.sp.model`, `en.sp.vocab` in the `lm` folder.<br>* `distilbert/distilgpt2` -- Distilled-GPT2 model from HuggingFace.<br>* `openai` -- one of OpenAI's models. Defined in the `hmeg/prompts/v1/reranker/openai.yaml` | `"kenlm/en"`                                           |
-
-Notes:
-* Miniphrase exercises are supported only when using the "templates" engine.
-* When using the `"openai"` reranker, create a `.env` file in the project root directory (the same directory
-as `hmeg_cli.py`) and set the `OPENAI_API_KEY` variable. You can use the provided `.env.template` file as a
-starting point.
-
-### Configuration example for "templates" engine
-
-```toml
-topics_folder="hmeg/topics"
-vocab_file="hmeg/vocabs/minilex.toml"
-
-topic="Have, Don’t have, There is, There isn’t / 있어요, 없어요"
-number_exercises=15
-
-engine="templates"
-grammar_correction="kenlm/en"
-```
-
-### Configuration example for "ollama" engine
-
-```toml
-topics_folder="hmeg/topics"
-vocab_level="C1"
-
-topic="Have, Don’t have, There is, There isn’t / 있어요, 없어요"
-number_exercises=15
-
-engine="ollama"
-model="gemma3:4b"
-```
 
 # Format of exercises and vocabulary
 
