@@ -12,9 +12,9 @@ def chat_loop(agent: CompiledStateGraph, student_id: str, max_turns: int = 20):
     Interactive chat loop for an agent that can call tools.
 
     - Keeps message history (system, user, assistant).
-    - Uses agent.run when available for simplicity (agent will execute registered @tool functions).
-    - Falls back to a streaming handler if agent.stream exists and you want incremental output.
-    - Stops on: empty user message; "exit" command; `FINISHED:` result from the finish tool; after max_turns.
+    - Delegates each turn to `tutor_usecases.invoke`, which runs the agent (including any tool calls).
+    - Uses `is_finish(steps)` to detect when the agent has requested to end the session.
+    - Stops on: empty user message; "exit" command; a finish indication from the finish tool; or after max_turns.
     """
 
     session_id = tutor_usecases.make_session_id(agent_name=agent.name, student_id=student_id)

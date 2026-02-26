@@ -63,7 +63,7 @@ def register_grammar_topics(grammar_dir: str | None = None, force: bool = False)
 
     cur_dir = os.path.split(__file__)[0]
     default_grammar_dir = os.path.join(cur_dir, "topics")
-    grammar_dir = grammar_dir or default_grammar_dir
+    grammar_dir = str(pathlib.Path(grammar_dir or default_grammar_dir).resolve())
 
     if grammar_dir in GrammarRegistry.loaded_dirs and not force:
         return
