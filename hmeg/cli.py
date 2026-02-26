@@ -174,8 +174,53 @@ class Runner:
         for idx, exercise in enumerate(exercises):
             print(f"{idx + 1}. {exercise}")
 
+    def tutor(self):
+        from hmeg.tutor.main_loop import chat_loop
+        from hmeg.tutor.usecases import create_agent
+
+        agent = create_agent("tutor.conf")
+        student_id = "student_001"
+        chat_loop(agent, student_id=student_id)
+
+
+def ensure_utf8_stdio():
+    """
+    Fix possible problems with the encoding of stdin/stdout when running in different environments (terminal, piped, redirected).
+    Also checks that line-editing features are preserved when running in an interactive terminal.
+    """
+
+    import io
+    import os
+
+    # If interactive terminal, avoid replacing sys.stdin because that breaks readline
+    if sys.stdin.isatty():
+        try:
+            sys.stdin.reconfigure(encoding="utf-8", errors="replace")
+            sys.stdout.reconfigure(encoding="utf-8", errors="replace")
+        except Exception:
+            # best-effort fallback: tell Python to use UTF-8 for I/O
+            os.environ.setdefault("PYTHONIOENCODING", "utf-8")
+        # enable readline line-editing if present
+        try:
+            import readline  # noqa: F401
+        except Exception:
+            pass
+        return
+
+    # Non-tty (piped/redirected): safe to wrap to force UTF-8
+    try:
+        sys.stdin.reconfigure(encoding="utf-8", errors="replace")
+        sys.stdout.reconfigure(encoding="utf-8", errors="replace")
+    except Exception:
+        sys.stdin = io.TextIOWrapper(open(sys.stdin.fileno(), "rb", 0),
+                                     encoding="utf-8", errors="replace", line_buffering=True)
+        sys.stdout = io.TextIOWrapper(open(sys.stdout.fileno(), "wb", 0),
+                                      encoding="utf-8", errors="replace", line_buffering=True)
+
 
 def main():
+    ensure_utf8_stdio()
+
     if len(sys.argv) == 1:  # no arguments
         Runner().run()
     else:
