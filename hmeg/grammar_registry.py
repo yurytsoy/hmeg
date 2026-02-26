@@ -9,10 +9,12 @@ from .entities import GrammarDescription
 
 class GrammarRegistry:
     topics: dict[str, GrammarDescription] = dict()
+    loaded_dirs: set[str] = set()
 
     @staticmethod
     def reset():
         GrammarRegistry.topics = dict()
+        GrammarRegistry.loaded_dirs = set()
 
     @staticmethod
     def register_grammar_topic(grammar_descr: GrammarDescription):
