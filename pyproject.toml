@@ -1,7 +1,7 @@
 [project]
 name = "hmeg"
 version = "0.3.0"
-requires-python = ">=3.10,<3.14"
+requires-python = ">=3.10"
 description = "Generator of exercises for practicing speaking for language learning."
 authors = [{name = "Yury Choi", email = "yurytsoy@gmail.com"}]
 license = {text = "MIT"}
@@ -13,7 +13,7 @@ dependencies = [
     "fire>=0.6.0",
     "inflect>=7.5.0",
     "jsonschema>=4.25.0",
-    "kenlm>=0.3.0",
+    "camel-kenlm>=2026.2.7",
     "langchain>=1.2.7,<2.0.0",
     "langchain-ollama>=1.0.1,<2.0.0",
     "langgraph>=1.0.1,<2.0.0",
