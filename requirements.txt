@@ -6,6 +6,7 @@ camel-kenlm==2026.2.7
 langchain==1.2.7
 langchain-ollama==1.0.1
 langgraph==1.0.7
+langgraph-prebuilt==1.0.7
 language_tool_python==2.9.5
 nltk==3.9.2
 ollama==0.6.1
