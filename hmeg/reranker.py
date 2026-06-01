@@ -69,6 +69,7 @@ class Reranker:
                 Reranker.tokenizers_[model_name] = tokenizer
 
             elif model_name == Reranker.Models.openai:
+                # no extra setup is required, just keep this branch for clarify.
                 ...
 
             else:
