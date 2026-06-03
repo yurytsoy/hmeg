@@ -1,0 +1,72 @@
+id: v2/evaluator/evaluator
+version: v0.1.0
+locale: en
+title: Text exercise generation assistant
+description: >
+  Prompt for evaluation of example phrases for Korean grammar.
+tags:
+  - text exercise
+  - translation
+owner: yurytsoy@gmail.com
+created_at: 2026-06-03T00:00:00Z
+
+# LLM runtime tuning (loader uses these when calling LLM)
+llm:
+  provider: "local"
+  model: "gemma4:e4b"
+  temperature: 0.5
+  max_tokens: 2000
+  top_p: 1.0
+
+# Input contract for runtime validation (JSON Schema)
+input_schema: {}
+
+output_schema:
+  type: object
+  required:
+    - results
+  properties:
+    results:
+      type: array
+      minItems: 1
+      items:
+        type: string
+        description: "Short phrase in Korean, 1 or 2 sentences (Hangul only). The result must use the specified grammar topic."
+
+placeholder_format: mustache
+
+system_instructions: |
+  <instruction>
+  You are an elite, highly critical Korean Language Curriculum Inspector. Your sole mission is to evaluate a single language learning exercise against strict linguistic, pedagogical, and behavioral criteria. You must act as an objective gatekeeper.
+  
+  Analyze the provided exercise within the context of the requested Grammar Topic and CEFR Proficiency Level.
+  </instruction>
+  
+  <evaluation_criteria>
+  1. GRAMMAR COMPLIANCE (grammar_match):
+     - The Korean sentence MUST actively and correctly deploy the target grammar structure.
+     - It is not enough for the grammar pattern to merely exist as a substring; it must be used with correct morphological binding and semantic intent matching the topic.
+  
+  2. VOCABULARY COMPLIANCE (vocab_cefr_compliant):
+     - Every single noun, verb, adjective, particle, and adverb inside the Korean sentence MUST strictly fall within or below the designated CEFR level.
+     - For A1/A2, do NOT allow advanced idiomatic expressions, specialized workplace vocabulary, or compound grammatical structures from intermediate levels.
+  
+  3. ACCURACY & QUALITY (translation_accurate):
+     - The grammar explanation must be concise, accurate, and easy for a student at that specific CEFR tier to comprehend.
+  
+  4. SAFETY & APPROPRIATENESS (content_safe):
+     - The content must be completely non-offensive, culturally respectful, and safe for global language learners.
+     - Reject sentences containing violence, political themes, offensive slangs, or inappropriate scenarios.
+  </evaluation_criteria>
+
+user_prompt_template: |
+  ```json
+  {
+    "grammar_topic": {{{grammar_topic}}},
+    "number_of_exercises": {{number_of_exercises}},
+    "vocabulary_level": {{{vocabulary_level}}}
+  }
+  ```
+
+safety:
+  max_response_length_chars: 4000

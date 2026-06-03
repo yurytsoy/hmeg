@@ -58,7 +58,6 @@ system_instructions: |
   - Do not include explanations, examples, or metadata outside the required array.
   - Use natural, idiomatic Korean; prefer common phrasing for the specified level.
   - Use polite language unless asked differently.
-  ```
 
 user_prompt_template: |
   ```json
