@@ -1,4 +1,5 @@
 import os
+import shutil
 import tempfile
 
 from rich.console import Console
@@ -11,10 +12,10 @@ console = Console()
 
 
 def generate_exercises(
-    topic_name: str, num: int, model: str | None = None, vocab_level: str | None = None, filename: str | None = None, verbose: bool = False
+    topic_name: str, num: int, model: str | None = None, vocab_level: str | None = None, out_path: str | None = None, verbose: bool = False, debug: bool = False
 ) -> list[str]:
-    filename = filename or "result.txt"  # TODO: include sanitized topic name into the filename
-    batch_size = min(num, 10)
+    out_path = out_path or "result.txt"  # TODO: include sanitized topic name into the filename
+    batch_size = min(num, 20)
 
     gen_agent = make_generator_agent(model_name=model or DEFAULT_MODEL)
     eval_agent = make_evaluator_agent(model_name=model or DEFAULT_MODEL)
@@ -30,22 +31,28 @@ def generate_exercises(
             ex_filename = os.path.join(tmp_dir, f"ex_{cur_num_exercises}_{cur_num_exercises + cur_batch_size}.txt")
             gen_res = gen_agent.run_sync(get_generator_prompt(topic_name, cur_batch_size, vocab_level, ex_filename))
             if verbose:
-                console.print(gen_res.usage)
+                console.print(f"[{gen_res.timestamp}] Generator usage: {gen_res.usage}")
+            if debug:
+                shutil.copy(ex_filename, os.path.split(ex_filename)[-1])
             if eval_agent is not None:
                 # get result from the run agent, eval sentences one by one, and save good lines to the new file
                 eval_filename = ex_filename.replace(".txt", "_eval.txt")
-                eval_agent.run_sync(get_evaluator_prompt(topic_name, vocab_level, ex_filename, eval_filename))
+                eval_res = eval_agent.run_sync(get_evaluator_prompt(topic_name, vocab_level, ex_filename, eval_filename))
+                if verbose:
+                    console.print(f"[{eval_res.timestamp}] Evaluator usage: {eval_res.usage}")
+                if debug:
+                    shutil.copy(eval_filename, os.path.split(eval_filename)[-1])
             else:
                 eval_filename = ex_filename
 
-            num_copied_lines = copy_lines(eval_filename, filename)
+            num_copied_lines = copy_lines(eval_filename, out_path)
             cur_num_exercises += num_copied_lines
             loop_count += 1
             if (loop_count > max_loops) and (cur_num_exercises < num):
                 console.print(f"[red]Failed to generate the required number of exercises after {max_loops} attempts. Current number of exercises: {cur_num_exercises}.[/red]")
                 break
 
-    return read_all_lines(filename)
+    return read_all_lines(out_path)
 
 
 def get_generator_prompt(

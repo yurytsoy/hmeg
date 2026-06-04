@@ -88,9 +88,13 @@ class TestExerciseGenerator(unittest.TestCase):
     def test_pydantic_generator(self):
         from hmeg.exercise_generator.pydantic_gen import generate_exercises
 
+        out_path = "result.txt"
+        if os.path.exists(out_path):
+            os.remove(out_path)
+
         random.seed(42)
         topics = random.choices(list(GrammarRegistry.topics), k=1)
-        exercises = generate_exercises(topics[0], num=40, verbose=True)
+        exercises = generate_exercises(topics[0], num=40, out_path=out_path, verbose=True, debug=True)
         print(topics[0])
         print("Generated exercises:", len(exercises))
         print(exercises)
