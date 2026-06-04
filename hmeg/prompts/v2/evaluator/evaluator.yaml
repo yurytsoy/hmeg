@@ -21,17 +21,7 @@ llm:
 # Input contract for runtime validation (JSON Schema)
 input_schema: {}
 
-output_schema:
-  type: object
-  required:
-    - results
-  properties:
-    results:
-      type: array
-      minItems: 1
-      items:
-        type: string
-        description: "Short phrase in Korean, 1 or 2 sentences (Hangul only). The result must use the specified grammar topic."
+output_schema: {}
 
 placeholder_format: mustache
 
@@ -51,12 +41,13 @@ system_instructions: |
      - Every single noun, verb, adjective, particle, and adverb inside the Korean sentence MUST strictly fall within or below the designated CEFR level.
      - For A1/A2, do NOT allow advanced idiomatic expressions, specialized workplace vocabulary, or compound grammatical structures from intermediate levels.
   
-  3. ACCURACY & QUALITY (translation_accurate):
-     - The grammar explanation must be concise, accurate, and easy for a student at that specific CEFR tier to comprehend.
-  
-  4. SAFETY & APPROPRIATENESS (content_safe):
+  3. SAFETY & APPROPRIATENESS (content_safe):
      - The content must be completely non-offensive, culturally respectful, and safe for global language learners.
      - Reject sentences containing violence, political themes, offensive slangs, or inappropriate scenarios.
+
+  4. RESPONSE FORMAT (format_compliant):
+     - Write selected sentences into the provided output file. If no sentences meet all criteria, the output file must be empty.
+     - Do not return any explanations or sentences in the response body.
   </evaluation_criteria>
 
 user_prompt_template: |
