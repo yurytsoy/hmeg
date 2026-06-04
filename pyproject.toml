@@ -1,7 +1,7 @@
 [project]
 name = "hmeg"
 version = "0.3.1"
-requires-python = ">=3.10"
+requires-python = ">=3.10,<3.15"
 description = "Generator of exercises for practicing speaking for language learning."
 authors = [{name = "Yury Choi", email = "yurytsoy@gmail.com"}]
 license = {text = "MIT"}
@@ -31,8 +31,8 @@ dependencies = [
     "sentencepiece>=0.2.1",
     "spacy>=3.8.11",
     "toml>=0.10.2",
-    "torch>=2.8.0",
-    "transformers>=4.57.6"
+    "torch>=2.11.0",
+    "transformers>=5.10.0"
 ]
 
 [project.scripts]
