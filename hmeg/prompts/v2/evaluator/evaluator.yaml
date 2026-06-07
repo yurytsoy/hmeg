@@ -13,7 +13,7 @@ created_at: 2026-06-03T00:00:00Z
 # LLM runtime tuning (loader uses these when calling LLM)
 llm:
   provider: "local"
-  model: "gemma4:e4b-it-qat"  # qwen3.5:9b | gemma4:26b | gemma4:e4b | gemma4:e4b-it-qat
+  model: "qwen3.5:9b"  # qwen3.5:9b | gemma4:26b | gemma4:e4b | gemma4:e4b-it-qat
   temperature: 0.2
   max_tokens: 16384
   top_p: 0.5

@@ -51,6 +51,18 @@ def write_line(ctx: RunContext, filepath: str, line: str) -> None:
         file.write(line + "\n" if not line.endswith("\n") else line)
 
 
+def write_lines(ctx: RunContext, filepath: str, lines: list[str]) -> None:
+    """
+    Adds multiple lines to a file. If file does not exist, then it is created.
+    """
+    if not lines:
+        return
+
+    with open(filepath, "a", encoding="utf-8") as file:
+        for line in lines:
+            file.write(line + "\n" if not line.endswith("\n") else line)
+
+
 def make_orchestrator_agent(
     model_name: str,
     system_prompt: str,
@@ -82,7 +94,7 @@ def make_generator_agent(model_name: str | None) -> Agent:
     return make_agent(
         model_name=model_name or exercise_prompt.llm.model,
         system_prompt=exercise_prompt.system_instructions,
-        tools=[write_line],
+        tools=[write_lines],
         output_type=GeneratorOutput,
         max_tokens=exercise_prompt.llm.max_tokens,
         top_k=exercise_prompt.llm.top_k,

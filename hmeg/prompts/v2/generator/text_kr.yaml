@@ -13,11 +13,11 @@ created_at: 2026-06-02T00:00:00Z
 # LLM runtime tuning (loader uses these when calling LLM)
 llm:
   provider: "local"
-  model: "gemma4:e4b-it-qat"  # qwen3.5:9b | gemma4:26b | gemma4:e4b | gemma4:e4b-it-qat
+  model: "gemma4:12b"  # qwen3.5:9b | gemma4:26b | gemma4:e4b | gemma4:e4b-it-qat
   temperature: 0.7
   max_tokens: 65536
   top_p: 0.9
-  top_k: 20
+  top_k: 32
 
 # Input contract for runtime validation (JSON Schema)
 input_schema: {}
