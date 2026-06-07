@@ -25,6 +25,8 @@ class LLMConfig:
     model: str
     temperature: float | None = None
     max_tokens: int | None = None
+    top_p: float | None = None
+    top_k: int | None = None
     verbatim: dict[str, Any] = field(default_factory=dict)
 
     @classmethod
@@ -34,6 +36,8 @@ class LLMConfig:
             model=d["model"],
             temperature=d.get("temperature"),
             max_tokens=d.get("max_tokens"),
+            top_k=d.get("top_k"),
+            top_p=d.get("top_p"),
             verbatim={k: v for k, v in d.items() if k not in {"provider", "model", "temperature", "max_tokens"}},
         )
 
