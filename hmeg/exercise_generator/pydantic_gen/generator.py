@@ -1,24 +1,51 @@
 import os
 import shutil
 import tempfile
+from typing import Any
 
+from pydantic_ai import Agent, AgentRunResult, exceptions
 from rich.console import Console
 
 from .usecases import make_generator_agent, make_evaluator_agent, get_num_lines, read_all_lines, copy_lines
 
-DEFAULT_MODEL = "gemma4:e4b"
-
 console = Console()
 
 
+def _run_agent(agent: Agent, prompt: str) -> AgentRunResult[Any] | None:
+    agent_resp = None
+    try:
+        shared_history = []
+        agent_resp = agent.run_sync(
+            prompt, message_history=shared_history,
+        )
+    except exceptions.UnexpectedModelBehavior as ex:
+        print(f"Agent failed! Reason: {ex}\n")
+
+        # 2. Inspect what messages the agent generated before failing
+        if not shared_history:
+            print("--- NO CONVERSATION HISTORY ---")
+        else:
+            print("--- FAILED CONVERSATION HISTORY ---")
+            for msg in shared_history:
+                # Pydantic AI messages have roles: 'user', 'model', or 'tool-return'
+                role = getattr(msg, 'role', 'unknown')
+                print(f"[{role.upper()}]:")
+
+                # Format or grab text/parts depending on message type
+                if hasattr(msg, 'parts'):
+                    print(msg.parts)
+                print("-" * 20)
+    return agent_resp
+
+
 def generate_exercises(
-    topic_name: str, num: int, model: str | None = None, vocab_level: str | None = None, out_path: str | None = None, verbose: bool = False, debug: bool = False
+    topic_name: str, num: int, gen_model: str | None = None, eval_model: str | None = None, vocab_level: str | None = None, out_path: str | None = None, verbose: bool = False, debug: bool = False
 ) -> list[str]:
     out_path = out_path or "result.txt"  # TODO: include sanitized topic name into the filename
-    batch_size = min(num, 20)
+    batch_size = min(num, 10)
 
-    gen_agent = make_generator_agent(model_name=model or DEFAULT_MODEL)
-    eval_agent = make_evaluator_agent(model_name=model or DEFAULT_MODEL)
+    gen_agent = make_generator_agent(model_name=gen_model)
+    eval_agent = make_evaluator_agent(model_name=eval_model)
     max_loops = int(1.41 * num) // batch_size  # include some possibility for the failed attempts
     loop_count = 0
     cur_num_exercises = 0
@@ -29,7 +56,7 @@ def generate_exercises(
 
             # ? TODO: add list of nouns and verbs to avoid or use dynamic instructions
             ex_filename = os.path.join(tmp_dir, f"ex_{cur_num_exercises}_{cur_num_exercises + cur_batch_size}.txt")
-            gen_res = gen_agent.run_sync(get_generator_prompt(topic_name, cur_batch_size, vocab_level, ex_filename))
+            gen_res = _run_agent(gen_agent, get_generator_prompt(topic_name, cur_batch_size, vocab_level, ex_filename))
             if verbose:
                 console.print(f"[{gen_res.timestamp}] Generator usage: {gen_res.usage}")
             if debug:
@@ -37,9 +64,10 @@ def generate_exercises(
             if eval_agent is not None:
                 # get result from the run agent, eval sentences one by one, and save good lines to the new file
                 eval_filename = ex_filename.replace(".txt", "_eval.txt")
-                eval_res = eval_agent.run_sync(get_evaluator_prompt(topic_name, vocab_level, ex_filename, eval_filename))
-                if verbose:
-                    console.print(f"[{eval_res.timestamp}] Evaluator usage: {eval_res.usage}")
+                for line in read_all_lines(ex_filename):
+                    eval_res = _run_agent(eval_agent, get_evaluator_prompt(topic_name, vocab_level, example=line, out_filename=eval_filename))
+                    if verbose:
+                        console.print(f"[{eval_res.timestamp}] Evaluator usage: {eval_res.usage}")
                 if debug:
                     shutil.copy(eval_filename, os.path.split(eval_filename)[-1])
             else:
@@ -62,16 +90,27 @@ def get_generator_prompt(
     out_filename: str,
 ) -> str:
     vocab_level = vocab_level or "A2"
-    prompt = f"Generate {num} exercises for the topic \"{topic_name}\" for the vocabulary matching CEFR level {vocab_level}. Write resulting exercises into the file '{out_filename}', each exercise in a separate line."
+    prompt = f"Generate {num} exercises for the Korean grammar topic \"{topic_name}\" using the vocabulary matching CEFR level {vocab_level}. Write resulting exercises into the file '{out_filename}', each exercise in a separate line."
     return prompt
 
 
 def get_evaluator_prompt(
     topic_name: str,
     vocab_level: str | None,
+    example: str,
+    out_filename: str,
+) -> str:
+    vocab_level = vocab_level or "A2"
+    prompt = f"Evaluate example for the provided grammar topic \"{topic_name}\" for the vocabulary matching CEFR level {vocab_level}. The example sentence: \"{example}\". If example matches the grammar and vocabulary level then write it to the output file \"{out_filename}\"."
+    return prompt
+
+
+def _get_evaluator_prompt(
+    topic_name: str,
+    vocab_level: str | None,
     input_filename: str,
     out_filename: str,
 ) -> str:
     vocab_level = vocab_level or "A2"
-    prompt = f"Evaluate examples for the provided grammar topic \"{topic_name}\" for the vocabulary matching CEFR level {vocab_level}. The examples are provided in the input file \"{input_filename}\", each line contains exactly 1 example. Select sentences that match the grammar and vocabulary level and write them to the output file \"{out_filename}\"."
+    prompt = f"Evaluate examples for the provided Korean grammar topic \"{topic_name}\" for the vocabulary matching CEFR level {vocab_level}. The examples are provided in the input file \"{input_filename}\", each line contains exactly 1 example. Write selected examples to the output file \"{out_filename}\"."
     return prompt

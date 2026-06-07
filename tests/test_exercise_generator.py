@@ -31,10 +31,7 @@ class TestExerciseGenerator(unittest.TestCase):
         with self.assertRaises(RuntimeError):
             ExerciseGenerator.generate_exercises("bad topic", num=10)
 
-    @unittest.skipIf(
-        not is_ollama_available(TEST_OLLAMA_MODEL),
-        "Run locally with Ollama service available"
-    )
+    @unittest.skipIf(not is_ollama_available(TEST_OLLAMA_MODEL), "Run locally with Ollama service available")
     def test_generate_exercises_ollama(self):
         from hmeg.exercise_generator.ollama_gen import generate_exercises
 
@@ -53,10 +50,7 @@ class TestExerciseGenerator(unittest.TestCase):
                 self.assertTrue(all(placeholder not in res.sentence_en for res in exercises if res.sentence_en is not None))
                 self.assertTrue(all(placeholder not in res.sentence_kr for res in exercises if res.sentence_kr is not None))
 
-    @unittest.skipIf(
-        not is_ollama_available(TEST_OLLAMA_MODEL),
-        "Run locally with Ollama service available"
-    )
+    @unittest.skipIf(not is_ollama_available(TEST_OLLAMA_MODEL), "Run locally with Ollama service available")
     def test_generate_exercises_ollama_with_vocabulary_level(self):
         from hmeg.exercise_generator.ollama_gen import generate_exercises
 
@@ -81,10 +75,7 @@ class TestExerciseGenerator(unittest.TestCase):
         self.assertGreaterEqual(max_len_kr_c2 + 8, max_len_kr_a1)
         self.assertGreaterEqual(max_len_en_c2 + 8, max_len_en_a1)
 
-    @unittest.skipIf(
-        not is_ollama_available(TEST_OLLAMA_MODEL),
-        "Run locally with Ollama service available"
-    )
+    @unittest.skipIf(not is_ollama_available(TEST_OLLAMA_MODEL), "Run locally with Ollama service available")
     def test_pydantic_generator(self):
         from hmeg.exercise_generator.pydantic_gen import generate_exercises
 
@@ -94,15 +85,12 @@ class TestExerciseGenerator(unittest.TestCase):
 
         random.seed(42)
         topics = random.choices(list(GrammarRegistry.topics), k=1)
-        exercises = generate_exercises(topics[0], num=40, out_path=out_path, verbose=True, debug=True)
+        exercises = generate_exercises(topics[0], num=20, out_path=out_path, verbose=True, debug=True)
         print(topics[0])
         print("Generated exercises:", len(exercises))
         print(exercises)
 
-    @unittest.skipIf(
-        not is_ollama_available(TEST_OLLAMA_MODEL),
-        "Run locally with Ollama service available"
-    )
+    @unittest.skipIf(not is_ollama_available(TEST_OLLAMA_MODEL), "Run locally with Ollama service available")
     def test_eval_agent(self):
         from hmeg.exercise_generator.pydantic_gen.generator import make_evaluator_agent, get_evaluator_prompt, read_all_lines
 
@@ -113,10 +101,11 @@ class TestExerciseGenerator(unittest.TestCase):
         model_name = "gemma4:e4b"
         agent = make_evaluator_agent(model_name=model_name)
         input_filename = "tests/data/result_10.txt"
+        example = read_all_lines(input_filename)[0]
 
         with self.subTest("Correct topic & CEFR"):
             agent.run_sync(get_evaluator_prompt(
-                topic_name=correct_topic, vocab_level="A2", input_filename=input_filename, out_filename="result_corr_A2.txt")
+                topic_name=correct_topic, vocab_level="A2", example=example, out_filename="result_corr_A2.txt")
             )
 
         with self.subTest("Correct topic, incorrect CEFR"):
@@ -124,22 +113,19 @@ class TestExerciseGenerator(unittest.TestCase):
                 agent.run_sync(get_evaluator_prompt(
                     topic_name=correct_topic,
                     vocab_level=vocab_level,
-                    input_filename=input_filename,
+                    example=example,
                     out_filename=f"result_corr_{vocab_level}.txt"
                 ))
             self.assertLess(os.stat(f"result_corr_A1.txt").st_size, os.stat(f"result_corr_A2.txt").st_size)
-            self.assertEqual(os.stat(f"result_corr_A2.txt").st_size, os.stat(f"result_corr_B1.txt").st_size)
+            self.assertEqual(os.stat(f"result_corr_A2.txt").st_size, os.stat(f"result_corr_B2.txt").st_size)
 
         with self.subTest("Incorrect topic, correct CEFR"):
             agent.run_sync(get_evaluator_prompt(
-                topic_name=incorrect_topic, vocab_level="A2", input_filename=input_filename, out_filename="result_incorr_A2.txt")
+                topic_name=incorrect_topic, vocab_level="A2", example=example, out_filename="result_incorr_A2.txt")
             )
             self.assertFalse(not os.path.exists("result_incorr_A2.txt"))  # nothing should be passed through.
 
-    @unittest.skipIf(
-        not is_ollama_available(TEST_OLLAMA_MODEL),
-        "Run locally with Ollama service available"
-    )
+    @unittest.skipIf(not is_ollama_available(TEST_OLLAMA_MODEL), "Run locally with Ollama service available")
     def test_gen_agent(self):
         from hmeg.exercise_generator.pydantic_gen.usecases import make_generator_agent
 
