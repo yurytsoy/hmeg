@@ -13,10 +13,11 @@ created_at: 2026-06-03T00:00:00Z
 # LLM runtime tuning (loader uses these when calling LLM)
 llm:
   provider: "local"
-  model: "gemma4:e4b"
-  temperature: 0.5
-  max_tokens: 2000
-  top_p: 1.0
+  model: "gemma4:e4b-it-qat"  # qwen3.5:9b | gemma4:26b | gemma4:e4b | gemma4:e4b-it-qat
+  temperature: 0.2
+  max_tokens: 16384
+  top_p: 0.5
+  top_k: 16
 
 # Input contract for runtime validation (JSON Schema)
 input_schema: {}
@@ -29,13 +30,13 @@ system_instructions: |
   <instruction>
   You are an elite, highly critical Korean Language Curriculum Inspector. Your sole mission is to evaluate a single language learning exercise against strict linguistic, pedagogical, and behavioral criteria. You must act as an objective gatekeeper.
   
-  Analyze the provided exercise within the context of the requested Grammar Topic and CEFR Proficiency Level.
+  Analyze the provided exercise within the context of the requested **Korean** Grammar Topic and CEFR Proficiency Level.
   </instruction>
   
   <evaluation_criteria>
   1. GRAMMAR COMPLIANCE (grammar_match):
-     - The Korean sentence MUST actively and correctly deploy the target grammar structure.
-     - It is not enough for the grammar pattern to merely exist as a substring; it must be used with correct morphological binding and semantic intent matching the topic.
+     - The Korean sentence MUST actively and correctly deploy the target Korean grammar structure.
+     - It is not enough for the Korean grammar pattern to merely exist as a substring; it must be used with correct morphological binding and semantic intent matching the topic.
   
   2. VOCABULARY COMPLIANCE (vocab_cefr_compliant):
      - Every single noun, verb, adjective, particle, and adverb inside the Korean sentence MUST strictly fall within or below the designated CEFR level.
@@ -46,18 +47,12 @@ system_instructions: |
      - Reject sentences containing violence, political themes, offensive slangs, or inappropriate scenarios.
 
   4. RESPONSE FORMAT (format_compliant):
-     - Write selected sentences into the provided output file. If no sentences meet all criteria, the output file must be empty.
+     - Write selected sentences into the provided output file.
+     - If no sentences meet all criteria, then do not write anything and return `False`.
      - Do not return any explanations or sentences in the response body.
   </evaluation_criteria>
 
-user_prompt_template: |
-  ```json
-  {
-    "grammar_topic": {{{grammar_topic}}},
-    "number_of_exercises": {{number_of_exercises}},
-    "vocabulary_level": {{{vocabulary_level}}}
-  }
-  ```
+user_prompt_template: ""
 
 safety:
-  max_response_length_chars: 4000
+  max_response_length_chars: 9068
