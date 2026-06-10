@@ -58,11 +58,13 @@ def generate_exercises(
             # ? TODO: add list of nouns and verbs to avoid or use dynamic instructions
             ex_filename = os.path.join(tmp_dir, f"ex_{cur_num_exercises}_{cur_num_exercises + cur_batch_size}.txt")
             gen_res = _run_agent(gen_agent, deps=get_generator_deps(topic_name, cur_batch_size, vocab_level, ex_filename))
-            if verbose and gen_res is not None:
+            if gen_res is None:
+                continue  # try again
+            if verbose:
                 console.print(f"[{gen_res.timestamp}] Generator usage: {gen_res.usage}")
             if debug:
                 shutil.copy(ex_filename, os.path.split(ex_filename)[-1])
-            if eval_agent is not None and gen_res is not None and get_num_lines(ex_filename) > 0:
+            if eval_agent is not None and get_num_lines(ex_filename) > 0:
                 # get result from the run agent, eval sentences one by one, and save good lines to the new file
                 eval_filename = ex_filename.replace(".txt", "_eval.txt")
                 for line in read_all_lines(ex_filename):
