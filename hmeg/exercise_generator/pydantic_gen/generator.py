@@ -1,3 +1,4 @@
+from dataclasses import dataclass
 import os
 import shutil
 import tempfile
@@ -6,17 +7,17 @@ from typing import Any
 from pydantic_ai import Agent, AgentRunResult, exceptions
 from rich.console import Console
 
-from .usecases import make_generator_agent, make_evaluator_agent, get_num_lines, read_all_lines, copy_lines
+from .usecases import make_generator_agent, make_evaluator_agent, get_num_lines, read_all_lines, copy_lines, GeneratorDeps, EvaluatorDeps
 
 console = Console()
 
 
-def _run_agent(agent: Agent, prompt: str) -> AgentRunResult[Any] | None:
+def _run_agent(agent: Agent, prompt: str | None = None, deps: type[dataclass] | None = None) -> AgentRunResult[Any] | None:
     agent_resp = None
     try:
         shared_history = []
         agent_resp = agent.run_sync(
-            prompt, message_history=shared_history,
+            prompt, message_history=shared_history, deps=deps
         )
     except exceptions.UnexpectedModelBehavior as ex:
         print(f"Agent failed! Reason: {ex}\n")
@@ -56,17 +57,17 @@ def generate_exercises(
 
             # ? TODO: add list of nouns and verbs to avoid or use dynamic instructions
             ex_filename = os.path.join(tmp_dir, f"ex_{cur_num_exercises}_{cur_num_exercises + cur_batch_size}.txt")
-            gen_res = _run_agent(gen_agent, get_generator_prompt(topic_name, cur_batch_size, vocab_level, ex_filename))
-            if verbose:
+            gen_res = _run_agent(gen_agent, deps=get_generator_deps(topic_name, cur_batch_size, vocab_level, ex_filename))
+            if verbose and gen_res is not None:
                 console.print(f"[{gen_res.timestamp}] Generator usage: {gen_res.usage}")
             if debug:
                 shutil.copy(ex_filename, os.path.split(ex_filename)[-1])
-            if eval_agent is not None:
+            if eval_agent is not None and gen_res is not None and get_num_lines(ex_filename) > 0:
                 # get result from the run agent, eval sentences one by one, and save good lines to the new file
                 eval_filename = ex_filename.replace(".txt", "_eval.txt")
                 for line in read_all_lines(ex_filename):
-                    eval_res = _run_agent(eval_agent, get_evaluator_prompt(topic_name, vocab_level, example=line, out_filename=eval_filename))
-                    if verbose:
+                    eval_res = _run_agent(eval_agent, deps=get_evaluator_deps(topic_name, vocab_level, example=line, out_filename=eval_filename))
+                    if verbose and eval_res is not None:
                         console.print(f"[{eval_res.timestamp}] Evaluator usage: {eval_res.usage}")
                 if debug:
                     shutil.copy(eval_filename, os.path.split(eval_filename)[-1])
@@ -83,26 +84,32 @@ def generate_exercises(
     return read_all_lines(out_path)
 
 
-def get_generator_prompt(
+def get_generator_deps(
     topic_name: str,
     num: int,
     vocab_level: str | None,
     out_filename: str,
-) -> str:
-    vocab_level = vocab_level or "A2"
-    prompt = f"Generate {num} exercises for the Korean grammar topic \"{topic_name}\" using the vocabulary matching CEFR level {vocab_level}. Write resulting exercises into the file '{out_filename}', each exercise in a separate line."
-    return prompt
+) -> GeneratorDeps:
+    return GeneratorDeps(
+        topic_name=topic_name,
+        num_exercises=num,
+        vocab_level=vocab_level,
+        out_filename=out_filename,
+    )
 
 
-def get_evaluator_prompt(
+def get_evaluator_deps(
     topic_name: str,
     vocab_level: str | None,
     example: str,
     out_filename: str,
-) -> str:
-    vocab_level = vocab_level or "A2"
-    prompt = f"Evaluate example for the provided grammar topic \"{topic_name}\" for the vocabulary matching CEFR level {vocab_level}. The example sentence: \"{example}\". If example matches the grammar and vocabulary level then write it to the output file \"{out_filename}\"."
-    return prompt
+) -> EvaluatorDeps:
+    return EvaluatorDeps(
+        topic_name=topic_name,
+        example=example,
+        vocab_level=vocab_level,
+        out_filename=out_filename,
+    )
 
 
 def _get_evaluator_prompt(
