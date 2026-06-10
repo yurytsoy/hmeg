@@ -1,13 +1,12 @@
 from collections.abc import Callable
 import os
+from dataclasses import dataclass
 
-from grpc._cython.cygrpc import BaseCompletionQueue
 from pydantic import BaseModel, Field
 from pydantic_ai import Agent, RunContext, ModelSettings
-from pydantic_ai.messages import ModelResponse, ToolCallPart
 from pydantic_ai.models.ollama import OllamaModel
 
-from .entities import DEFAULT_MAX_TOKENS, DEFAULT_TEMPERATURE, DEFAULT_TOP_P, DEFAULT_TOP_K
+from .entities import DEFAULT_MAX_TOKENS, DEFAULT_TEMPERATURE, DEFAULT_TOP_P, DEFAULT_TOP_K, DEFAULT_VOCAB_LEVEL
 
 
 def get_num_lines(filepath: str) -> int:
@@ -83,11 +82,27 @@ You are an Orchestrator Agent. Your goal is to solve the user's request by break
     )
 
 
+@dataclass
+class GeneratorDeps:
+    num_exercises: int
+    topic_name: str
+    vocab_level: str | None
+    out_filename: str
+
+
+class GeneratorOutput(BaseModel):
+    result_num: int = Field(description="Number of generated Korean phrases.")
+
+
+def generator_instructions(ctx: RunContext[GeneratorDeps]) -> str:
+    deps = ctx.deps
+    vocab_level = deps.vocab_level or DEFAULT_VOCAB_LEVEL
+    res = f"Generate {deps.num_exercises} exercises for the Korean grammar topic \"{deps.topic_name}\" using the vocabulary matching CEFR level {vocab_level}. Write resulting exercises into the file '{deps.out_filename}', each exercise in a separate line."
+    return res
+
+
 def make_generator_agent(model_name: str | None) -> Agent:
     from hmeg.prompt_loader import PromptLoader
-
-    class GeneratorOutput(BaseModel):
-        result_num: int = Field(description="Number of generated Korean phrases.")
 
     prompt_loader_ = PromptLoader()
     exercise_prompt = prompt_loader_.load("v2/generator/text_kr")
@@ -95,7 +110,9 @@ def make_generator_agent(model_name: str | None) -> Agent:
         model_name=model_name or exercise_prompt.llm.model,
         system_prompt=exercise_prompt.system_instructions,
         tools=[write_lines],
+        deps_type=GeneratorDeps,
         output_type=GeneratorOutput,
+        instructions=generator_instructions,
         max_tokens=exercise_prompt.llm.max_tokens,
         top_k=exercise_prompt.llm.top_k,
         top_p=exercise_prompt.llm.top_p,
@@ -103,11 +120,27 @@ def make_generator_agent(model_name: str | None) -> Agent:
     )
 
 
+@dataclass
+class EvaluatorDeps:
+    topic_name: str
+    vocab_level: str | None
+    example: str
+    out_filename: str
+
+
+def evaluator_instructions(ctx: RunContext[EvaluatorDeps]) -> str:
+    deps = ctx.deps
+    vocab_level = deps.vocab_level or DEFAULT_VOCAB_LEVEL
+    res = f"Evaluate example for the provided grammar topic \"{deps.topic_name}\" for the vocabulary matching CEFR level {vocab_level}. The example sentence: \"{deps.example}\". If example matches the grammar and vocabulary level then write it to the output file \"{deps.out_filename}\"."
+    return res
+
+
+class EvaluatorOutput(BaseModel):
+    result: bool = Field(description="Whether provided example passed (True) or not (False).")
+
+
 def make_evaluator_agent(model_name: str | None) -> Agent:
     from hmeg.prompt_loader import PromptLoader
-
-    class EvaluatorOutput(BaseModel):
-        result: bool = Field(description="Whether provided example passed (True) or not (False).")
 
     prompt_loader_ = PromptLoader()
     exercise_prompt = prompt_loader_.load("v2/evaluator/evaluator")
@@ -115,7 +148,9 @@ def make_evaluator_agent(model_name: str | None) -> Agent:
         model_name=model_name or exercise_prompt.llm.model,
         system_prompt=exercise_prompt.system_instructions,
         tools=[write_line],
+        deps_type=EvaluatorDeps,
         output_type=EvaluatorOutput,
+        instructions=evaluator_instructions,
         max_tokens=exercise_prompt.llm.max_tokens,
         top_k=exercise_prompt.llm.top_k,
         top_p=exercise_prompt.llm.top_p,
@@ -127,7 +162,9 @@ def make_agent(
     model_name: str,
     system_prompt: str,
     tools: list[Callable] | None = None,
+    deps_type: type[dataclass] | None = None,
     output_type: type[BaseModel] | None = None,
+    instructions: Callable | None = None,
     max_tokens: int | None = 4096,
     top_k: int | None = None,
     top_p: float | None = None,
@@ -146,6 +183,8 @@ def make_agent(
             max_tokens=max_tokens, temperature=temperature, top_p=top_p, top_k=top_k, thinking="medium",
             extra_body={"options": {"num_ctx": max_tokens}}
         ),
+        instructions=instructions,
+        deps_type=deps_type,
         output_type=output_type,
         end_strategy='graceful'
     )
