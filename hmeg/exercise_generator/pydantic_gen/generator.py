@@ -47,12 +47,12 @@ def generate_exercises(
 
     gen_agent = make_generator_agent(model_name=gen_model)
     eval_agent = make_evaluator_agent(model_name=eval_model)
-    max_loops = int(1.41 * num) // batch_size  # include some possibility for the failed attempts
+    max_loops = max(int(1.41 * num) // batch_size, num // batch_size + 1)  # include some possibility for the failed attempts
     loop_count = 0
     cur_num_exercises = 0
 
     with tempfile.TemporaryDirectory() as tmp_dir:
-        while cur_num_exercises < num:
+        while (cur_num_exercises < num) and (loop_count < max_loops):
             cur_batch_size = min(batch_size, num - cur_num_exercises)
 
             # ? TODO: add list of nouns and verbs to avoid or use dynamic instructions
@@ -79,9 +79,9 @@ def generate_exercises(
             num_copied_lines = copy_lines(eval_filename, out_path)
             cur_num_exercises += num_copied_lines
             loop_count += 1
-            if (loop_count > max_loops) and (cur_num_exercises < num):
-                console.print(f"[red]Failed to generate the required number of exercises after {max_loops} attempts. Current number of exercises: {cur_num_exercises}.[/red]")
-                break
+
+        if (loop_count > max_loops) and (cur_num_exercises < num):
+            console.print(f"[red]Failed to generate the required number of exercises after {max_loops} attempts. Current number of exercises: {cur_num_exercises}.[/red]")
 
     return read_all_lines(out_path)
 
