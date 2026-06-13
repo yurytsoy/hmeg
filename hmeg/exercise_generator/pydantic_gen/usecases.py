@@ -136,7 +136,7 @@ def evaluator_instructions(ctx: RunContext[EvaluatorDeps]) -> str:
 
 
 class EvaluatorOutput(BaseModel):
-    result: bool = Field(description="Whether provided example passed (True) or not (False).")
+    result_num: int = Field(description="Number of passed sentences.")
 
 
 def make_evaluator_agent(model_name: str | None) -> Agent:

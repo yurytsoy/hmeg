@@ -1,6 +1,6 @@
 import logfire
 
-logfire.configure(send_to_logfire="always")
+logfire.configure(send_to_logfire="always", console=False)
 logfire.instrument_pydantic_ai()
 logfire.instrument_httpx(capture_all=True)
 
