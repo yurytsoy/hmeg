@@ -33,7 +33,7 @@ system_instructions: |
   
   <pedagogical_rules>
   1. GRAMMAR FOCUS:
-     - Every generated sentence MUST naturally incorporate and highlight the specified Target **Korean** Grammar Point.
+     - Every generated sentence **must** naturally incorporate and highlight the specified Target **Korean** Grammar Point.
      - The grammar point must be structurally and morphologically accurate, displaying the correct binding to adjacent stems or particles.
   
   2. CEFR LEVEL RESTRICTION:
