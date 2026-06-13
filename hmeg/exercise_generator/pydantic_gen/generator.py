@@ -1,7 +1,8 @@
 import logfire
 
-logfire.configure()
+logfire.configure(send_to_logfire="always")
 logfire.instrument_pydantic_ai()
+logfire.instrument_httpx(capture_all=True)
 
 from dataclasses import dataclass
 import os
