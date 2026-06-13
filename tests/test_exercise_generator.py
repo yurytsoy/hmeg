@@ -85,7 +85,15 @@ class TestExerciseGenerator(unittest.TestCase):
 
         random.seed(42)
         topics = random.choices(list(GrammarRegistry.topics), k=1)
-        exercises = generate_exercises(topics[0], num=20, out_path=out_path, verbose=True, debug=True, gen_model="gemma4:12b-64k", eval_model="qwen3.5:9b-16k")
+        exercises = generate_exercises(
+            topics[0],
+            num=20,
+            out_path=out_path,
+            gen_model="gemma4:12b-64k",
+            eval_model="qwen3.5:9b-4k",
+            verbose=True,
+            debug=True,
+        )
         print(topics[0])
         print("Generated exercises:", len(exercises))
         print(exercises)
