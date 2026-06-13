@@ -8,6 +8,7 @@ langchain-ollama==1.0.1
 langgraph==1.0.7
 langgraph-prebuilt==1.0.7
 language_tool_python==2.9.5
+logfire==4.34.0
 nltk==3.9.2
 ollama==0.6.1
 openai==2.29.0

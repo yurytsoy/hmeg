@@ -1,3 +1,8 @@
+import logfire
+
+logfire.configure()
+logfire.instrument_pydantic_ai()
+
 from dataclasses import dataclass
 import os
 import shutil
