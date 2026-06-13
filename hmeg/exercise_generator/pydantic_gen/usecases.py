@@ -131,7 +131,7 @@ class EvaluatorDeps:
 def evaluator_instructions(ctx: RunContext[EvaluatorDeps]) -> str:
     deps = ctx.deps
     vocab_level = deps.vocab_level or DEFAULT_VOCAB_LEVEL
-    res = f"Evaluate example for the provided grammar topic \"{deps.topic_name}\" for the vocabulary matching CEFR level {vocab_level}. The example sentence: \"{deps.example}\". If example matches the grammar and vocabulary level then write it to the output file \"{deps.out_filename}\"."
+    res = f"Evaluate example for the provided grammar topic \"{deps.topic_name}\" for the vocabulary matching CEFR level {vocab_level}. The example sentence: \"{deps.example}\". If example matches the grammar and vocabulary level then write it to the output file \"{deps.out_filename}\", otherwise finish the session."
     return res
 
 

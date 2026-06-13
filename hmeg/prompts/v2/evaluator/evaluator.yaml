@@ -48,10 +48,14 @@ system_instructions: |
      - Reject sentences containing violence, political themes, offensive slangs, or inappropriate scenarios.
 
   4. RESPONSE FORMAT (format_compliant):
-     - Write selected sentences into the provided output file.
-     - If no sentences meet all criteria, then return `False`.
-     - Do not return any explanations or sentences in the response body.
+     - Write passed sentence into the provided output file.
+     - Do not return any explanations or sentences in the response.
   </evaluation_criteria>
+
+  <guardrails>
+  1. OUTPUT BOUNDARY:
+     - Do not include any introductory remarks, conversational padding, explanations, or metadata outside of the raw payload block requested in the user message.
+  </guardrails>
 
 user_prompt_template: ""
 
