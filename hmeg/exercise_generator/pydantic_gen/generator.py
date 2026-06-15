@@ -13,7 +13,7 @@ from typing import Any
 from pydantic_ai import Agent, AgentRunResult, exceptions
 from rich.console import Console
 
-from .usecases import make_generator_agent, make_evaluator_agent, get_num_lines, read_all_lines, copy_lines, GeneratorDeps, EvaluatorDeps
+from .usecases import make_generator_agent, make_evaluator_agent, get_num_lines, read_all_lines, copy_lines, GeneratorDeps, EvaluatorDeps, write_line
 
 console = Console()
 
@@ -74,9 +74,12 @@ def generate_exercises(
                 # get result from the run agent, eval sentences one by one, and save good lines to the new file
                 eval_filename = ex_filename.replace(".txt", "_eval.txt")
                 for line in read_all_lines(ex_filename):
-                    eval_res = _run_agent(eval_agent, deps=get_evaluator_deps(topic_name, vocab_level, example=line, out_filename=eval_filename))
-                    if verbose and eval_res is not None:
-                        console.print(f"[{eval_res.timestamp}] Evaluator usage: {eval_res.usage}")
+                    eval_res = _run_agent(eval_agent, deps=get_evaluator_deps(topic_name, vocab_level, example=line))
+                    if eval_res is not None:
+                        if eval_res.output.is_valid:
+                            write_line(None, eval_filename, line)
+                        if verbose:
+                            console.print(f"[{eval_res.timestamp}] Evaluator usage: {eval_res.usage}")
                 if debug:
                     shutil.copy(eval_filename, os.path.split(eval_filename)[-1])
             else:
@@ -110,13 +113,11 @@ def get_evaluator_deps(
     topic_name: str,
     vocab_level: str | None,
     example: str,
-    out_filename: str,
 ) -> EvaluatorDeps:
     return EvaluatorDeps(
         topic_name=topic_name,
         example=example,
         vocab_level=vocab_level,
-        out_filename=out_filename,
     )
 
 

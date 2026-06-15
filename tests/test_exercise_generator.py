@@ -90,7 +90,7 @@ class TestExerciseGenerator(unittest.TestCase):
             num=20,
             out_path=out_path,
             gen_model="gemma4:12b-64k",
-            eval_model="qwen3.5:9b-4k",
+            eval_model="qwen3.5:9b-8k",
             verbose=True,
             debug=True,
         )

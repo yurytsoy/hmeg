@@ -125,18 +125,17 @@ class EvaluatorDeps:
     topic_name: str
     vocab_level: str | None
     example: str
-    out_filename: str
 
 
 def evaluator_instructions(ctx: RunContext[EvaluatorDeps]) -> str:
     deps = ctx.deps
     vocab_level = deps.vocab_level or DEFAULT_VOCAB_LEVEL
-    res = f"Evaluate example for the provided grammar topic \"{deps.topic_name}\" for the vocabulary matching CEFR level {vocab_level}. The example sentence: \"{deps.example}\". If example matches the grammar and vocabulary level then write it to the output file \"{deps.out_filename}\", otherwise finish the session."
+    res = f"Evaluate sentence: '{deps.example}' against Topic: '{deps.topic_name}' at CEFR: {vocab_level}."
     return res
 
 
 class EvaluatorOutput(BaseModel):
-    result_num: int = Field(description="Number of passed sentences.")
+    is_valid: bool = Field(description="Whether the input sentence is valid or not.")
 
 
 def make_evaluator_agent(model_name: str | None) -> Agent:
@@ -147,7 +146,6 @@ def make_evaluator_agent(model_name: str | None) -> Agent:
     return make_agent(
         model_name=model_name or exercise_prompt.llm.model,
         system_prompt=exercise_prompt.system_instructions,
-        tools=[write_line],
         deps_type=EvaluatorDeps,
         output_type=EvaluatorOutput,
         instructions=evaluator_instructions,

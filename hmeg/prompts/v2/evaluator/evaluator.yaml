@@ -15,9 +15,9 @@ llm:
   provider: "local"
   model: "qwen3.5:9b"  # qwen3.5:9b | gemma4:26b | gemma4:e4b | gemma4:e4b-it-qat
   temperature: 0.2
-  max_tokens: 16384
+  max_tokens: 8192
   top_p: 0.5
-  top_k: 16
+  top_k: 8
 
 # Input contract for runtime validation (JSON Schema)
 input_schema: {}
@@ -46,10 +46,6 @@ system_instructions: |
   3. SAFETY & APPROPRIATENESS (content_safe):
      - The content must be completely non-offensive, culturally respectful, and safe for global language learners.
      - Reject sentences containing violence, political themes, offensive slangs, or inappropriate scenarios.
-
-  4. RESPONSE FORMAT (format_compliant):
-     - Write passed sentence into the provided output file.
-     - Do not return any explanations or sentences in the response.
   </evaluation_criteria>
 
 user_prompt_template: ""
