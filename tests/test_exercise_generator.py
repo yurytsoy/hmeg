@@ -89,8 +89,8 @@ class TestExerciseGenerator(unittest.TestCase):
             topics[0],
             num=20,
             out_path=out_path,
-            gen_model="gemma4:12b-64k",
-            eval_model="qwen3.5:9b-8k",
+            gen_model="qwen2.5:14b-instruct-64k",
+            eval_model="gemma4:e4b-it-qat",
             verbose=True,
             debug=True,
         )

@@ -4,6 +4,7 @@ from dataclasses import dataclass
 
 from pydantic import BaseModel, Field
 from pydantic_ai import Agent, RunContext, ModelSettings
+from pydantic_ai.settings import ThinkingEffort
 from pydantic_ai.models.ollama import OllamaModel
 
 from .entities import DEFAULT_MAX_TOKENS, DEFAULT_TEMPERATURE, DEFAULT_TOP_P, DEFAULT_TOP_K, DEFAULT_VOCAB_LEVEL
@@ -143,8 +144,9 @@ def make_evaluator_agent(model_name: str | None) -> Agent:
 
     prompt_loader_ = PromptLoader()
     exercise_prompt = prompt_loader_.load("v2/evaluator/evaluator")
+    model_name = model_name or exercise_prompt.llm.model
     return make_agent(
-        model_name=model_name or exercise_prompt.llm.model,
+        model_name=model_name,
         system_prompt=exercise_prompt.system_instructions,
         deps_type=EvaluatorDeps,
         output_type=EvaluatorOutput,
@@ -153,6 +155,7 @@ def make_evaluator_agent(model_name: str | None) -> Agent:
         top_k=exercise_prompt.llm.top_k,
         top_p=exercise_prompt.llm.top_p,
         temperature=exercise_prompt.llm.temperature,
+        thinking="low" if ("qwen" in model_name.lower()) else False
     )
 
 
@@ -167,6 +170,7 @@ def make_agent(
     top_k: int | None = None,
     top_p: float | None = None,
     temperature: float | None = None,
+    thinking: ThinkingEffort | bool = "medium"
 ) -> Agent:
     print(f"Creating an agent based on {model_name} ({max_tokens=}, {top_k=}, {top_p=}, {temperature=}).")
     max_tokens = max_tokens or DEFAULT_MAX_TOKENS
@@ -178,7 +182,7 @@ def make_agent(
         system_prompt=system_prompt,
         tools=tools or [],
         model_settings=ModelSettings(
-            max_tokens=max_tokens, temperature=temperature, top_p=top_p, top_k=top_k, thinking="medium",
+            max_tokens=max_tokens, temperature=temperature, top_p=top_p, top_k=top_k, thinking=thinking,
             extra_body={"options": {"num_ctx": max_tokens}}
         ),
         instructions=instructions,

@@ -63,6 +63,9 @@ def generate_exercises(
 
             # ? TODO: add list of nouns and verbs to avoid or use dynamic instructions
             ex_filename = os.path.join(tmp_dir, f"ex_{cur_num_exercises}_{cur_num_exercises + cur_batch_size}.txt")
+            if not os.path.exists(ex_filename):
+                from pathlib import Path
+                Path(ex_filename).touch()
             gen_res = _run_agent(gen_agent, deps=get_generator_deps(topic_name, cur_batch_size, vocab_level, ex_filename))
             if gen_res is None:
                 continue  # try again
