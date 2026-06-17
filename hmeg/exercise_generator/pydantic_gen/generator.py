@@ -16,6 +16,7 @@ from rich.console import Console
 
 from .usecases import make_generator_agent, make_evaluator_agent, get_num_lines, read_all_lines, copy_lines, GeneratorDeps, EvaluatorDeps, write_line
 
+OLLAMA_NUM_PARALLEL = 4
 console = Console()
 
 
@@ -46,12 +47,22 @@ def _run_agent(agent: Agent, prompt: str | None = None, deps: type[dataclass] | 
     return agent_resp
 
 
+async def _run_agent_async(sem: asyncio.Semaphore, agent: Agent, prompt: str | None = None, deps: type[dataclass] | None = None):
+    async with sem: # Dynamically limits active requests
+        response = await asyncio.to_thread(_run_agent, **dict(agent=agent, prompt=prompt, deps=deps))
+        return response
+
+
 async def evaluate_file(eval_agent: Agent, ex_filename: str, topic_name: str, vocab_level: str, out_path: str, verbose: bool = False) -> int:
+    sem = asyncio.Semaphore(OLLAMA_NUM_PARALLEL)
+
     lines = read_all_lines(ex_filename)
     results = await asyncio.gather(
-        *[await asyncio.to_thread(_run_agent, **dict(agent=eval_agent, deps=get_evaluator_deps(topic_name, vocab_level, example=line)))
+        *[_run_agent_async(sem=sem, agent=eval_agent, deps=get_evaluator_deps(topic_name, vocab_level, example=line))
           for line in lines]
     )
+    if verbose:
+        console.print(f"Evaluation results gathered ({len(results)})")
     valid_count = 0
     for eval_res, line in zip(results, lines):
         if eval_res is None:
@@ -77,15 +88,13 @@ def generate_exercises(
     loop_count = 0
     cur_num_exercises = 0
 
-    with tempfile.TemporaryDirectory() as tmp_dir:
+    tmp_dir = tempfile.mkdtemp()
+    try:
         while (cur_num_exercises < num) and (loop_count < max_loops):
             cur_batch_size = min(batch_size, num - cur_num_exercises)
 
             # ? TODO: add list of nouns and verbs to avoid or use dynamic instructions
             ex_filename = os.path.join(tmp_dir, f"ex_{cur_num_exercises}_{cur_num_exercises + cur_batch_size}.txt")
-            if not os.path.exists(ex_filename):
-                from pathlib import Path
-                Path(ex_filename).touch()
             gen_res = _run_agent(gen_agent, deps=get_generator_deps(topic_name, cur_batch_size, vocab_level, ex_filename))
             if gen_res is None:
                 continue  # try again
@@ -97,14 +106,16 @@ def generate_exercises(
                 # get result from the run agent, eval sentences one by one, and save good lines to the new file
 
                 eval_filename = ex_filename.replace(".txt", "_eval.txt")
-                eval_count = asyncio.run(evaluate_file(
-                    eval_agent=eval_agent,
-                    ex_filename=ex_filename,
-                    topic_name=topic_name,
-                    vocab_level=vocab_level,
-                    out_path=eval_filename,
-                    verbose=verbose,
-                ))
+                asyncio.run(
+                    evaluate_file(
+                        eval_agent=eval_agent,
+                        ex_filename=ex_filename,
+                        topic_name=topic_name,
+                        vocab_level=vocab_level,
+                        out_path=eval_filename,
+                        verbose=verbose,
+                    )
+                )
                 if debug:
                     shutil.copy(eval_filename, os.path.split(eval_filename)[-1])
             else:
@@ -116,6 +127,8 @@ def generate_exercises(
 
         if (loop_count > max_loops) and (cur_num_exercises < num):
             console.print(f"[red]Failed to generate the required number of exercises after {max_loops} attempts. Current number of exercises: {cur_num_exercises}.[/red]")
+    finally:
+        shutil.rmtree(tmp_dir)
 
     return read_all_lines(out_path)
 
