@@ -4,6 +4,7 @@ logfire.configure(send_to_logfire="always", console=False)
 logfire.instrument_pydantic_ai()
 logfire.instrument_httpx(capture_all=True)
 
+import asyncio
 from dataclasses import dataclass
 import os
 import shutil
@@ -45,6 +46,25 @@ def _run_agent(agent: Agent, prompt: str | None = None, deps: type[dataclass] | 
     return agent_resp
 
 
+async def evaluate_file(eval_agent: Agent, ex_filename: str, topic_name: str, vocab_level: str, out_path: str, verbose: bool = False) -> int:
+    lines = read_all_lines(ex_filename)
+    results = await asyncio.gather(
+        *[await asyncio.to_thread(_run_agent, **dict(agent=eval_agent, deps=get_evaluator_deps(topic_name, vocab_level, example=line)))
+          for line in lines]
+    )
+    valid_count = 0
+    for eval_res, line in zip(results, lines):
+        if eval_res is None:
+            continue
+
+        if eval_res.output.is_valid:
+            valid_count += 1
+            write_line(None, out_path, line)
+        if verbose:
+            console.print(f"[{eval_res.timestamp}] Evaluator usage: {eval_res.usage}")
+    return valid_count
+
+
 def generate_exercises(
     topic_name: str, num: int, gen_model: str | None = None, eval_model: str | None = None, vocab_level: str | None = None, out_path: str | None = None, verbose: bool = False, debug: bool = False
 ) -> list[str]:
@@ -75,14 +95,16 @@ def generate_exercises(
                 shutil.copy(ex_filename, os.path.split(ex_filename)[-1])
             if eval_agent is not None and get_num_lines(ex_filename) > 0:
                 # get result from the run agent, eval sentences one by one, and save good lines to the new file
+
                 eval_filename = ex_filename.replace(".txt", "_eval.txt")
-                for line in read_all_lines(ex_filename):
-                    eval_res = _run_agent(eval_agent, deps=get_evaluator_deps(topic_name, vocab_level, example=line))
-                    if eval_res is not None:
-                        if eval_res.output.is_valid:
-                            write_line(None, eval_filename, line)
-                        if verbose:
-                            console.print(f"[{eval_res.timestamp}] Evaluator usage: {eval_res.usage}")
+                eval_count = asyncio.run(evaluate_file(
+                    eval_agent=eval_agent,
+                    ex_filename=ex_filename,
+                    topic_name=topic_name,
+                    vocab_level=vocab_level,
+                    out_path=eval_filename,
+                    verbose=verbose,
+                ))
                 if debug:
                     shutil.copy(eval_filename, os.path.split(eval_filename)[-1])
             else:
