@@ -31,13 +31,16 @@ def read_all_lines(filepath: str) -> list[str]:
     return res
 
 
-def copy_lines(src_filepath: str, dst_filepath: str) -> int:
+def copy_lines(src_filepath: str, dst_filepath: str, only_unique: bool = True) -> int:
     if not os.path.exists(src_filepath):
         return 0
 
+    dst_lines = read_all_lines(dst_filepath)
     lines = read_all_lines(src_filepath)
     with open(dst_filepath, "a", encoding="utf-8") as file:
         for line in lines:
+            if only_unique and (line in dst_lines):
+                continue
             file.write(line + "\n")
     return len(lines)
 

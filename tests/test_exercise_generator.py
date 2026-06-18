@@ -1,3 +1,8 @@
+import warnings
+
+# Filter out the specific transformers wrapper warning
+warnings.filterwarnings("ignore", message=".*Accessing `LambdaRuntimeClient`.*")
+
 import os
 import random
 import unittest
