@@ -92,7 +92,7 @@ class TestExerciseGenerator(unittest.TestCase):
         topics = random.choices(list(GrammarRegistry.topics), k=1)
         exercises = generate_exercises(
             topics[0],
-            num=20,
+            num=100,
             out_path=out_path,
             gen_model="qwen2.5:14b-instruct-64k",
             eval_model="gemma4:e4b",
