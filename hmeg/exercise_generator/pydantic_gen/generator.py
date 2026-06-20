@@ -116,7 +116,7 @@ def generate_exercises(
                         verbose=verbose,
                     )
                 )
-                if debug:
+                if debug and os.path.exists(eval_filename):
                     shutil.copy(eval_filename, os.path.split(eval_filename)[-1])
             else:
                 eval_filename = ex_filename
