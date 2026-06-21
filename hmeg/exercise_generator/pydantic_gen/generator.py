@@ -100,7 +100,7 @@ def generate_exercises(
                 continue  # try again
             if verbose:
                 console.print(f"[{gen_res.timestamp}] Generator usage: {gen_res.usage}")
-            if debug:
+            if debug and os.path.exists(ex_filename):
                 shutil.copy(ex_filename, os.path.split(ex_filename)[-1])
             if eval_agent is not None and get_num_lines(ex_filename) > 0:
                 # get result from the run agent, eval sentences one by one, and save good lines to the new file
