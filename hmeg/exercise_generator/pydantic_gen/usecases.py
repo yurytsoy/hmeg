@@ -36,13 +36,15 @@ def copy_lines(src_filepath: str, dst_filepath: str, only_unique: bool = True) -
         return 0
 
     dst_lines = read_all_lines(dst_filepath)
-    lines = read_all_lines(src_filepath)
+    lines = set(read_all_lines(src_filepath))
+    num_copy = 0
     with open(dst_filepath, "a", encoding="utf-8") as file:
         for line in lines:
             if only_unique and (line in dst_lines):
                 continue
             file.write(line + "\n")
-    return len(lines)
+            num_copy += 1
+    return num_copy
 
 
 def write_line(ctx: RunContext, filepath: str, line: str) -> None:
