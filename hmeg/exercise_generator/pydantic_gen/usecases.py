@@ -66,26 +66,6 @@ def write_lines(ctx: RunContext, filepath: str, lines: list[str]) -> None:
             file.write(line + "\n" if not line.endswith("\n") else line)
 
 
-def make_orchestrator_agent(
-    model_name: str,
-    system_prompt: str,
-) -> Agent:
-    prompt = """
-You are an Orchestrator Agent. Your goal is to solve the user's request by breaking it down into steps and using basic tools.
-1. Analyze the request.
-2. Formulate a step-by-step plan. Each step should be simple enough to be handled by a small language model with 4k tokens context size.
-3. Execute the steps on by one.
-4. If you absolutely cannot solve it with available tools, explain exactly what basic tools are missing.
-    """
-
-    return Agent(
-        OllamaModel(model_name=model_name),
-        system_prompt=system_prompt,
-        tools=[],  # TODO
-        model_settings=ModelSettings(temperature=0.0)
-    )
-
-
 @dataclass
 class GeneratorDeps:
     num_exercises: int

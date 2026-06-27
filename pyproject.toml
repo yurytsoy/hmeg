@@ -1,6 +1,6 @@
 [project]
 name = "hmeg"
-version = "0.3.1b"
+version = "0.3.1a"
 requires-python = ">=3.10,<3.15"
 description = "Generator of exercises for practicing speaking for language learning."
 authors = [{name = "Yury Choi", email = "yurytsoy@gmail.com"}]
