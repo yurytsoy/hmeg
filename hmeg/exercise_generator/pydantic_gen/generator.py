@@ -53,12 +53,12 @@ async def _run_agent_async(sem: asyncio.Semaphore, agent: Agent, prompt: str | N
         return response
 
 
-async def evaluate_file(eval_agent: Agent, ex_filename: str, topic_name: str, vocab_level: str, out_path: str, verbose: bool = False) -> int:
+async def evaluate_file(eval_agent: Agent, ex_filename: str, topic_name: str, vocab_level: str, ref_examples: list[str], out_path: str, verbose: bool = False) -> int:
     sem = asyncio.Semaphore(OLLAMA_NUM_PARALLEL)
 
     lines = read_all_lines(ex_filename)
     results = await asyncio.gather(
-        *[_run_agent_async(sem=sem, agent=eval_agent, deps=get_evaluator_deps(topic_name, vocab_level, example=line))
+        *[_run_agent_async(sem=sem, agent=eval_agent, deps=get_evaluator_deps(topic_name, vocab_level, example=line, ref_examples=ref_examples))
           for line in lines]
     )
     if verbose:
@@ -77,7 +77,15 @@ async def evaluate_file(eval_agent: Agent, ex_filename: str, topic_name: str, vo
 
 
 def generate_exercises(
-    topic_name: str, num: int, gen_model: str | None = None, eval_model: str | None = None, vocab_level: str | None = None, out_path: str | None = None, verbose: bool = False, debug: bool = False
+    topic_name: str,
+    num: int,
+    gen_model: str | None = None,
+    eval_model: str | None = None,
+    vocab_level: str | None = None,
+    examples: list[str] | None = None,
+    out_path: str | None = None,
+    verbose: bool = False,
+    debug: bool = False
 ) -> list[str]:
     out_path = out_path or "result.txt"  # TODO: include sanitized topic name into the filename
     batch_size = min(num, 10)
@@ -95,7 +103,8 @@ def generate_exercises(
 
             # ? TODO: add list of nouns and verbs to avoid or use dynamic instructions
             ex_filename = os.path.join(tmp_dir, f"ex_{cur_num_exercises}_{cur_num_exercises + cur_batch_size}.txt")
-            gen_res = _run_agent(gen_agent, deps=get_generator_deps(topic_name, cur_batch_size, vocab_level, ex_filename))
+            gen_deps = get_generator_deps(topic_name, cur_batch_size, vocab_level=vocab_level, out_filename=ex_filename, examples=examples)
+            gen_res = _run_agent(gen_agent, deps=gen_deps)
             if gen_res is None:
                 continue  # try again
             if verbose:
@@ -112,6 +121,7 @@ def generate_exercises(
                         ex_filename=ex_filename,
                         topic_name=topic_name,
                         vocab_level=vocab_level,
+                        ref_examples=examples or [],
                         out_path=eval_filename,
                         verbose=verbose,
                     )
@@ -138,12 +148,14 @@ def get_generator_deps(
     num: int,
     vocab_level: str | None,
     out_filename: str,
+    examples: list[str] | None = None,
 ) -> GeneratorDeps:
     return GeneratorDeps(
         topic_name=topic_name,
         num_exercises=num,
         vocab_level=vocab_level,
         out_filename=out_filename,
+        examples=examples or []
     )
 
 
@@ -151,20 +163,11 @@ def get_evaluator_deps(
     topic_name: str,
     vocab_level: str | None,
     example: str,
+    ref_examples: list[str]
 ) -> EvaluatorDeps:
     return EvaluatorDeps(
         topic_name=topic_name,
         example=example,
         vocab_level=vocab_level,
+        ref_examples=ref_examples
     )
-
-
-def _get_evaluator_prompt(
-    topic_name: str,
-    vocab_level: str | None,
-    input_filename: str,
-    out_filename: str,
-) -> str:
-    vocab_level = vocab_level or "A2"
-    prompt = f"Evaluate examples for the provided Korean grammar topic \"{topic_name}\" for the vocabulary matching CEFR level {vocab_level}. The examples are provided in the input file \"{input_filename}\", each line contains exactly 1 example. Write selected examples to the output file \"{out_filename}\"."
-    return prompt

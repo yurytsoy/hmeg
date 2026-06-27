@@ -92,6 +92,7 @@ class GeneratorDeps:
     topic_name: str
     vocab_level: str | None
     out_filename: str
+    examples: list[str]
 
 
 class GeneratorOutput(BaseModel):
@@ -102,6 +103,14 @@ def generator_instructions(ctx: RunContext[GeneratorDeps]) -> str:
     deps = ctx.deps
     vocab_level = deps.vocab_level or DEFAULT_VOCAB_LEVEL
     res = f"Generate {deps.num_exercises} exercises for the Korean grammar topic \"{deps.topic_name}\" using the vocabulary matching CEFR level {vocab_level}. Write resulting exercises into the file '{deps.out_filename}', each exercise in a separate line."
+
+    examples = ""
+    if deps.examples:
+        examples = "\nExamples of valid exercises:"
+        for example in deps.examples:
+            examples += f"\n- {example}"
+        examples += "\n**IMPORTANT:** **Never** copy examples!"
+    res += examples
     return res
 
 
@@ -129,12 +138,20 @@ class EvaluatorDeps:
     topic_name: str
     vocab_level: str | None
     example: str
+    ref_examples: list[str]
 
 
 def evaluator_instructions(ctx: RunContext[EvaluatorDeps]) -> str:
     deps = ctx.deps
     vocab_level = deps.vocab_level or DEFAULT_VOCAB_LEVEL
     res = f"Evaluate sentence: '{deps.example}' against Topic: '{deps.topic_name}' at CEFR: {vocab_level}."
+
+    ref_examples = ""
+    if deps.ref_examples:
+        ref_examples = "\nReference valid sentences:"
+        for ref_ex in deps.ref_examples:
+            ref_examples += f"\n- {ref_ex}"
+    res += ref_examples
     return res
 
 
